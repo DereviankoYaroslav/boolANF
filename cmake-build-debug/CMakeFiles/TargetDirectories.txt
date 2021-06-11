@@ -1,0 +1,3 @@
+D:/CLionProjects/boolANF/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/CLionProjects/boolANF/cmake-build-debug/CMakeFiles/boolANF.dir
+D:/CLionProjects/boolANF/cmake-build-debug/CMakeFiles/rebuild_cache.dir
