@@ -12,7 +12,7 @@ int *binaryElements(int *arr, int size, int count);
 
 int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t);
 
-int *to_ANF(const int *func, int size);
+int *toANF(const int *func, int size);
 
 int HammingWeight(const int *function, int size);
 
@@ -26,6 +26,15 @@ int funcsIsEqual(const int *func1, const int *func2, int size);
 
 int NLinearity(int *func, int size, int count);
 
+int *toPolarTable(const int *function, int size);
+
+int myModulus(int number, int mod);
+
+int *HadamardCoefficients(int *func, int size, int count);
+
+int HadamardMax(const int *arr, int size);
+
+int HadamardNLinearity(int max, int count);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -86,7 +95,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
     printf("\n");
     printf("ANF REPRESENTATION\n");
-    int *ar4 = to_ANF(ar3, size);
+    int *ar4 = toANF(ar3, size);
 
     for (int i = 0; i < size; ++i) {
         printf("%d ", ar4[i]);
@@ -105,24 +114,84 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int dec = algebraicDeg(f, size, n);
     printf("\n\nALGEBRAIC DEG = %d ", dec);
 
-    int fun1[]={0,0,1,1};
-    int fun2[]={0,1,0,0};
+    /*int fun1[] = {0, 0, 1, 1};
+    int fun2[] = {0, 1, 0, 0};
 
-    int dist = HammingDistance(fun1,fun2,4);
-    printf("\nHD = %d ", dist);
+    int dist = HammingDistance(fun1, fun2, 4);
+    printf("\nHD = %d ", dist);*/
 
+    int fun11[] = {1, 0, 1, 1};
+    int nel = NLinearity(fun11, 4, 2);
+    printf("\nNON LINEARITY (DISTANCE) = %d", nel);
+
+
+    int *polFunc = toPolarTable(fun11, 4);
+    for (int i = 0; i < 4; ++i) {
+        printf(" %d", polFunc[i]);
+    }
+
+    /*int *result = malloc(8 * sizeof(int));
+    int *test = malloc(8 * sizeof(int));
+    int *functions2 = elemsForN(8);
     printf("\n");
+    for (int i = 0; i < 8; ++i) {
+        int *bin = valueToBinary(functions2[i], 3);
+        for (int j = 0; j < 3; ++j) {
+            //printf(" bin j = %d", bin[j]);
+            // *(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
+            test [i * 3 + j] = bin[j];
+            printf(" %d",test [i * 3 + j]);
+        }
+        printf("\n");
+    }
+    int *w = malloc(3 * sizeof(int));
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            w[j] = test[i * 3 + j];
+            printf("w = %d", w[j]);
+        }
+        int res = 0;
+        for (int j = 0; j < 8; ++j) {
+            int r = 0;
+            for (int k = 0; k < 3; ++k) {
+                r += myModulus(w[k] * test[j * 3 + k], 2);
+            }
+            res += raiseToPower(-1, myModulus(fun11[j] + r, 2));
+        }
+        result[i] = res;
+    }
+    for (int i = 0; i < 8; ++i) {
+        printf(" = %d", result[i]);
+    }*/
 
-    int fun11[] = {1,0,1,1};
-    int nel = NLinearity(fun11,4,2);
-    printf("NL(f) = %d\n", nel);
+    int *ar5 = HadamardCoefficients(fun11, 4, 2);
+    /*for (int i = 0; i < 4; ++i) {
+        printf(" %d", ar5[i]);
+    }*/
+
+    int max = HadamardMax(ar5, 4);
+    //printf("\n max = %d", max);
+
+    int nl = HadamardNLinearity(max, 2);
+    printf("\nHADAMARD NON LINEARITY = %d", nl);
+    printf("\n");
 
     free(binElems);
     free(ar);
     free(ar3);
     free(ar4);
+    free(ar5);
 
     return 0;
+}
+
+int myModulus(int number, int mod) {
+    if (number < 0) {
+        while (number < 0) {
+            number = number + mod;
+        }
+    }
+    return number % 2;
 }
 
 //Функція перетворення елементів з десяткової СЧ у двійкову СЧ, для певного ступеня N
@@ -211,7 +280,7 @@ int *elemsForN(int size) {
 
 //Функція переведення з таблиці істиності до АНФ
 
-int *to_ANF(const int *func, int size) {
+int *toANF(const int *func, int size) {
     int *matrix = calloc(size * size, sizeof(int));
     for (int i = 0; i < size; ++i) {
         matrix[i] = func[size - 1 - i];
@@ -305,7 +374,7 @@ int algebraicDeg(const int *func, int size, int count) {
 int HammingDistance(const int *func1, const int *func2, int size) {
     int res = 0;
     for (int i = 0; i < size; ++i) {
-        if ((func1[i] ^ func2[i])!= 0) res++;
+        if ((func1[i] ^ func2[i]) != 0) res++;
     }
     return res;
 }
@@ -339,14 +408,15 @@ int NLinearity(int *func, int size, int count) {
         for (int j = 0; j < matrixColumns; ++j) {
             //printf(" bin j = %d", bin[j]);
             //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
-            functions [i * matrixColumns + j] = bin[j];
+            functions[i * matrixColumns + j] = bin[j];
             //printf(" %d",functions [i * cols + j]);
         }
         //printf("\n");
     }
     minimumNL = HammingDistance(func, functions, size);
     for (int i = 0; i < matrixRows; ++i) {
-        if (algebraicDeg(functions + matrixColumns * i, size, count) <= 1 && !funcsIsEqual(func, functions + matrixColumns * i, size)) {
+        if (algebraicDeg(functions + matrixColumns * i, size, count) <= 1 &&
+            !funcsIsEqual(func, functions + matrixColumns * i, size)) {
             int newMinHD = HammingDistance(func, functions + matrixColumns * i, matrixColumns);
             if (newMinHD < minimumNL) {
                 minimumNL = newMinHD;
@@ -355,5 +425,67 @@ int NLinearity(int *func, int size, int count) {
     }
     int result = minimumNL;
     return result;
+}
+
+int *toPolarTable(const int *function, int size) {
+    int *res = calloc(size, sizeof(int));
+    for (int i = 0; i < size; ++i) {
+        res[i] = raiseToPower(-1, function[i]);
+    }
+    return res;
+}
+
+//Функція визначення коефіцієнтів перетворення Уолдша-Адамара
+
+int *HadamardCoefficients(int *func, int size, int count) {
+    int *result = calloc(size, sizeof(int));
+    int *test = calloc(size, sizeof(int));
+    int *functions2 = elemsForN(size);
+    /*for (int i = 0; i < rows; ++i) {
+        printf(" %d",functions2 [i]);
+    }*/
+    printf("\n");
+    for (int i = 0; i < size; ++i) {
+        int *bin = valueToBinary(functions2[i], count);
+        for (int j = 0; j < count; ++j) {
+            //printf(" bin j = %d", bin[j]);
+            //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
+            test[i * count + j] = bin[j];
+            //printf(" %d",test [i * count + j]);
+        }
+        //printf("\n");
+    }
+    int *w = calloc(count, sizeof(int));
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < count; ++j) {
+            w[j] = test[i * count + j];
+            //printf("w = %d", w[j]);
+        }
+        int res = 0;
+        for (int j = 0; j < size; ++j) {
+            int r = 0;
+            for (int k = 0; k < count; ++k) {
+                r += myModulus(w[k] * test[j * count + k], 2);
+            }
+            res += raiseToPower(-1, myModulus(func[j] + r, 2));
+        }
+        result[i] = res;
+    }
+    return result;
+}
+
+int HadamardMax(const int *arr, int size) {
+    int maxCoefficient = arr[0];
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] > maxCoefficient) {
+            maxCoefficient = arr[i];
+        }
+    }
+    return maxCoefficient;
+}
+
+int HadamardNLinearity(int max, int count) {
+    int nl = (raiseToPower(2, count) - max) / 2;
+    return nl;
 }
 
