@@ -60,15 +60,16 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
         printf("%d ", binElems[i]);
     }*/
 
-    printf("\nBooleans\n");
+    //printf("\nBooleans\n");
     int *ar = binaryElements(binElems, size, n);
+    /*
     for (int i = 0; i < n; ++i) {
         printf("x%d = ", i);
         for (int j = 0; j < size; ++j) {
             printf("%d ", ar[i * size + j]);
         }
         printf("\n");
-    }
+    }*/
 
     int *ar3 = calloc(size, sizeof(int));
     int modulus = 0;
@@ -106,13 +107,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     int weight;
     weight = HammingWeight(ar3, size);
-    printf("HW = %d ", weight);
+    printf("HAMMING WEIGHT = %d ", weight);
     printf("\n");
     funcIsBalanced(weight, n);
 
 
     int dec = algebraicDeg(f, size, n);
-    printf("\n\nALGEBRAIC DEG = %d ", dec);
+    printf("\n\nALGEBRAIC DEGREE = %d ", dec);
 
     /*int fun1[] = {0, 0, 1, 1};
     int fun2[] = {0, 1, 0, 0};
@@ -124,7 +125,10 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int nel = NLinearity(fun11, 4, 2);
     printf("\nNON LINEARITY (DISTANCE) = %d", nel);
 
+    printf("\n");
 
+    printf("\nPOLAR TABLE");
+    printf("\n");
     int *polFunc = toPolarTable(fun11, 4);
     for (int i = 0; i < 4; ++i) {
         printf(" %d", polFunc[i]);
@@ -184,6 +188,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     return 0;
 }
+
+//Функція приведення числа за модулем дуякого числа
 
 int myModulus(int number, int mod) {
     if (number < 0) {
@@ -427,6 +433,8 @@ int NLinearity(int *func, int size, int count) {
     return result;
 }
 
+//Функція представлення таблиці істиності в полярному вигляді
+
 int *toPolarTable(const int *function, int size) {
     int *res = calloc(size, sizeof(int));
     for (int i = 0; i < size; ++i) {
@@ -474,6 +482,8 @@ int *HadamardCoefficients(int *func, int size, int count) {
     return result;
 }
 
+//Функція визначення найбільшого коефіцієнта перетворення Уолдша-Адамара
+
 int HadamardMax(const int *arr, int size) {
     int maxCoefficient = arr[0];
     for (int i = 0; i < size; ++i) {
@@ -483,6 +493,8 @@ int HadamardMax(const int *arr, int size) {
     }
     return maxCoefficient;
 }
+
+//Функція визначення нелінійності функції через коефіцієнти Уолдша-Адамара
 
 int HadamardNLinearity(int max, int count) {
     int nl = (raiseToPower(2, count) - max) / 2;
