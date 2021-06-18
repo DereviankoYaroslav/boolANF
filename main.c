@@ -36,6 +36,12 @@ int HadamardMax(const int *arr, int size);
 
 int HadamardNLinearity(int max, int count);
 
+int *autoCorrelation(int *func, int size, int count);
+
+int autoCorrelationMax(const int *arr, int size);
+
+int expansionCriterion(const int *func, int size, int k);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -131,7 +137,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
     int *polFunc = toPolarTable(fun11, 4);
     for (int i = 0; i < 4; ++i) {
-        printf(" %d", polFunc[i]);
+        printf("%d ", polFunc[i]);
     }
 
     /*int *result = malloc(8 * sizeof(int));
@@ -180,11 +186,33 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nHADAMARD NON LINEARITY = %d", nl);
     printf("\n");
 
+    int fun22[] = {1, 0, 1, 1};
+
+    int *ar6 = autoCorrelation(fun22, 4, 2);
+
+    printf("\nAUTO CORRELATING FUNCTION");
+    printf("\n");
+    for (int i = 3; i >= 0; i--) {
+        printf("%d ", ar6[i]);
+    }
+    printf("\n");
+
+    int AC = autoCorrelationMax(ar6, 4);
+    printf("\nAUTO CORRELATION = %d", AC);
+    printf("\n");
+
+    int ec = expansionCriterion(fun22, 4, 1);
+    printf("\n");
+    printf("\nW = %d", ec);
+    printf("\n");
+
+
     free(binElems);
     free(ar);
     free(ar3);
     free(ar4);
     free(ar5);
+    free(ar6);
 
     return 0;
 }
@@ -500,4 +528,49 @@ int HadamardNLinearity(int max, int count) {
     int nl = (raiseToPower(2, count) - max) / 2;
     return nl;
 }
+
+//Функція обчислення автокореляційної функції
+
+int *autoCorrelation(int *func, int size, int count) {
+    int *acFunc = calloc(size, sizeof(int));
+    int *polFunc = toPolarTable(func, size);
+    acFunc[0] = raiseToPower(2, count);
+    for (int i = 1; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            int temp = polFunc[j] * polFunc[j ^ i];
+            //printf("j^i = %d", j^i);
+            acFunc[i] = acFunc[i] + temp;
+        }
+        //printf("ac i = %d", acFunc[i]);
+    }
+    return acFunc;
+}
+
+//Функція обчислення автокореляції з функції автокореляції
+
+int autoCorrelationMax(const int *arr, int size) {
+    int maxCoefficient = arr[1];
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] > maxCoefficient) {
+            maxCoefficient = arr[i];
+        }
+    }
+    return maxCoefficient;
+}
+
+//Функція визначення відповідності критеріям
+
+int expansionCriterion(const int *func, int size, int k) {
+    int result = 0;
+    for (int i = 0; i < size; ++i) {
+        result += func[i] ^ func[i ^ k];
+    }
+    if (result == size / 2) {
+        printf("\nComply with Criterion KP(%d)", k);
+    } else {
+        printf("\nNot comply with Criterion KP(%d)", k);
+    }
+    return result;
+}
+
 
