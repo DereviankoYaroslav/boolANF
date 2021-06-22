@@ -42,6 +42,16 @@ int autoCorrelationMax(const int *arr, int size);
 
 int expansionCriterion(const int *func, int size, int k);
 
+int *WHT1PlusSet(const int *func, int size, int newSize, int max);
+
+int *WHT1MinusSet(const int *func, int size, int newSize, int max);
+
+int *WHT2PlusSet(const int *func, int size, int newSize, int max);
+
+int *WHT2MinusSet(const int *func, int size, int newSize, int max);
+
+int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -206,6 +216,137 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nW = %d", ec);
     printf("\n");
 
+    int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
+    printf("\nTRUTH TABLE");
+    printf("\n");
+    for (int i = 0; i < 16; ++i) {
+        printf("%d ", fx[i]);
+    }
+    int *fxarr = HadamardCoefficients(fx, 16, 4);
+    printf("\nHADAMARD COEFFICIENTS");
+    printf("\n");
+    for (int i = 0; i < 16; ++i) {
+        printf("%d ", fxarr[i]);
+    }
+    int max1 = HadamardMax(fxarr, 16);
+    //printf("\n max = %d", max);
+    int nl2 = HadamardNLinearity(max1, 4);
+    printf("\n");
+    printf("\nHADAMARD NON LINEARITY = %d", nl2);
+    printf("\n");
+
+    int sizeWHT1P = 0;
+    for (int i = 0; i<16; ++i){
+        if (fxarr [i] == max1){
+            sizeWHT1P++;
+        }
+    }
+
+    printf("\nW1 PLUS");
+    printf("\n");
+    int *WHT1Plus = WHT1PlusSet(fxarr,16,sizeWHT1P,max1);
+    if (WHT1Plus) {
+        for (int i = 0; i < sizeWHT1P; ++i) {
+            printf("%d ", WHT1Plus[i]);
+        }
+    } else {
+        printf("NULL");
+    }
+    printf("\n");
+
+    int sizeWHT1M = 0;
+    for (int i = 0; i<16; ++i){
+        if (fxarr [i] == -max1){
+            sizeWHT1M++;
+        }
+    }
+
+    printf("\nW1 MINUS");
+    printf("\n");
+    int *WHT1Minus = WHT1MinusSet(fxarr,16,sizeWHT1M,max1);
+    if (WHT1Minus) {
+        for (int i = 0; i < sizeWHT1M; ++i) {
+            printf("%d ", WHT1Minus[i]);
+        }
+    } else {
+        printf("NULL");
+    }
+    printf("\n");
+
+    int sizeWHT2P = 0;
+    for (int i = 0; i<16; ++i){
+        if (fxarr [i] == (max1-2)){
+            sizeWHT2P++;
+        }
+    }
+
+    printf("\nW2 PLUS");
+    printf("\n");
+    int *WHT2Plus = WHT2PlusSet(fxarr,16,sizeWHT2P,max1);
+    if (WHT2Plus) {
+        for (int i = 0; i < sizeWHT2P; ++i) {
+            printf("%d ", WHT2Plus[i]);
+        }
+    } else {
+        printf("NULL");
+    }
+    printf("\n");
+
+    int sizeWHT2M = 0;
+    for (int i = 0; i<16; ++i){
+        if (fxarr [i] == (max1-2)){
+            sizeWHT2M++;
+        }
+    }
+
+    printf("\nW2 MINUS");
+    printf("\n");
+    int *WHT2Minus = WHT2MinusSet(fxarr,16,sizeWHT2M,max1);
+    if (WHT2Minus) {
+        for (int i = 0; i < sizeWHT2M; ++i) {
+            printf("%d ", WHT2Minus[i]);
+        }
+    } else {
+        printf("NULL");
+    }
+    printf("\n");
+
+    // Отримання об'єднання WHT1P та WHT2P
+    if (!WHT1Plus && !WHT2Plus)
+    {
+        printf("SET IS NULL");
+    } else {
+        int c1[(sizeWHT1P + sizeWHT2P)];
+        //printf("%d ", (sizeWHT1P + sizeWHT1P));
+
+        int m1 = arrayUnion(WHT1Plus, sizeWHT1P, WHT2Plus, sizeWHT2P, c1);
+        printf("\nSET WHT PLUS");
+        printf("\n");
+        for (int i = 0; i < m1; ++i) {
+            printf("%d ", c1[i]);
+        }
+    }
+
+    printf("\n");
+    printf("\n");
+
+    // Отримання об'єднання WHT1M та WHT2M
+    if (!WHT1Minus && !WHT2Minus)
+    {
+        printf("SET WHT MINUS IS NULL");
+    } else {
+        int c2[(sizeWHT1M + sizeWHT2M)];
+        //printf("%d ", (sizeWHT1P + sizeWHT1P));
+
+        int m2 = arrayUnion(WHT1Minus, sizeWHT1M, WHT2Minus, sizeWHT2M, c2);
+        printf("\nSET WHT MINUS");
+        printf("\n");
+        for (int i = 0; i < m2; ++i) {
+            printf("%d ", c2[i]);
+        }
+    }
+
+    printf("\n");
 
     free(binElems);
     free(ar);
@@ -213,6 +354,11 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     free(ar4);
     free(ar5);
     free(ar6);
+    free(fxarr);
+    free(WHT1Plus);
+    free(WHT2Plus);
+    free(WHT1Minus);
+    free(WHT2Minus);
 
     return 0;
 }
@@ -475,9 +621,9 @@ int *toPolarTable(const int *function, int size) {
 
 int *HadamardCoefficients(int *func, int size, int count) {
     int *result = calloc(size, sizeof(int));
-    int *test = calloc(size, sizeof(int));
+    int *test = calloc(size*count, sizeof(int));
     int *functions2 = elemsForN(size);
-    /*for (int i = 0; i < rows; ++i) {
+    /*for (int i = 0; i < size; ++i) {
         printf(" %d",functions2 [i]);
     }*/
     printf("\n");
@@ -571,6 +717,91 @@ int expansionCriterion(const int *func, int size, int k) {
         printf("\nNot comply with Criterion KP(%d)", k);
     }
     return result;
+}
+
+int *WHT1PlusSet(const int *func, int size, int newSize, int max){
+    if (newSize != 0) {
+        int *result = calloc(newSize, sizeof(int));
+        int k = 0;
+        for (int j = 0; j<size; ++j){
+            if (func[j] == max){
+                result[k]= j;
+                k++;
+            }
+        }
+        return result;
+    } else {
+        return NULL;
+    }
+}
+
+int *WHT1MinusSet(const int *func, int size, int newSize, int max){
+    if (newSize != 0) {
+        int *result = calloc(newSize, sizeof(int));
+        int k = 0;
+        for (int j = 0; j<size; ++j){
+            if (func[j] == -max){
+                result[k]= j;
+                k++;
+            }
+        }
+        return result;
+    } else {
+        return NULL;
+    }
+}
+
+int *WHT2PlusSet(const int *func, int size, int newSize, int max){
+    if (newSize != 0) {
+        int *result = calloc(newSize, sizeof(int));
+        int k = 0;
+        for (int j = 0; j<size; ++j){
+            if (func[j] == (max-2)){
+                result[k]= j;
+                k++;
+            }
+        }
+        return result;
+    } else {
+        return NULL;
+    }
+}
+
+int *WHT2MinusSet(const int *func, int size, int newSize, int max){
+    if (newSize != 0) {
+        int *result = calloc(newSize, sizeof(int));
+        int k = 0;
+        for (int j = 0; j<size; ++j){
+            if (func[j] == -(max-2)){
+                result[k]= j;
+                k++;
+            }
+        }
+        return result;
+    } else {
+        return NULL;
+    }
+}
+
+int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]){
+    int n = 0, i = 0, j = 0;
+
+    while((i < n1) && (j < n2)){
+        if(a[i] < b[j])
+            c[n++] = a[i++];
+        else if(a[i] > b[j])
+            c[n++] = b[j++];
+        else {
+            c[n++] = a[i++];
+            ++j;
+        }
+    }
+
+    while(i < n1)
+        c[n++] = a[i++];
+    while(j < n2)
+        c[n++] = b[j++];
+    return n;
 }
 
 
