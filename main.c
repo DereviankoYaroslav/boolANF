@@ -58,7 +58,7 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2);
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize);
 
-void HillClimbing (int f[], int *improvementSet, int size);
+void HillClimbing(const int f[], const int *improvementSet, int size);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -467,7 +467,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nHADAMARD NON LINEARITY = %d", nl3);
     printf("\n");
 
-    HillClimbing(fx,ar8,16);
+    HillClimbing(fx, ar8, 16);
 
 
     free(binElems);
@@ -1011,12 +1011,12 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
 
 //Функція підвищення нелінійності методом Градієнтного Підйому
 
-void HillClimbing (int f[], int *improvementSet, int size){
-    int *ftemp = calloc (size,sizeof(int));
+void HillClimbing(const int f[], const int *improvementSet, int size) {
+    int *ftemp = calloc(size, sizeof(int));
     int counter = 0;
     for (int i = 0; i < size; ++i) {
-        for (int i = 0; i < 16; ++i) {
-            ftemp [i] = f [i];
+        for (int j = 0; j < 16; ++j) {
+            ftemp[j] = f[j];
         }
         if (improvementSet[counter] == 1) {
             if (ftemp[counter] == 0) {
@@ -1029,13 +1029,13 @@ void HillClimbing (int f[], int *improvementSet, int size){
             printf("\n");
             printf("\nNEW TRUTH TABLE");
             printf("\n");
-            for (int i = 0; i < 16; ++i) {
+            for (i = 0; i < 16; ++i) {
                 printf("%d ", ftemp[i]);
             }
             int *farr = HadamardCoefficients(ftemp, 16, 4);
             printf("\nNEW HADAMARD COEFFICIENTS");
             printf("\n");
-            for (int i = 0; i < 16; ++i) {
+            for (i = 0; i < 16; ++i) {
                 printf("%d ", farr[i]);
             }
             int max = HadamardMax(farr, 16);
