@@ -52,7 +52,11 @@ int *WHT2MinusSet(const int *func, int size, int newSize, int max);
 
 int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]);
 
-void linearFunctions (int *arr, int size, int count, int t);
+int *linearFunctions (int size, int count, int t);
+
+int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2);
+
+int *improvementSet(int func[],int *linearFunctions, int size, int linearMassSize);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -351,19 +355,72 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\n");
 
-
-    int *binElems2 = elemsForN(16);
-
+    int *ar7 = linearFunctions(16,4,5);
+    printf("\nLINEAR FUNCTION");
+    printf("\n");
     for (int i = 0; i < 16; ++i) {
-        printf("%d ", binElems2[i]);
+        printf("%d ", ar7[i]);
     }
-    int *binArr = binaryElements(binElems2, 16, 4);
     printf("\n");
 
-    linearFunctions(binElems2,16,4,4);
+    int c1[(sizeWHT1P + sizeWHT2P)];
+    int c2[(sizeWHT1M + sizeWHT2M)];
+    int m1 = arrayUnion(WHT1Plus, sizeWHT1P, WHT2Plus, sizeWHT2P, c1);
+    int m2 = arrayUnion(WHT1Minus, sizeWHT1M, WHT2Minus, sizeWHT2M, c2);
+
+    //printf("%d ", m1);
+    //printf("%d ", m2);
+
+    int linearMassSize = m1+m2;
+    /*int c3[1] = {7};
+    int c[linearMassSize];
+    for (int i = 0; i < m1; ++i) {
+            c[i] = c1[i];
+    }
+    if (m2!=0) {
+        for (int j = 0; j < m2; ++j) {
+            c[j + m1] = c3[j];
+        }
+    }*/
+
+    int *c = arrayAdd(c1,m1,c2,m2);
+    printf("\nOMEGA LINEAR FUNCTIONS TO FIND");
+    printf("\n");
+    for (int i = 0; i <linearMassSize; ++i){
+        printf("%d ", c[i]);
+    }
+    printf("\n");
+
+    int *linearFunctionsMass = calloc(linearMassSize*16, sizeof(int));
+    for (int i = 0; i <linearMassSize; ++i){
+        int t = c[i];
+        int *arr = linearFunctions(16,4,t);
+        for (int j = 0; j < 16; ++j){
+            //printf("%d ", arr[j]);
+            linearFunctionsMass[i*16+j] = arr[j];
+            //printf("%d ", linearFunctionsMass[j]);
+        }
+    }
+
+    printf("\nLINEAR FUNCTIONS");
+    printf("\n");
+
+    for (int i = 0; i <linearMassSize; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            printf("%d ", linearFunctionsMass[i * 16 + j]);
+        }
+        printf("\n");
+    }
 
 
+    printf("\nIMPROVEMENT SET");
+    printf("\n");
+    int *ar8 = improvementSet(fx,linearFunctionsMass,16,linearMassSize);
+    for (int j = 0; j < 16; ++j) {
+        printf("%d ", ar8[j]);
+    }
 
+    printf("\n");
 
     free(binElems);
     free(ar);
@@ -376,6 +433,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     free(WHT2Plus);
     free(WHT1Minus);
     free(WHT2Minus);
+    free(ar7);
+    free(ar8);
 
     return 0;
 }
@@ -821,16 +880,17 @@ int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]){
     return n;
 }
 
-void linearFunctions (int *arr, int size, int count, int t){
+int *linearFunctions (int size, int count, int t){
     int calc1 = 0;
     int calc2 = 0;
     int sum = 0;
-    int *ar = binaryElements(arr, size, count);
+    int *binElems = elemsForN(size);
+    int *ar = binaryElements(binElems, size, count);
     int *bin = valueToBinary(t, count);
-    for (int i = 0; i < count; ++i) {
+    /*for (int i = 0; i < count; ++i) {
         printf("%d ", bin[i]);
-    }
-    printf("\n");
+    }*/
+    //printf("\n");
     int *result = calloc(size, sizeof(int));
     for (int j = 0; j < size; ++j) {
         for (int i = 0, k = count-1; i < count, k >= 0; ++i, --k) {
@@ -840,10 +900,40 @@ void linearFunctions (int *arr, int size, int count, int t){
             sum = sum^calc1;
             //printf("%d ", sum);
         }
-        printf("%d ", sum);
+        //printf("%d ", sum);
+        result [j] = sum;
         sum = 0;
-        printf("\n");
+        //printf("\n");
     }
+    return result;
+}
+
+int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2){
+    int linearMassSize = size1+size2;
+    int *result = calloc(linearMassSize, sizeof(int));
+    for (int i = 0; i < size1; ++i) {
+        result[i] = arr1[i];
+    }
+    if (size2!=0) {
+        for (int j = 0; j < size2; ++j) {
+            result[j + size1] = arr2[j];
+        }
+    }
+    return result;
+}
+
+int *improvementSet(int func[],int *linearFunctions, int size, int linearMassSize){
+    int *result = calloc(size, sizeof(int));
+    for (int i = 1; i < linearMassSize; ++i){
+        for (int j = 0; j < size; ++j) {
+            if ((func[j] == linearFunctions[j]) && (func[j] == linearFunctions[i * size + j])) {
+                result[j] = 1;
+            } else {
+                result[j] = 0;
+            }
+        }
+    }
+    return result;
 }
 
 
