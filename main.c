@@ -52,6 +52,8 @@ int *WHT2MinusSet(const int *func, int size, int newSize, int max);
 
 int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]);
 
+void linearFunctions (int *arr, int size, int count, int t);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -78,8 +80,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     //printf("\nBooleans\n");
     int *ar = binaryElements(binElems, size, n);
-    /*
-    for (int i = 0; i < n; ++i) {
+
+    /*for (int i = 0; i < n; ++i) {
         printf("x%d = ", i);
         for (int j = 0; j < size; ++j) {
             printf("%d ", ar[i * size + j]);
@@ -92,6 +94,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     for (int t = 0, k = size - 1; t < size; ++t, k--) {
         int *ar2 = massToBooleanFunc(binElems, ar, size, n, t);
         for (int i = 0; i < size; ++i) {
+            //printf("%d ", ar2[i]);
             if (f[i] != 0) {
                 //printf("%d ", ar2[i]);
                 modulus = modulus ^ ar2[i];
@@ -314,7 +317,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     // Отримання об'єднання WHT1P та WHT2P
     if (!WHT1Plus && !WHT2Plus)
     {
-        printf("SET IS NULL");
+        printf("SET WHT PLUS IS NULL");
     } else {
         int c1[(sizeWHT1P + sizeWHT2P)];
         //printf("%d ", (sizeWHT1P + sizeWHT1P));
@@ -347,6 +350,20 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }
 
     printf("\n");
+
+
+    int *binElems2 = elemsForN(16);
+
+    for (int i = 0; i < 16; ++i) {
+        printf("%d ", binElems2[i]);
+    }
+    int *binArr = binaryElements(binElems2, 16, 4);
+    printf("\n");
+
+    linearFunctions(binElems2,16,4,4);
+
+
+
 
     free(binElems);
     free(ar);
@@ -802,6 +819,31 @@ int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]){
     while(j < n2)
         c[n++] = b[j++];
     return n;
+}
+
+void linearFunctions (int *arr, int size, int count, int t){
+    int calc1 = 0;
+    int calc2 = 0;
+    int sum = 0;
+    int *ar = binaryElements(arr, size, count);
+    int *bin = valueToBinary(t, count);
+    for (int i = 0; i < count; ++i) {
+        printf("%d ", bin[i]);
+    }
+    printf("\n");
+    int *result = calloc(size, sizeof(int));
+    for (int j = 0; j < size; ++j) {
+        for (int i = 0, k = count-1; i < count, k >= 0; ++i, --k) {
+            calc1 = ar[i * size + j]*bin[k];
+            //printf("%d ", bin[k]);
+            //printf("%d ", calc1);
+            sum = sum^calc1;
+            //printf("%d ", sum);
+        }
+        printf("%d ", sum);
+        sum = 0;
+        printf("\n");
+    }
 }
 
 
