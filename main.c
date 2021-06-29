@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <time.h>
 
 int raiseToPower(int num, int pow);
 
@@ -225,13 +226,31 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nW = %d", ec);
     printf("\n");
 
+    n = 5;
+    size = raiseToPower(2,n);
+    int fx[size];
+
+    srand ( time(NULL) );
+
+    for (int i = 0; i < size; ++i){
+        fx[i] = rand() % 2;
+    }
+
+    printf("\nMY FUNCTION 2^8");
+    printf("\n");
+    for (int i = 0; i < size; ++i){
+        printf("%d ", fx[i]);
+    }
+    printf("\n");
+
     //int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
-    int fx[] = {1,0,1,1};
+    //int fx[] = {1,0,1,1};
+    //int fx[] = {1,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0};
     printf("\nTRUTH TABLE");
     printf("\n");
     //size = 16;
-    size = 4;
-    n = 2;
+    //size = 4;
+    //n = 2;
     //n = 4;
     for (int i = 0; i < size; ++i) {
         printf("%d ", fx[i]);
@@ -243,7 +262,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
         printf("%d ", fxarr[i]);
     }
     int max1 = HadamardMax(fxarr, size);
-    //printf("\n max = %d", max);
+    //printf("\n max = %d", max1);
     int nl2 = HadamardNLinearity(max1, n);
     printf("\n");
     printf("\nHADAMARD NON LINEARITY = %d", nl2);
@@ -793,6 +812,7 @@ int HadamardMax(const int *arr, int size) {
             maxCoefficient = arr[i];
         }
     }
+    //printf("max coef %d", maxCoefficient);
     return maxCoefficient;
 }
 
@@ -1017,8 +1037,11 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
                 }
             }
         }
+        /*for (int j = 0; j < size; ++j) {
+            printf("%d ", result2[j]);
+        }*/
         for (int j = 0; j < size; ++j) {
-            if (result1[j] == result2[j] == 1) {
+            if ((result1[j] == 1) && (result2[j] == 1) && (result1[j] == result2[j])) {
                 result[j] = 1;
             } else {
                 result[j] = 0;
@@ -1027,14 +1050,17 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
     } else {
         for (int j = 0; j < size; ++j) {
             result[j] = result1[j];
-            if (result1[j] == 1){
-                counter++;
-            }
+        }
+    }
+    for (int j = 0; j < size; ++j) {
+        if (result[j] == 1){
+            counter++;
         }
     }
     if (counter == 0){
-        printf("IMPROVEMENT IS UNAVAILABLE");
+        printf("\nIMPROVEMENT IS UNAVAILABLE");
     }
+
     return result;
 }
 
