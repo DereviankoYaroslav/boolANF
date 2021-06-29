@@ -341,7 +341,6 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }
 
     printf("\n");
-    printf("\n");
 
     // Отримання об'єднання WHT1M та WHT2M
     if (!WHT1Minus && !WHT2Minus) {
@@ -360,13 +359,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\n");
 
-    int *ar7 = linearFunctions(size, n, 5);
+    /*int *ar7 = linearFunctions(size, n, 5);
     printf("\nLINEAR FUNCTION");
     printf("\n");
     for (int i = 0; i < size; ++i) {
         printf("%d ", ar7[i]);
     }
-    printf("\n");
+    printf("\n");*/
 
     int c1[(sizeWHT1P + sizeWHT2P)];
     int c2[(sizeWHT1M + sizeWHT2M)];
@@ -418,9 +417,10 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }
 
 
-    printf("\nIMPROVEMENT SET");
+    printf("\nIMPROVEMENT SET:");
     printf("\n");
     int *ar8 = improvementSet(fx, linearFunctionsMass, size, linearMassSize, m1);
+    printf("\n");
     for (int j = 0; j < size; ++j) {
         printf("%d ", ar8[j]);
     }
@@ -485,7 +485,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     free(WHT2Plus);
     free(WHT1Minus);
     free(WHT2Minus);
-    free(ar7);
+    //free(ar7);
     free(ar8);
 
     return 0;
@@ -991,11 +991,10 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
 //Функція знаходження набору покращень
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize) {
+    int counter = 0;
     int *result = calloc(size, sizeof(int));
     int *result1 = calloc(size, sizeof(int));
     int *result2 = calloc(size, sizeof(int));
-    printf("SIZE ==%d ", WHTPlusSize);
-    printf("\n");
     for (int i = 0; i < WHTPlusSize; ++i) {
         for (int j = 0; j < size; ++j) {
             if ((func[j] == linearFunctions[j]) && (func[j] == linearFunctions[i * size + j])) {
@@ -1005,10 +1004,9 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
             }
         }
     }
-    for (int j = 0; j < size; ++j) {
+    /*for (int j = 0; j < size; ++j) {
         printf("%d ", result1[j]);
-    }
-    printf("\n");
+    }*/
     if (WHTPlusSize < linearMassSize) {
         for (int i = WHTPlusSize; i < linearMassSize; ++i) {
             for (int j = 0; j < size; ++j) {
@@ -1029,9 +1027,14 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
     } else {
         for (int j = 0; j < size; ++j) {
             result[j] = result1[j];
+            if (result1[j] == 1){
+                counter++;
+            }
         }
     }
-
+    if (counter == 0){
+        printf("IMPROVEMENT IS UNAVAILABLE");
+    }
     return result;
 }
 
