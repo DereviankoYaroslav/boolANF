@@ -30,7 +30,7 @@ int *toPolarTable(const int *function, int size);
 
 int myModulus(int number, int mod);
 
-int *HadamardCoefficients(int *func, int size, int count);
+int *HadamardCoefficients(const int *func, int size, int count);
 
 int HadamardMax(const int *arr, int size);
 
@@ -58,7 +58,7 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2);
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize);
 
-void HillClimbing(const int f[], const int *improvementSet, int size);
+void HillClimbing(const int f[], const int *improvementSet, int size, int count);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -225,27 +225,32 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nW = %d", ec);
     printf("\n");
 
-    int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
+    //int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
+    int fx[] = {1,0,1,1};
     printf("\nTRUTH TABLE");
     printf("\n");
-    for (int i = 0; i < 16; ++i) {
+    //size = 16;
+    size = 4;
+    n = 2;
+    //n = 4;
+    for (int i = 0; i < size; ++i) {
         printf("%d ", fx[i]);
     }
-    int *fxarr = HadamardCoefficients(fx, 16, 4);
+    int *fxarr = HadamardCoefficients(fx, size, n);
     printf("\nHADAMARD COEFFICIENTS");
     printf("\n");
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < size; ++i) {
         printf("%d ", fxarr[i]);
     }
-    int max1 = HadamardMax(fxarr, 16);
+    int max1 = HadamardMax(fxarr, size);
     //printf("\n max = %d", max);
-    int nl2 = HadamardNLinearity(max1, 4);
+    int nl2 = HadamardNLinearity(max1, n);
     printf("\n");
     printf("\nHADAMARD NON LINEARITY = %d", nl2);
     printf("\n");
 
     int sizeWHT1P = 0;
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < size; ++i) {
         if (fxarr[i] == max1) {
             sizeWHT1P++;
         }
@@ -253,7 +258,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\nW1 PLUS");
     printf("\n");
-    int *WHT1Plus = WHT1PlusSet(fxarr, 16, sizeWHT1P, max1);
+    int *WHT1Plus = WHT1PlusSet(fxarr, size, sizeWHT1P, max1);
     if (WHT1Plus) {
         for (int i = 0; i < sizeWHT1P; ++i) {
             printf("%d ", WHT1Plus[i]);
@@ -264,7 +269,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
 
     int sizeWHT1M = 0;
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < size; ++i) {
         if (fxarr[i] == -max1) {
             sizeWHT1M++;
         }
@@ -272,7 +277,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\nW1 MINUS");
     printf("\n");
-    int *WHT1Minus = WHT1MinusSet(fxarr, 16, sizeWHT1M, max1);
+    int *WHT1Minus = WHT1MinusSet(fxarr, size, sizeWHT1M, max1);
     if (WHT1Minus) {
         for (int i = 0; i < sizeWHT1M; ++i) {
             printf("%d ", WHT1Minus[i]);
@@ -283,7 +288,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
 
     int sizeWHT2P = 0;
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < size; ++i) {
         if (fxarr[i] == (max1 - 2)) {
             sizeWHT2P++;
         }
@@ -291,7 +296,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\nW2 PLUS");
     printf("\n");
-    int *WHT2Plus = WHT2PlusSet(fxarr, 16, sizeWHT2P, max1);
+    int *WHT2Plus = WHT2PlusSet(fxarr, size, sizeWHT2P, max1);
     if (WHT2Plus) {
         for (int i = 0; i < sizeWHT2P; ++i) {
             printf("%d ", WHT2Plus[i]);
@@ -302,7 +307,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
 
     int sizeWHT2M = 0;
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < size; ++i) {
         if (fxarr[i] == (max1 - 2)) {
             sizeWHT2M++;
         }
@@ -310,7 +315,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\nW2 MINUS");
     printf("\n");
-    int *WHT2Minus = WHT2MinusSet(fxarr, 16, sizeWHT2M, max1);
+    int *WHT2Minus = WHT2MinusSet(fxarr, size, sizeWHT2M, max1);
     if (WHT2Minus) {
         for (int i = 0; i < sizeWHT2M; ++i) {
             printf("%d ", WHT2Minus[i]);
@@ -355,10 +360,10 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\n");
 
-    int *ar7 = linearFunctions(16, 4, 5);
+    int *ar7 = linearFunctions(size, n, 5);
     printf("\nLINEAR FUNCTION");
     printf("\n");
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < size; ++i) {
         printf("%d ", ar7[i]);
     }
     printf("\n");
@@ -394,10 +399,10 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int *linearFunctionsMass = calloc(linearMassSize * 16, sizeof(int));
     for (int i = 0; i < linearMassSize; ++i) {
         int t = c[i];
-        int *arr = linearFunctions(16, 4, t);
-        for (int j = 0; j < 16; ++j) {
+        int *arr = linearFunctions(size, n, t);
+        for (int j = 0; j < size; ++j) {
             //printf("%d ", arr[j]);
-            linearFunctionsMass[i * 16 + j] = arr[j];
+            linearFunctionsMass[i * size + j] = arr[j];
             //printf("%d ", linearFunctionsMass[j]);
         }
     }
@@ -406,8 +411,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
 
     for (int i = 0; i < linearMassSize; ++i) {
-        for (int j = 0; j < 16; ++j) {
-            printf("%d ", linearFunctionsMass[i * 16 + j]);
+        for (int j = 0; j < size; ++j) {
+            printf("%d ", linearFunctionsMass[i * size + j]);
         }
         printf("\n");
     }
@@ -415,8 +420,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\nIMPROVEMENT SET");
     printf("\n");
-    int *ar8 = improvementSet(fx, linearFunctionsMass, 16, linearMassSize, m1);
-    for (int j = 0; j < 16; ++j) {
+    int *ar8 = improvementSet(fx, linearFunctionsMass, size, linearMassSize, m1);
+    for (int j = 0; j < size; ++j) {
         printf("%d ", ar8[j]);
     }
 
@@ -448,7 +453,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     printf("\n");*/
 
-    int fx2[] = {1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
+    /*int fx2[] = {1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
     printf("\nTRUTH TABLE g(x)");
     printf("\n");
     for (int i = 0; i < 16; ++i) {
@@ -465,10 +470,9 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int nl3 = HadamardNLinearity(max2, 4);
     printf("\n");
     printf("\nHADAMARD NON LINEARITY = %d", nl3);
-    printf("\n");
+    printf("\n");*/
 
-    HillClimbing(fx, ar8, 16);
-
+    HillClimbing(fx, ar8, size, n);
 
     free(binElems);
     free(ar);
@@ -743,7 +747,7 @@ int *toPolarTable(const int *function, int size) {
 
 //Функція визначення коефіцієнтів перетворення Уолдша-Адамара
 
-int *HadamardCoefficients(int *func, int size, int count) {
+int *HadamardCoefficients(const int *func, int size, int count) {
     int *result = calloc(size, sizeof(int));
     int *test = calloc(size * count, sizeof(int));
     int *functions2 = elemsForN(size);
@@ -988,34 +992,56 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize) {
     int *result = calloc(size, sizeof(int));
-    for (int i = 1; i < WHTPlusSize; ++i) {
+    int *result1 = calloc(size, sizeof(int));
+    int *result2 = calloc(size, sizeof(int));
+    printf("SIZE ==%d ", WHTPlusSize);
+    printf("\n");
+    for (int i = 0; i < WHTPlusSize; ++i) {
         for (int j = 0; j < size; ++j) {
             if ((func[j] == linearFunctions[j]) && (func[j] == linearFunctions[i * size + j])) {
-                result[j] = 1;
+                result1[j] = 1;
             } else {
-                result[j] = 0;
+                result1[j] = 0;
             }
         }
     }
-    for (int i = WHTPlusSize; i < linearMassSize; ++i) {
+    for (int j = 0; j < size; ++j) {
+        printf("%d ", result1[j]);
+    }
+    printf("\n");
+    if (WHTPlusSize < linearMassSize) {
+        for (int i = WHTPlusSize; i < linearMassSize; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if ((func[j] != linearFunctions[j]) && (func[j] != linearFunctions[i * size + j])) {
+                    result2[j] = 1;
+                } else {
+                    result2[j] = 0;
+                }
+            }
+        }
         for (int j = 0; j < size; ++j) {
-            if ((func[j] != linearFunctions[j]) && (func[j] != linearFunctions[i * size + j])) {
+            if (result1[j] == result2[j] == 1) {
                 result[j] = 1;
             } else {
                 result[j] = 0;
             }
         }
+    } else {
+        for (int j = 0; j < size; ++j) {
+            result[j] = result1[j];
+        }
     }
+
     return result;
 }
 
 //Функція підвищення нелінійності методом Градієнтного Підйому
 
-void HillClimbing(const int f[], const int *improvementSet, int size) {
+void HillClimbing(const int f[], const int *improvementSet, int size, int count) {
     int *ftemp = calloc(size, sizeof(int));
     int counter = 0;
     for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < 16; ++j) {
+        for (int j = 0; j < size; ++j) {
             ftemp[j] = f[j];
         }
         if (improvementSet[counter] == 1) {
@@ -1029,18 +1055,18 @@ void HillClimbing(const int f[], const int *improvementSet, int size) {
             printf("\n");
             printf("\nNEW TRUTH TABLE");
             printf("\n");
-            for (i = 0; i < 16; ++i) {
-                printf("%d ", ftemp[i]);
+            for (int k = 0; k < size; ++k) {
+                printf("%d ", ftemp[k]);
             }
-            int *farr = HadamardCoefficients(ftemp, 16, 4);
+            int *farr = HadamardCoefficients(ftemp, size, count);
             printf("\nNEW HADAMARD COEFFICIENTS");
             printf("\n");
-            for (i = 0; i < 16; ++i) {
-                printf("%d ", farr[i]);
+            for (int l = 0; l < size; ++l) {
+                printf("%d ", farr[l]);
             }
-            int max = HadamardMax(farr, 16);
+            int max = HadamardMax(farr, size);
             //printf("\n max = %d", max);
-            int nl = HadamardNLinearity(max, 4);
+            int nl = HadamardNLinearity(max, count);
             printf("\n");
             printf("\nNEW HADAMARD NON LINEARITY = %d", nl);
             printf("\n");
@@ -1048,5 +1074,6 @@ void HillClimbing(const int f[], const int *improvementSet, int size) {
         counter++;
     }
 }
+
 
 
