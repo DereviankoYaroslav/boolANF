@@ -226,7 +226,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nW = %d", ec);
     printf("\n");
 
-    n = 5;
+    n = 8;
     size = raiseToPower(2,n);
     int fx[size];
 
@@ -239,19 +239,28 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nMY FUNCTION 2^8");
     printf("\n");
     for (int i = 0; i < size; ++i){
-        printf("%d ", fx[i]);
+        printf("%d, ", fx[i]);
     }
     printf("\n");
 
     //int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
     //int fx[] = {1,0,1,1};
     //int fx[] = {1,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0};
+    /*int fx[] = {0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0,
+                1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1,
+                0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1,
+                0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+                0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0,
+                1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1,
+                1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0};*/
     printf("\nTRUTH TABLE");
     printf("\n");
+    //size = 256;
     //size = 16;
+    //n = 4;
     //size = 4;
     //n = 2;
-    //n = 4;
+    //n = 8;
     for (int i = 0; i < size; ++i) {
         printf("%d ", fx[i]);
     }
@@ -363,7 +372,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     // Отримання об'єднання WHT1M та WHT2M
     if (!WHT1Minus && !WHT2Minus) {
-        printf("SET WHT MINUS IS NULL");
+        printf("\nSET WHT MINUS IS NULL");
     } else {
         int c2[(sizeWHT1M + sizeWHT2M)];
         //printf("%d ", (sizeWHT1P + sizeWHT1P));
@@ -407,6 +416,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }*/
 
     int *c = arrayAdd(c1, m1, c2, m2);
+    //printf("Linear mass size %d ", linearMassSize);
     printf("\nOMEGA LINEAR FUNCTIONS TO FIND");
     printf("\n");
     for (int i = 0; i < linearMassSize; ++i) {
@@ -437,7 +447,6 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
 
     printf("\nIMPROVEMENT SET:");
-    printf("\n");
     int *ar8 = improvementSet(fx, linearFunctionsMass, size, linearMassSize, m1);
     printf("\n");
     for (int j = 0; j < size; ++j) {
@@ -1012,30 +1021,48 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize) {
     int counter = 0;
+    int k = 0;
+    int flag = 1;
     int *result = calloc(size, sizeof(int));
     int *result1 = calloc(size, sizeof(int));
     int *result2 = calloc(size, sizeof(int));
-    for (int i = 0; i < WHTPlusSize; ++i) {
-        for (int j = 0; j < size; ++j) {
-            if ((func[j] == linearFunctions[j]) && (func[j] == linearFunctions[i * size + j])) {
-                result1[j] = 1;
+    for (int j = 0; j < size; ++j) {
+        for (int i = 0; i < WHTPlusSize; ++i) {
+            if ((func[j] == linearFunctions[i * size + j])) {
+                flag = 1;
             } else {
-                result1[j] = 0;
+                flag = 0;
+                break;
             }
         }
+        //printf("flag %d ", flag);
+        if (flag == 1) {
+            result1[j] = 1;
+        } else {
+            result1[j] = 0;
+        }
+
     }
     /*for (int j = 0; j < size; ++j) {
         printf("%d ", result1[j]);
     }*/
     if (WHTPlusSize < linearMassSize) {
-        for (int i = WHTPlusSize; i < linearMassSize; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if ((func[j] != linearFunctions[j]) && (func[j] != linearFunctions[i * size + j])) {
-                    result2[j] = 1;
+        for (int j = 0; j < size; ++j) {
+            for (int i = WHTPlusSize; i < linearMassSize; ++i) {
+                if ((func[j] != linearFunctions[i * size + j])) {
+                    flag = 1;
                 } else {
-                    result2[j] = 0;
+                    flag = 0;
+                    break;
                 }
             }
+            //printf("flag %d ", flag);
+            if (flag == 1) {
+                result2[j] = 1;
+            } else {
+                result2[j] = 0;
+            }
+
         }
         /*for (int j = 0; j < size; ++j) {
             printf("%d ", result2[j]);
