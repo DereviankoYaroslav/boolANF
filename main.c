@@ -453,9 +453,15 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     n = 8;
     size = raiseToPower(2,n);
-    int fx2[size];
+    int fx2[] = {1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1,
+                     0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,
+                     0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+                     0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+                     0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1,
+                     1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1,
+                     1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0,};
 
-    srand ( time(NULL) );
+    /*srand ( time(NULL) );
 
     for (int i = 0; i < size; ++i){
         fx2[i] = rand() % 2;
@@ -466,7 +472,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     for (int i = 0; i < size; ++i){
         printf("%d, ", fx2[i]);
     }
-    printf("\n");
+    printf("\n");*/
 
     int *ar9 = roundableHillClimbing(fx2, size, n);
 
@@ -1139,7 +1145,7 @@ int *roundableHillClimbing(const int f[], int size, int count){
         result[i] = f [i];
     }
     int counter = 0;
-    while (counter < 2) {
+    while (counter < 6) {
         int weight;
         weight = HammingWeight(result, size);
         int flag = funcIsBalanced(weight, count);
@@ -1346,6 +1352,15 @@ int *roundableHillClimbing(const int f[], int size, int count){
             //printf("%d ", result[j]);
         }
         counter++;
+        free(fxarr);
+        free(WHT1Plus);
+        free(WHT1Minus);
+        free(WHT2Plus);
+        free(WHT2Minus);
+        free(c);
+        free(linearFunctionsMass);
+        free(ar8);
+        free(ar9);
     }
 
     return result;
