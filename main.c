@@ -444,7 +444,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     //HillClimbing(fx, ar8, size, n);
 
-    //n = 2;
+    //n = 4;
     //size = raiseToPower(2,n);
 
     //int fx2[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
@@ -1134,16 +1134,22 @@ int *HillClimbing(const int f[], const int *improvementSet, int size, int count)
 }
 
 int *roundableHillClimbing(const int f[], int size, int count){
+    int *result = calloc(size,sizeof(int));
+    for (int i = 0; i < size; ++i){
+        result[i] = f [i];
+    }
+    int counter = 0;
+    while (counter < 2) {
         int weight;
-        weight = HammingWeight(f, size);
+        weight = HammingWeight(result, size);
         int flag = funcIsBalanced(weight, count);
         printf("\n");
         printf("\nTRUTH TABLE");
         printf("\n");
         for (int i = 0; i < size; ++i) {
-            printf("%d ", f[i]);
+            printf("%d ", result[i]);
         }
-        int *fxarr = HadamardCoefficients(f, size, count);
+        int *fxarr = HadamardCoefficients(result, size, count);
         printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
         for (int i = 0; i < size; ++i) {
@@ -1303,7 +1309,7 @@ int *roundableHillClimbing(const int f[], int size, int count){
         }
         printf("\n");
 
-        int *linearFunctionsMass = calloc(linearMassSize * 16, sizeof(int));
+        int *linearFunctionsMass = calloc(linearMassSize * size, sizeof(int));
         for (int i = 0; i < linearMassSize; ++i) {
             int t = c[i];
             int *arr = linearFunctions(size, count, t);
@@ -1326,27 +1332,23 @@ int *roundableHillClimbing(const int f[], int size, int count){
 
 
         printf("\nIMPROVEMENT SET:");
-        int *ar8 = improvementSet(f, linearFunctionsMass, size, linearMassSize, m1);
+        int *ar8 = improvementSet(result, linearFunctionsMass, size, linearMassSize, m1);
         int k;
         printf("\n");
         for (int j = 0; j < size; ++j) {
             printf("%d ", ar8[j]);
         }
 
-        int *ar9 = HillClimbing(f, ar8, size, count);
+        int *ar9 = HillClimbing(result, ar8, size, count);
         printf("\n");
         for (int j = 0; j < size; ++j) {
-            printf("%d ", ar9[j]);
+            result[j] = ar9[j];
+            //printf("%d ", result[j]);
         }
+        counter++;
+    }
 
-    return ar9;
-    free(fxarr);
-    free(WHT1Plus);
-    free(WHT2Plus);
-    free(WHT1Minus);
-    free(WHT2Minus);
-    free(ar8);
-    free(ar9);
+    return result;
 }
 
 
