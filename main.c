@@ -17,7 +17,7 @@ int *toANF(const int *func, int size);
 
 int HammingWeight(const int *function, int size);
 
-void funcIsBalanced(int weight, int pow);
+int funcIsBalanced(int weight, int pow);
 
 int algebraicDeg(const int *func, int size, int count);
 
@@ -59,7 +59,9 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2);
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize);
 
-void HillClimbing(const int f[], const int *improvementSet, int size, int count);
+int *HillClimbing(const int f[], const int *improvementSet, int size, int count);
+
+int *roundableHillClimbing(const int f[], int size, int count);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -71,7 +73,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("N = %d",n);*/
     int size = raiseToPower(2, n);
     int *binElems = elemsForN(size);
-    int f[] = {0, 0, 1, 0, 0, 1, 1, 0};
+    int f[] = {0,0,1,0,0,1,1,0};
     /*int f[size];
     printf("\n");
     printf("Enter function using 0 and 1:");
@@ -135,11 +137,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     weight = HammingWeight(ar3, size);
     printf("HAMMING WEIGHT = %d ", weight);
     printf("\n");
-    funcIsBalanced(weight, n);
+    int flag = funcIsBalanced(weight, n);
 
 
     int dec = algebraicDeg(f, size, n);
     printf("\n\nALGEBRAIC DEGREE = %d ", dec);
+
+    printf("\n");
 
     /*int fun1[] = {0, 0, 1, 1};
     int fun2[] = {0, 1, 0, 0};
@@ -147,7 +151,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int dist = HammingDistance(fun1, fun2, 4);
     printf("\nHD = %d ", dist);*/
 
-    int fun11[] = {1, 0, 1, 1};
+    int fun11[] = {1, 1, 1, 1};
     int nel = NLinearity(fun11, 4, 2);
     printf("\nNON LINEARITY (DISTANCE) = %d", nel);
 
@@ -226,7 +230,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nW = %d", ec);
     printf("\n");
 
-    n = 8;
+    /*n = 8;
     size = raiseToPower(2,n);
     int fx[size];
 
@@ -241,10 +245,18 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     for (int i = 0; i < size; ++i){
         printf("%d, ", fx[i]);
     }
+    printf("\n");*/
+
+    /*int weight2;
+    weight2 = HammingWeight(fx, size);
+    printf("HAMMING WEIGHT = %d ", weight2);
     printf("\n");
+    funcIsBalanced(weight2, n);*/
+
+
 
     //int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
-    //int fx[] = {1,0,1,1};
+    int fx[] = {1,0,1,1};
     //int fx[] = {1,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0};
     /*int fx[] = {0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0,
                 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1,
@@ -258,8 +270,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     //size = 256;
     //size = 16;
     //n = 4;
-    //size = 4;
-    //n = 2;
+    size = 4;
+    n = 2;
     //n = 8;
     for (int i = 0; i < size; ++i) {
         printf("%d ", fx[i]);
@@ -500,7 +512,20 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nHADAMARD NON LINEARITY = %d", nl3);
     printf("\n");*/
 
-    HillClimbing(fx, ar8, size, n);
+    //HillClimbing(fx, ar8, size, n);
+    n = 4;
+    size = raiseToPower(2,n);
+
+    int fx2[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
+
+    int *ar9 = roundableHillClimbing(fx2, size, n);
+
+    for (int j = 0; j < size; ++j) {
+        printf("%d ", ar9[j]);
+    }
+
+
+
 
     free(binElems);
     free(ar);
@@ -515,6 +540,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     free(WHT2Minus);
     //free(ar7);
     free(ar8);
+    free(ar9);
 
     return 0;
 }
@@ -656,11 +682,15 @@ int HammingWeight(const int *function, int size) {
 
 //Функція визначення збалансованості функції
 
-void funcIsBalanced(int weight, int pow) {
+int funcIsBalanced(int weight, int pow) {
+    int flag = 1;
     if (weight == raiseToPower(2, pow - 1)) {
         printf("\nFunction is BALANCED!");
+        return flag;
     } else {
         printf("\nFunction is NOT BALANCED!");
+        int flag = 0;
+        return flag;
     }
 }
 
@@ -731,29 +761,47 @@ int funcsIsEqual(const int *func1, const int *func2, int size) {
 
 int NLinearity(int *func, int size, int count) {
     int minimumNL;
+    int minimumNL1;
+    int minimumNL2;
     int matrixColumns = size;
     int matrixRows = raiseToPower(2, matrixColumns);
     int *functions = calloc(matrixRows * matrixColumns, sizeof(int));
     int *functions2 = elemsForN(matrixRows);
-    /*for (int i = 0; i < rows; ++i) {
+    int *testfunc = calloc(size,sizeof(int));
+    /*for (int i = 0; i < matrixRows; ++i) {
         printf(" %d",functions2 [i]);
     }*/
-    printf("\n");
+    //printf("\n");
     for (int i = 0; i < matrixRows; ++i) {
         int *bin = valueToBinary(functions2[i], matrixColumns);
         for (int j = 0; j < matrixColumns; ++j) {
             //printf(" bin j = %d", bin[j]);
             //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
             functions[i * matrixColumns + j] = bin[j];
-            //printf(" %d",functions [i * cols + j]);
+            //printf(" %d",functions [i * matrixColumns + j]);
         }
         //printf("\n");
     }
-    minimumNL = HammingDistance(func, functions, size);
+    //minimumNL = HammingDistance(func, functions, size);
+    minimumNL1 = HammingDistance(func, functions, size);
+    int *bin = valueToBinary(matrixRows-1, matrixColumns);
+    for (int j = 0; j < matrixColumns; ++j) {
+        testfunc[j] = bin[j];
+    }
+    /*for (int i = 0; i < size; ++i) {
+        printf(" %d",testfunc[i]);
+    }*/
+    //printf(" %d",minimumNL1);
+    minimumNL2 = HammingDistance(func, testfunc, size);
+    minimumNL = minimumNL1;
+    if (minimumNL2 < minimumNL1){
+        minimumNL = minimumNL2;
+    }
     for (int i = 0; i < matrixRows; ++i) {
         if (algebraicDeg(functions + matrixColumns * i, size, count) <= 1 &&
             !funcsIsEqual(func, functions + matrixColumns * i, size)) {
             int newMinHD = HammingDistance(func, functions + matrixColumns * i, matrixColumns);
+            //printf(" NEW MIDHD%d",newMinHD);
             if (newMinHD < minimumNL) {
                 minimumNL = newMinHD;
             }
@@ -815,10 +863,10 @@ int *HadamardCoefficients(const int *func, int size, int count) {
 //Функція визначення найбільшого коефіцієнта перетворення Уолдша-Адамара
 
 int HadamardMax(const int *arr, int size) {
-    int maxCoefficient = arr[0];
+    int maxCoefficient = abs(arr[0]);
     for (int i = 0; i < size; ++i) {
-        if (arr[i] > maxCoefficient) {
-            maxCoefficient = arr[i];
+        if (abs(arr[i] > maxCoefficient)) {
+            maxCoefficient = abs(arr[i]);
         }
     }
     //printf("max coef %d", maxCoefficient);
@@ -1093,21 +1141,20 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
 
 //Функція підвищення нелінійності методом Градієнтного Підйому
 
-void HillClimbing(const int f[], const int *improvementSet, int size, int count) {
+int *HillClimbing(const int f[], const int *improvementSet, int size, int count) {
     int *ftemp = calloc(size, sizeof(int));
-    int counter = 0;
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
             ftemp[j] = f[j];
         }
-        if (improvementSet[counter] == 1) {
-            if (ftemp[counter] == 0) {
-                ftemp[counter] = 1;
+        if (improvementSet[i] == 1) {
+            if (ftemp[i] == 0) {
+                ftemp[i] = 1;
             } else {
-                ftemp[counter] = 0;
+                ftemp[i] = 0;
             }
             printf("\n|---------------------------------|");
-            printf("\nCHANGED COEFFICIENT NUMBER %d ", counter);
+            printf("\nCHANGED COEFFICIENT NUMBER %d ", i);
             printf("\n");
             printf("\nNEW TRUTH TABLE");
             printf("\n");
@@ -1126,9 +1173,232 @@ void HillClimbing(const int f[], const int *improvementSet, int size, int count)
             printf("\n");
             printf("\nNEW HADAMARD NON LINEARITY = %d", nl);
             printf("\n");
+            return ftemp;
+            break;
         }
-        counter++;
     }
+}
+
+int *roundableHillClimbing(const int f[], int size, int count){
+    int counter = 0;
+    int *result = calloc(size,sizeof(int));
+    while (counter == 0) {
+        int weight;
+        weight = HammingWeight(f, size);
+        int flag = funcIsBalanced(weight, count);
+        printf("\n");
+        printf("\nTRUTH TABLE");
+        printf("\n");
+        for (int i = 0; i < size; ++i) {
+            printf("%d ", f[i]);
+        }
+        int *fxarr = HadamardCoefficients(f, size, count);
+        printf("\nHADAMARD COEFFICIENTS");
+        printf("\n");
+        for (int i = 0; i < size; ++i) {
+            printf("%d ", fxarr[i]);
+        }
+        int max1 = HadamardMax(fxarr, size);
+        //printf("\n max = %d", max1);
+        int nl2 = HadamardNLinearity(max1, count);
+        printf("\n");
+        printf("\nHADAMARD NON LINEARITY = %d", nl2);
+        printf("\n");
+
+        int sizeWHT1P = 0;
+        for (int i = 0; i < size; ++i) {
+            if (fxarr[i] == max1) {
+                sizeWHT1P++;
+            }
+        }
+
+        printf("\nW1 PLUS");
+        printf("\n");
+        int *WHT1Plus = WHT1PlusSet(fxarr, size, sizeWHT1P, max1);
+        if (WHT1Plus) {
+            for (int i = 0; i < sizeWHT1P; ++i) {
+                printf("%d ", WHT1Plus[i]);
+            }
+        } else {
+            printf("NULL");
+        }
+        printf("\n");
+
+        int sizeWHT1M = 0;
+        for (int i = 0; i < size; ++i) {
+            if (fxarr[i] == -max1) {
+                sizeWHT1M++;
+            }
+        }
+
+        printf("\nW1 MINUS");
+        printf("\n");
+        int *WHT1Minus = WHT1MinusSet(fxarr, size, sizeWHT1M, max1);
+        if (WHT1Minus) {
+            for (int i = 0; i < sizeWHT1M; ++i) {
+                printf("%d ", WHT1Minus[i]);
+            }
+        } else {
+            printf("NULL");
+        }
+        printf("\n");
+
+        int sizeWHT2P = 0;
+        for (int i = 0; i < size; ++i) {
+            if (fxarr[i] == (max1 - 2)) {
+                sizeWHT2P++;
+            }
+        }
+
+        printf("\nW2 PLUS");
+        printf("\n");
+        int *WHT2Plus = WHT2PlusSet(fxarr, size, sizeWHT2P, max1);
+        if (WHT2Plus) {
+            for (int i = 0; i < sizeWHT2P; ++i) {
+                printf("%d ", WHT2Plus[i]);
+            }
+        } else {
+            printf("NULL");
+        }
+        printf("\n");
+
+        int sizeWHT2M = 0;
+        for (int i = 0; i < size; ++i) {
+            if (fxarr[i] == (max1 - 2)) {
+                sizeWHT2M++;
+            }
+        }
+
+        printf("\nW2 MINUS");
+        printf("\n");
+        int *WHT2Minus = WHT2MinusSet(fxarr, size, sizeWHT2M, max1);
+        if (WHT2Minus) {
+            for (int i = 0; i < sizeWHT2M; ++i) {
+                printf("%d ", WHT2Minus[i]);
+            }
+        } else {
+            printf("NULL");
+        }
+        printf("\n");
+
+        // Отримання об'єднання WHT1P та WHT2P
+        if (!WHT1Plus && !WHT2Plus) {
+            printf("SET WHT PLUS IS NULL");
+        } else {
+            int c1[(sizeWHT1P + sizeWHT2P)];
+            //printf("%d ", (sizeWHT1P + sizeWHT1P));
+
+            int m1 = arrayUnion(WHT1Plus, sizeWHT1P, WHT2Plus, sizeWHT2P, c1);
+            printf("\nSET WHT PLUS");
+            printf("\n");
+            for (int i = 0; i < m1; ++i) {
+                printf("%d ", c1[i]);
+            }
+        }
+
+        printf("\n");
+
+        // Отримання об'єднання WHT1M та WHT2M
+        if (!WHT1Minus && !WHT2Minus) {
+            printf("\nSET WHT MINUS IS NULL");
+        } else {
+            int c2[(sizeWHT1M + sizeWHT2M)];
+            //printf("%d ", (sizeWHT1P + sizeWHT1P));
+
+            int m2 = arrayUnion(WHT1Minus, sizeWHT1M, WHT2Minus, sizeWHT2M, c2);
+            printf("\nSET WHT MINUS");
+            printf("\n");
+            for (int i = 0; i < m2; ++i) {
+                printf("%d ", c2[i]);
+            }
+        }
+
+        printf("\n");
+
+        /*int *ar7 = linearFunctions(size, n, 5);
+        printf("\nLINEAR FUNCTION");
+        printf("\n");
+        for (int i = 0; i < size; ++i) {
+            printf("%d ", ar7[i]);
+        }
+        printf("\n");*/
+
+        int c1[(sizeWHT1P + sizeWHT2P)];
+        int c2[(sizeWHT1M + sizeWHT2M)];
+        int m1 = arrayUnion(WHT1Plus, sizeWHT1P, WHT2Plus, sizeWHT2P, c1);
+        int m2 = arrayUnion(WHT1Minus, sizeWHT1M, WHT2Minus, sizeWHT2M, c2);
+
+        //printf("%d ", m1);
+        //printf("%d ", m2);
+
+        int linearMassSize = m1 + m2;
+        /*int c3[1] = {7};
+        int c[linearMassSize];
+        for (int i = 0; i < m1; ++i) {
+                c[i] = c1[i];
+        }
+        if (m2!=0) {
+            for (int j = 0; j < m2; ++j) {
+                c[j + m1] = c3[j];
+            }
+        }*/
+
+        int *c = arrayAdd(c1, m1, c2, m2);
+        //printf("Linear mass size %d ", linearMassSize);
+        printf("\nOMEGA LINEAR FUNCTIONS TO FIND");
+        printf("\n");
+        for (int i = 0; i < linearMassSize; ++i) {
+            printf("%d ", c[i]);
+        }
+        printf("\n");
+
+        int *linearFunctionsMass = calloc(linearMassSize * 16, sizeof(int));
+        for (int i = 0; i < linearMassSize; ++i) {
+            int t = c[i];
+            int *arr = linearFunctions(size, count, t);
+            for (int j = 0; j < size; ++j) {
+                //printf("%d ", arr[j]);
+                linearFunctionsMass[i * size + j] = arr[j];
+                //printf("%d ", linearFunctionsMass[j]);
+            }
+        }
+
+        printf("\nLINEAR FUNCTIONS");
+        printf("\n");
+
+        for (int i = 0; i < linearMassSize; ++i) {
+            for (int j = 0; j < size; ++j) {
+                printf("%d ", linearFunctionsMass[i * size + j]);
+            }
+            printf("\n");
+        }
+
+
+        printf("\nIMPROVEMENT SET:");
+        int *ar8 = improvementSet(f, linearFunctionsMass, size, linearMassSize, m1);
+        int k;
+        printf("\n");
+        for (int j = 0; j < size; ++j) {
+            if (ar8[j] != 0) {
+                k++;
+            }
+        }
+
+        printf("\n");
+
+        if (k > 0) {
+            int *ar9 = HillClimbing(f, ar8, size, count);
+            printf("\n");
+            for (int j = 0; j < size; ++j) {
+                printf("%d ", ar9[j]);
+                result[j] = ar9[j];
+            }
+        } else {
+            counter = 1;
+            result = NULL;
+        }
+    }
+    return result;
 }
 
 
