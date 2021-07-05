@@ -63,6 +63,8 @@ int *HillClimbing(const int f[], const int *improvementSet, int size, int count)
 
 int *roundableHillClimbing(const int f[], int size, int count);
 
+int *SBoxToBooleanFunc(int *sbox, int size, int count);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -474,7 +476,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }
     printf("\n");*/
 
-    int *ar9 = roundableHillClimbing(fx2, size, n);
+    //int *ar9 = roundableHillClimbing(fx2, size, n);
 
     /*if (ar9 != NULL) {
         for (int j = 0; j < size; ++j) {
@@ -484,8 +486,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
         printf("\nIMPROVEMENT SET:");
     }*/
 
+    n = 3;
+    size = raiseToPower(2,n);
+    int sbox[] = {4, 1, 3, 5, 2, 0, 7, 6};
+    int *ar7 = SBoxToBooleanFunc(sbox,size,n);
 
-
+    int sbox2[] = {4, 4, 3, 5, 2, 0, 7, 6};
+    int *ar8 = SBoxToBooleanFunc(sbox2,size,n);
 
     free(binElems);
     free(ar);
@@ -493,13 +500,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     free(ar4);
     free(ar5);
     free(ar6);
+    free(ar7);
+    free(ar8);
     //free(fxarr);
     //free(WHT1Plus);
     //free(WHT2Plus);
     //free(WHT1Minus);
     //free(WHT2Minus);
-    //free(ar7);
-    //free(ar8);
     //free(ar9);
 
     return 0;
@@ -1363,6 +1370,37 @@ int *roundableHillClimbing(const int f[], int size, int count){
         free(ar9);
     }
 
+    return result;
+}
+
+int *SBoxToBooleanFunc(int *sbox, int size, int count){
+    printf("\nS-BOX\n");
+    for (int i = 0; i < size; ++i) {
+        printf("%d ", sbox[i]);
+    }
+    printf("\n");
+    printf("\nS-BOX IN BOOLEAN FUNCTIONS REPRESENTATION\n");
+    int *result = binaryElements(sbox, size, count);
+    for (int i = 0; i < count; ++i) {
+        printf("Function %d = ", i);
+        for (int j = 0; j < size; ++j) {
+            printf("%d ", result[i * size + j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n");
+
+    for (int i = 0; i < count; ++i) {
+        int *temp = calloc (size,sizeof(int));
+        printf("Function %d", i);
+        for (int j = 0; j < size; ++j) {
+            temp[j] = result[i * size + j];
+        }
+        int weight = HammingWeight(temp,size);
+        int flag = funcIsBalanced(weight,count);
+        printf("\n");
+    }
     return result;
 }
 
