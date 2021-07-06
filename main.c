@@ -65,6 +65,8 @@ int *roundableHillClimbing(const int f[], int size, int count);
 
 int *SBoxToBooleanFunc(int *sbox, int size, int count);
 
+int *booleanFunctionsToSBox(int *arr, int size, int count);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -75,7 +77,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("N = %d",n);*/
     int size = raiseToPower(2, n);
     int *binElems = elemsForN(size);
-    int f[] = {0,0,1,0,0,1,1,0};
+    int f[] = {0, 0, 1, 0, 0, 1, 1, 0};
     /*int f[size];
     printf("\n");
     printf("Enter function using 0 and 1:");
@@ -232,22 +234,22 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nW = %d", ec);
     printf("\n");
 
-    /*n = 8;
-    size = raiseToPower(2,n);
+    n = 8;
+    size = raiseToPower(2, n);
     int fx[size];
 
-    srand ( time(NULL) );
+    srand(time(NULL));
 
-    for (int i = 0; i < size; ++i){
+    for (int i = 0; i < size; ++i) {
         fx[i] = rand() % 2;
     }
 
     printf("\nMY FUNCTION 2^8");
     printf("\n");
-    for (int i = 0; i < size; ++i){
+    for (int i = 0; i < size; ++i) {
         printf("%d, ", fx[i]);
     }
-    printf("\n");*/
+    printf("\n");
 
     //int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
     //int fx[] = {1,0,1,1};
@@ -453,7 +455,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     //int fx2[] = {1,0,1,1};
 
-    n = 8;
+    /*n = 8;
     size = raiseToPower(2,n);
     int fx2[] = {1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1,
                      0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,
@@ -461,7 +463,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
                      0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
                      0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1,
                      1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1,
-                     1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0,};
+                     1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0,};*/
 
     /*srand ( time(NULL) );
 
@@ -476,7 +478,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }
     printf("\n");*/
 
-    //int *ar9 = roundableHillClimbing(fx2, size, n);
+    int *ar9 = roundableHillClimbing(fx, size, n);
+
+    printf("\n");
+    int newNonLin = ar9[0];
+    printf("\nNEW NON LINEARITY AFTER HILL CLIMBING = ");
+    printf("%d ", newNonLin);
+    printf("\n");
 
     /*if (ar9 != NULL) {
         for (int j = 0; j < size; ++j) {
@@ -487,12 +495,29 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }*/
 
     n = 3;
-    size = raiseToPower(2,n);
+    size = raiseToPower(2, n);
     int sbox[] = {4, 1, 3, 5, 2, 0, 7, 6};
-    int *ar7 = SBoxToBooleanFunc(sbox,size,n);
+    int *ar7 = SBoxToBooleanFunc(sbox, size, n);
+
+    int *sboxRev = booleanFunctionsToSBox(ar7,size,n);
+
+    printf("\nS-BOX TO DECIMAL FROM BINARY\n");
+
+    for (int i = 0; i < size; ++i){
+        printf("%d ", sboxRev[i]);
+    }
+    printf("\n");
 
     int sbox2[] = {4, 4, 3, 5, 2, 0, 7, 6};
-    int *ar8 = SBoxToBooleanFunc(sbox2,size,n);
+    int *ar8 = SBoxToBooleanFunc(sbox2, size, n);
+
+    int *sboxRev2 = booleanFunctionsToSBox(ar8,size,n);
+
+    printf("\nS-BOX TO DECIMAL FROM BINARY\n");
+    for (int i = 0; i < size; ++i){
+        printf("%d ", sboxRev2[i]);
+    }
+    printf("\n");
 
     free(binElems);
     free(ar);
@@ -734,7 +759,7 @@ int NLinearity(int *func, int size, int count) {
     int matrixRows = raiseToPower(2, matrixColumns);
     int *functions = calloc(matrixRows * matrixColumns, sizeof(int));
     int *functions2 = elemsForN(matrixRows);
-    int *testfunc = calloc(size,sizeof(int));
+    int *testfunc = calloc(size, sizeof(int));
     /*for (int i = 0; i < matrixRows; ++i) {
         printf(" %d",functions2 [i]);
     }*/
@@ -751,7 +776,7 @@ int NLinearity(int *func, int size, int count) {
     }
     //minimumNL = HammingDistance(func, functions, size);
     minimumNL1 = HammingDistance(func, functions, size);
-    int *bin = valueToBinary(matrixRows-1, matrixColumns);
+    int *bin = valueToBinary(matrixRows - 1, matrixColumns);
     for (int j = 0; j < matrixColumns; ++j) {
         testfunc[j] = bin[j];
     }
@@ -761,7 +786,7 @@ int NLinearity(int *func, int size, int count) {
     //printf(" %d",minimumNL1);
     minimumNL2 = HammingDistance(func, testfunc, size);
     minimumNL = minimumNL1;
-    if (minimumNL2 < minimumNL1){
+    if (minimumNL2 < minimumNL1) {
         minimumNL = minimumNL2;
     }
     for (int i = 0; i < matrixRows; ++i) {
@@ -1095,11 +1120,11 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
         }
     }
     for (int j = 0; j < size; ++j) {
-        if (result[j] == 1){
+        if (result[j] == 1) {
             counter++;
         }
     }
-    if (counter == 0){
+    if (counter == 0) {
         printf("\nIMPROVEMENT IS UNAVAILABLE");
     }
 
@@ -1146,13 +1171,13 @@ int *HillClimbing(const int f[], const int *improvementSet, int size, int count)
     }
 }
 
-int *roundableHillClimbing(const int f[], int size, int count){
-    int *result = calloc(size,sizeof(int));
-    for (int i = 0; i < size; ++i){
-        result[i] = f [i];
+int *roundableHillClimbing(const int f[], int size, int count) {
+    int *result = calloc(size, sizeof(int));
+    for (int i = 0; i < size; ++i) {
+        result[i] = f[i];
     }
     int counter = 0;
-    while (counter < 6) {
+    while (counter < 1) {
         int weight;
         weight = HammingWeight(result, size);
         int flag = funcIsBalanced(weight, count);
@@ -1346,10 +1371,21 @@ int *roundableHillClimbing(const int f[], int size, int count){
 
         printf("\nIMPROVEMENT SET:");
         int *ar8 = improvementSet(result, linearFunctionsMass, size, linearMassSize, m1);
-        int k;
+        int k = 0;
         printf("\n");
         for (int j = 0; j < size; ++j) {
             printf("%d ", ar8[j]);
+            if (ar8[j] != 0) {
+                k++;
+            }
+        }
+        if (k == 0) {
+            counter = 1;
+            //printf("counter %d ", counter);
+            int *nonLin = calloc(1, sizeof(int));
+            nonLin[0] = nl2;
+            return nonLin;
+            break;
         }
 
         int *ar9 = HillClimbing(result, ar8, size, count);
@@ -1358,7 +1394,6 @@ int *roundableHillClimbing(const int f[], int size, int count){
             result[j] = ar9[j];
             //printf("%d ", result[j]);
         }
-        counter++;
         free(fxarr);
         free(WHT1Plus);
         free(WHT1Minus);
@@ -1373,7 +1408,7 @@ int *roundableHillClimbing(const int f[], int size, int count){
     return result;
 }
 
-int *SBoxToBooleanFunc(int *sbox, int size, int count){
+int *SBoxToBooleanFunc(int *sbox, int size, int count) {
     printf("\nS-BOX\n");
     for (int i = 0; i < size; ++i) {
         printf("%d ", sbox[i]);
@@ -1392,14 +1427,25 @@ int *SBoxToBooleanFunc(int *sbox, int size, int count){
     printf("\n");
 
     for (int i = 0; i < count; ++i) {
-        int *temp = calloc (size,sizeof(int));
+        int *temp = calloc(size, sizeof(int));
         printf("Function %d", i);
         for (int j = 0; j < size; ++j) {
             temp[j] = result[i * size + j];
         }
-        int weight = HammingWeight(temp,size);
-        int flag = funcIsBalanced(weight,count);
+        int weight = HammingWeight(temp, size);
+        int flag = funcIsBalanced(weight, count);
         printf("\n");
+    }
+    return result;
+}
+
+int *booleanFunctionsToSBox(int *arr, int size, int count) {
+    int *result = calloc(size, sizeof(int));
+    for (int i = 0; i < size; ++i) {
+        result[i] = 0;
+        for (int j = 0; j < count; ++j) {
+            result [i] += arr [j * size + i] * raiseToPower(2, j);
+        }
     }
     return result;
 }
