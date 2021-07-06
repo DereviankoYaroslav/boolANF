@@ -67,6 +67,10 @@ int *SBoxToBooleanFunc(int *sbox, int size, int count);
 
 int *booleanFunctionsToSBox(int *arr, int size, int count);
 
+int *propertiesOfBooleanFunc(int *arr, int size, int count);
+
+int *linearCombinations(int *arr, int size, int count);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -499,7 +503,9 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int sbox[] = {4, 1, 3, 5, 2, 0, 7, 6};
     int *ar7 = SBoxToBooleanFunc(sbox, size, n);
 
-    int *sboxRev = booleanFunctionsToSBox(ar7,size,n);
+    int *ar8 = propertiesOfBooleanFunc(ar7,size,n);
+
+    /*int *sboxRev = booleanFunctionsToSBox(ar7,size,n);
 
     printf("\nS-BOX TO DECIMAL FROM BINARY\n");
 
@@ -517,7 +523,18 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     for (int i = 0; i < size; ++i){
         printf("%d ", sboxRev2[i]);
     }
-    printf("\n");
+    printf("\n");*/
+
+    int *ar10 = linearCombinations(ar7,size,n);
+
+    /*for (int i = 0; i < size; ++i) {
+        printf("Function %d = ", i);
+        for (int j = 0; j < size; ++j) {
+            printf("%d ", ar10[i * size + j]);
+        }
+        printf("\n");
+    }*/
+
 
     free(binElems);
     free(ar);
@@ -532,7 +549,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     //free(WHT2Plus);
     //free(WHT1Minus);
     //free(WHT2Minus);
-    //free(ar9);
+    free(ar9);
 
     return 0;
 }
@@ -892,10 +909,10 @@ int *autoCorrelation(int *func, int size, int count) {
 //Функція обчислення автокореляції з функції автокореляції
 
 int autoCorrelationMax(const int *arr, int size) {
-    int maxCoefficient = arr[1];
+    int maxCoefficient = abs(arr[1]);
     for (int i = 1; i < size; ++i) {
-        if (arr[i] > maxCoefficient) {
-            maxCoefficient = arr[i];
+        if (abs(arr[i]) > maxCoefficient) {
+            maxCoefficient = abs(arr[i]);
         }
     }
     return maxCoefficient;
@@ -1446,6 +1463,79 @@ int *booleanFunctionsToSBox(int *arr, int size, int count) {
         for (int j = 0; j < count; ++j) {
             result [i] += arr [j * size + i] * raiseToPower(2, j);
         }
+    }
+    return result;
+}
+
+int *propertiesOfBooleanFunc(int *arr, int size, int count){
+    printf("\nFUNCTIONS PROPERTIES\n");
+    for (int i = 0; i < count; ++i) {
+        int *temp = calloc(size, sizeof(int));
+        printf("\nFunction %d", i);
+        for (int j = 0; j < size; ++j) {
+            temp[j] = arr[i * size + j];
+        }
+        int weight = HammingWeight(temp, size);
+        int flag = funcIsBalanced(weight, count);
+        int *fxarr = HadamardCoefficients(temp, size, count);
+        printf("\nHADAMARD COEFFICIENTS");
+        printf("\n");
+        for (int i = 0; i < size; ++i) {
+            printf("%d ", fxarr[i]);
+        }
+        int max1 = HadamardMax(fxarr, size);
+        //printf("\n max = %d", max1);
+        int nl2 = HadamardNLinearity(max1, count);
+        printf("\n");
+        printf("\nHADAMARD NON LINEARITY = %d", nl2);
+        printf("\n");
+        int k = 1;
+        int ec = expansionCriterion(temp, size, k);
+        printf("\n");
+        int *ar = autoCorrelation(temp, size, count);
+
+        printf("\nAUTO CORRELATING FUNCTION");
+        printf("\n");
+        for (int i = size-1; i >= 0; i--) {
+            printf("%d ", ar[i]);
+        }
+        printf("\n");
+
+        int AC = autoCorrelationMax(ar, size);
+        printf("\nAUTO CORRELATION = %d", AC);
+        printf("\n");
+        int dec = algebraicDeg(temp, size, count);
+        printf("\nALGEBRAIC DEGREE = %d ", dec);
+        printf("\n");
+    }
+    return arr;
+}
+
+int *linearCombinations(int *arr, int size, int count){
+    int *result = calloc(size*size, sizeof(int));
+    int *calc = calloc(size, sizeof(int));
+    for (int i = 1; i < size; ++i){
+        int *bin = valueToBinary(i, count);
+        for (int j = 0, k = count - 1; j < count; ++j, k--) {
+            if (bin[k] == 1){
+                for (int k = 0; k < size; ++k) {
+                    calc[k] = calc[k] ^ arr[j * size + k];
+                    //printf(" %d", arr[j*size]);
+                    printf(" %d", j * size + k);
+                    printf("calc =  %d", calc[k]);
+                    //result[(i-1)*size+k] = calc[k];
+                    //printf("result  =  %d", (i-1)*size+k);
+                }
+                printf("\n");
+            }
+            //printf(" %d", bin[j]);
+        }
+        for (int l = 0; l < size; ++l) {
+            //printf("calc =  %d", calc[l]);
+            //result[(i-1) * size + l] = calc[l];
+            calc[l] = 0;
+        }
+        printf("\n");
     }
     return result;
 }
