@@ -71,6 +71,8 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count);
 
 int *linearCombinations(int *arr, int size, int count);
 
+int *propertiesOfLinearCombinations(int *arr, int size, int count);
+
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -535,6 +537,8 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
         }
         printf("\n");
     }
+
+    int *ar11 = propertiesOfLinearCombinations(ar10, size, n);
 
 
     free(binElems);
@@ -1542,6 +1546,50 @@ int *linearCombinations(int *arr, int size, int count){
         //printf("\n");
     }
     return result;
+}
+
+int *propertiesOfLinearCombinations(int *arr, int size, int count){
+    printf("\nLINEAR COMBINATIONS PROPERTIES\n");
+    for (int i = 0; i < size-1; ++i) {
+        int *temp = calloc(size, sizeof(int));
+        printf("\nCombination %d", i);
+        for (int j = 0; j < size; ++j) {
+            temp[j] = arr[i * size + j];
+        }
+        int weight = HammingWeight(temp, size);
+        int flag = funcIsBalanced(weight, count);
+        int *fxarr = HadamardCoefficients(temp, size, count);
+        printf("\nHADAMARD COEFFICIENTS");
+        printf("\n");
+        for (int i = 0; i < size; ++i) {
+            printf("%d ", fxarr[i]);
+        }
+        int max1 = HadamardMax(fxarr, size);
+        //printf("\n max = %d", max1);
+        int nl2 = HadamardNLinearity(max1, count);
+        printf("\n");
+        printf("\nHADAMARD NON LINEARITY = %d", nl2);
+        printf("\n");
+        int k = 1;
+        int ec = expansionCriterion(temp, size, k);
+        printf("\n");
+        int *ar = autoCorrelation(temp, size, count);
+
+        printf("\nAUTO CORRELATING FUNCTION");
+        printf("\n");
+        for (int i = size-1; i >= 0; i--) {
+            printf("%d ", ar[i]);
+        }
+        printf("\n");
+
+        int AC = autoCorrelationMax(ar, size);
+        printf("\nAUTO CORRELATION = %d", AC);
+        printf("\n");
+        int dec = algebraicDeg(temp, size, count);
+        printf("\nALGEBRAIC DEGREE = %d ", dec);
+        printf("\n");
+    }
+    return arr;
 }
 
 
