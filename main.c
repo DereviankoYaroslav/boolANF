@@ -527,13 +527,14 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     int *ar10 = linearCombinations(ar7,size,n);
 
-    /*for (int i = 0; i < size; ++i) {
-        printf("Function %d = ", i);
+    printf("\nLINEAR COMBINATION OF BOOLEAN FUNCTIONS\n");
+    for (int i = 0; i < size-1; ++i) {
+        printf("Combination %d = ", i);
         for (int j = 0; j < size; ++j) {
             printf("%d ", ar10[i * size + j]);
         }
         printf("\n");
-    }*/
+    }
 
 
     free(binElems);
@@ -1521,12 +1522,15 @@ int *linearCombinations(int *arr, int size, int count){
                 for (int k = 0; k < size; ++k) {
                     calc[k] = calc[k] ^ arr[j * size + k];
                     //printf(" %d", arr[j*size]);
-                    printf(" %d", j * size + k);
-                    printf("calc =  %d", calc[k]);
+                    //printf(" %d", j * size + k);
+                    //printf("calc =  %d", calc[k]);
                     //result[(i-1)*size+k] = calc[k];
                     //printf("result  =  %d", (i-1)*size+k);
                 }
-                printf("\n");
+                //printf("\n");
+            }
+            for (int r = 0; r < size; ++r) {
+                result[(i-1) * size + r] = calc[r];
             }
             //printf(" %d", bin[j]);
         }
@@ -1535,7 +1539,7 @@ int *linearCombinations(int *arr, int size, int count){
             //result[(i-1) * size + l] = calc[l];
             calc[l] = 0;
         }
-        printf("\n");
+        //printf("\n");
     }
     return result;
 }
