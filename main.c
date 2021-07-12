@@ -81,38 +81,20 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
 
-    int n = 3;
-    /*printf("Enter N:");
-    scan f("%d",&n);
-    printf("N = %d",n);*/
+    int n = 5;
     int size = raiseToPower(2, n);
-    int *binElems = elemsForN(size);
-    int f[] = {0, 0, 1, 0, 0, 1, 1, 0};
-    /*int f[size];
-    printf("\n");
-    printf("Enter function using 0 and 1:");
-    printf("\n");
-    for (int i = 0; i < size; ++i){
-        printf("Enter f[%d]:",i);
-        scan f("%d",&f[i]);
-    }*/
+    //int *binElems = elemsForN(size);
+    //int f[] = {0, 0, 1, 0, 0, 1, 1, 0};
 
-    /*for (int i = 0; i < size; ++i) {
-        printf("%d ", binElems[i]);
-    }*/
-
-    //printf("\nBooleans\n");
-    int *ar = binaryElements(binElems, size, n);
-
-    /*for (int i = 0; i < n; ++i) {
-        printf("x%d = ", i);
+    /*int *ar = binaryElements(binElems, size, n);
+    for (int i = 0; i < n; ++i) {
         for (int j = 0; j < size; ++j) {
-            printf("%d ", ar[i * size + j]);
+            printf("%d ", ar[i*size+j]);
         }
         printf("\n");
-    }*/
+    }/*
 
-    int *ar3 = calloc(size, sizeof(int));
+    /*int *ar3 = calloc(size, sizeof(int));
     int modulus = 0;
     for (int t = 0, k = size - 1; t < size; ++t, k--) {
         int *ar2 = massToBooleanFunc(binElems, ar, size, n, t);
@@ -153,16 +135,10 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\n");
     int flag = funcIsBalanced(weight, n);
 
-
     int dec = algebraicDeg(f, size, n);
     printf("\n\nALGEBRAIC DEGREE = %d ", dec);
 
     printf("\n");
-
-    /*int fun1[] = {0, 0, 1, 1};
-    int fun2[] = {0, 1, 0, 0};
-    int dist = HammingDistance(fun1, fun2, 4);
-    printf("\nHD = %d ", dist);*/
 
     int fun11[] = {1, 1, 1, 1};
     int nel = NLinearity(fun11, 4, 2);
@@ -177,47 +153,9 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
         printf("%d ", polFunc[i]);
     }
 
-    /*int *result = malloc(8 * sizeof(int));
-    int *test = malloc(8 * sizeof(int));
-    int *functions2 = elemsForN(8);
-    printf("\n");
-    for (int i = 0; i < 8; ++i) {
-        int *bin = valueToBinary(functions2[i], 3);
-        for (int j = 0; j < 3; ++j) {
-            //printf(" bin j = %d", bin[j]);
-            // *(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
-            test [i * 3 + j] = bin[j];
-            printf(" %d",test [i * 3 + j]);
-        }
-        printf("\n");
-    }
-    int *w = malloc(3 * sizeof(int));
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            w[j] = test[i * 3 + j];
-            printf("w = %d", w[j]);
-        }
-        int res = 0;
-        for (int j = 0; j < 8; ++j) {
-            int r = 0;
-            for (int k = 0; k < 3; ++k) {
-                r += myModulus(w[k] * test[j * 3 + k], 2);
-            }
-            res += raiseToPower(-1, myModulus(fun11[j] + r, 2));
-        }
-        result[i] = res;
-    }
-    for (int i = 0; i < 8; ++i) {
-        printf(" = %d", result[i]);
-    }*/
-
     int *ar5 = HadamardCoefficients(fun11, 4, 2);
-    /*for (int i = 0; i < 4; ++i) {
-        printf(" %d", ar5[i]);
-    }*/
 
     int max = HadamardMax(ar5, 4);
-    //printf("\n max = %d", max);
 
     int nl = HadamardNLinearity(max, 2);
     printf("\nHADAMARD NON LINEARITY = %d", nl);
@@ -258,7 +196,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     for (int i = 0; i < size; ++i) {
         printf("%d, ", fx[i]);
     }
-    printf("\n");
+    printf("\n");*/
 
     //int fx[] = {0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1};
     //int fx[] = {1,0,1,1};
@@ -459,13 +397,13 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     }
     printf("\n");*/
 
-    int *ar9 = roundableHillClimbing(fx, size, n);
+    //int *ar9 = roundableHillClimbing(fx, size, n);
 
-    printf("\n");
+    /*printf("\n");
     int newNonLin = ar9[0];
     printf("\nNEW NON LINEARITY AFTER HILL CLIMBING = ");
     printf("%d ", newNonLin);
-    printf("\n");
+    printf("\n");*/
 
     /*if (ar9 != NULL) {
         for (int j = 0; j < size; ++j) {
@@ -511,9 +449,15 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int *ar11 = propertiesOfLinearCombinations(ar10, size, n);
 
     printf("\nNON LINEARITY OF S-BOX IS\n");
-    for (int i = 0; i < 1; ++i) {
-        printf("%d ", ar11[i]);
-    }
+    printf("%d ", ar11[0]);
+    printf("\n");
+
+    printf("\nAUTO CORRELATION OF S-BOX IS\n");
+    printf("%d ", ar11[1]);
+    printf("\n");
+
+    printf("\nDEC OF S-BOX IS\n");
+    printf("%d ", ar11[2]);
     printf("\n");
     printf("\n");
 
@@ -522,12 +466,12 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     int *ar13 = propertiesOfSBox(ar12,8,3);
 
 
-    free(binElems);
-    free(ar);
-    free(ar3);
-    free(ar4);
-    free(ar5);
-    free(ar6);
+    //free(binElems);
+    //free(ar);
+    //free(ar3);
+    //free(ar4);
+    //free(ar5);
+    //free(ar6);
     free(ar7);
     //free(ar8);
     //free(fxarr);
@@ -535,7 +479,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     //free(WHT2Plus);
     //free(WHT1Minus);
     //free(WHT2Minus);
-    free(ar9);
+    //free(ar9);
     free(ar10);
     free(ar11);
 
@@ -1546,6 +1490,7 @@ int *linearCombinations(const int *arr, int size, int count){
 int *propertiesOfLinearCombinations(const int *arr, int size, int count){
     int *minimalNL = calloc(size-1, sizeof(int));
     int *maxAC = calloc(size-1, sizeof(int));
+    int *minDEC = calloc(size-1, sizeof(int));
     printf("\nLINEAR COMBINATIONS PROPERTIES\n");
     for (int i = 0; i < size-1; ++i) {
         int *temp = calloc(size, sizeof(int));
@@ -1587,6 +1532,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count){
         int dec = algebraicDeg(temp, size, count);
         printf("\nALGEBRAIC DEGREE = %d ", dec);
         printf("\n");
+        minDEC[i] = dec;
     }
     int min = 0;
     min = minimalNL[0];
@@ -1608,10 +1554,21 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count){
             max = maxAC[t];
         }
     }
+    int minD = 0;
+    minD = minDEC[0];
+    printf("\nDEC ARRAY");
+    printf("\n");
+    for (int y = 0; y < size-1; ++y){
+        printf("%d ", minDEC[y]);
+        if (minDEC [y] < minD){
+            minD = minDEC[y];
+        }
+    }
     printf("\n");
     int *result = calloc(1,sizeof(int));
     result[0] = min;
     result[1] = max;
+    result[2] = minD;
     return result;
 }
 
@@ -1649,6 +1606,8 @@ int *propertiesOfSBox(int *sbox, int size, int count){
     printf("%d ", ar2[0]);
     printf("\nAUTO CORRELATION OF S-BOX IS\n");
     printf("%d ", ar2[1]);
+    printf("\nDEC OF S-BOX IS\n");
+    printf("%d ", ar2[2]);
     printf("\n");
 }
 
