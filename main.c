@@ -71,7 +71,11 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count);
 
 int *linearCombinations(const int *arr, int size, int count);
 
-int *propertiesOfLinearCombinations(int *arr, int size, int count);
+int *propertiesOfLinearCombinations(const int *arr, int size, int count);
+
+int *SBoxGenerating(int n, int m);
+
+int *propertiesOfSBox(int *sbox, int size, int count);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -473,7 +477,7 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
 
     n = 5;
     size = raiseToPower(2, n);
-    int sbox[] = {4, 1, 3, 13, 2, 0, 7, 6, 9, 26, 8, 12, 10, 14, 5, 11, 16, 17, 18, 19, 20, 29, 31, 23, 24, 25, 15, 27, 28, 21, 30, 22, 32};
+    int sbox[] = {4 ,22 ,16 ,15 ,21 ,11 ,8 ,9 ,25 ,19 ,20 ,13 ,23 ,29 ,31 ,7 ,6 ,2 ,10 ,3 ,1 ,17 ,30 ,12 ,24 ,26 ,5 ,0 ,14 ,18 ,28 ,27 };
     int *ar7 = SBoxToBooleanFunc(sbox, size, n);
 
     //int *ar8 = propertiesOfBooleanFunc(ar7,size,n);
@@ -511,6 +515,11 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
         printf("%d ", ar11[i]);
     }
     printf("\n");
+    printf("\n");
+
+    int *ar12 = SBoxGenerating(3,3);
+
+    int *ar13 = propertiesOfSBox(ar12,8,3);
 
 
     free(binElems);
@@ -789,7 +798,7 @@ int NLinearity(int *func, int size, int count) {
         if (algebraicDeg(functions + matrixColumns * i, size, count) <= 1 &&
             !funcsIsEqual(func, functions + matrixColumns * i, size)) {
             int newMinHD = HammingDistance(func, functions + matrixColumns * i, matrixColumns);
-            //printf(" NEW MIDHD%d",newMinHD);
+            //printf(" NEW MID HD%d",newMinHD);
             if (newMinHD < minimumNL) {
                 minimumNL = newMinHD;
             }
@@ -1534,8 +1543,9 @@ int *linearCombinations(const int *arr, int size, int count){
 
 //Функція знаходження показників лінійних комбінацій для булевих функцій S-Box'у та знаходження мінімальної нелінійності серед них
 
-int *propertiesOfLinearCombinations(int *arr, int size, int count){
+int *propertiesOfLinearCombinations(const int *arr, int size, int count){
     int *minimalNL = calloc(size-1, sizeof(int));
+    int *maxAC = calloc(size-1, sizeof(int));
     printf("\nLINEAR COMBINATIONS PROPERTIES\n");
     for (int i = 0; i < size-1; ++i) {
         int *temp = calloc(size, sizeof(int));
@@ -1573,13 +1583,14 @@ int *propertiesOfLinearCombinations(int *arr, int size, int count){
         int AC = autoCorrelationMax(ar, size);
         printf("\nAUTO CORRELATION = %d", AC);
         printf("\n");
+        maxAC[i] = AC;
         int dec = algebraicDeg(temp, size, count);
         printf("\nALGEBRAIC DEGREE = %d ", dec);
         printf("\n");
     }
     int min = 0;
     min = minimalNL[0];
-    printf("\nNON LINEARITIES ARRAY");
+    printf("\nNON-LINEARITIES ARRAY");
     printf("\n");
     for (int r = 0; r < size-1; ++r){
         printf("%d ", minimalNL[r]);
@@ -1587,8 +1598,57 @@ int *propertiesOfLinearCombinations(int *arr, int size, int count){
             min = minimalNL[r];
         }
     }
+    int max = 0;
+    max = maxAC[0];
+    printf("\nAC ARRAYS");
+    printf("\n");
+    for (int t = 0; t < size-1; ++t){
+        printf("%d ", maxAC[t]);
+        if (maxAC [t] > min){
+            max = maxAC[t];
+        }
+    }
     printf("\n");
     int *result = calloc(1,sizeof(int));
     result[0] = min;
+    result[1] = max;
     return result;
 }
+
+int *SBoxGenerating(int n, int m) {
+    srand(time(NULL));
+    int size = raiseToPower(2, n);
+    int *dec = (int *) malloc(sizeof(int) * size);
+    for (int i = 0; i < size;) {
+        dec[i] = rand()%size;
+        int contains = 0;
+        for (int j = 0; j < i; ++j) {
+            if (dec[i] == dec[j]) {
+                contains = 1;
+                break;
+            }
+        }
+        if (!contains) {
+            i++;
+        }
+    }
+    printf("Generated s-box: ");
+    for (int i = 0; i < size; ++i) {
+        printf("%d ,", dec[i]);
+    }
+    printf("\n");
+    int *sb = SBoxToBooleanFunc(dec, size, m);
+    free(dec);
+    return sb;
+}
+
+int *propertiesOfSBox(int *sbox, int size, int count){
+    int *ar1 = linearCombinations(sbox,size,count);
+    int *ar2 = propertiesOfLinearCombinations(ar1, size, count);
+    printf("\nNON LINEARITY OF S-BOX IS\n");
+    printf("%d ", ar2[0]);
+    printf("\nAUTO CORRELATION OF S-BOX IS\n");
+    printf("%d ", ar2[1]);
+    printf("\n");
+}
+
