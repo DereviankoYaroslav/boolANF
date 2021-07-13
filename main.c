@@ -69,13 +69,15 @@ int *booleanFunctionsToSBox(const int *arr, int size, int count);
 
 int *propertiesOfBooleanFunc(int *arr, int size, int count);
 
-int *linearCombinations(const int *arr, int size, int count);
+int *linearCombinations(int *arr, int size, int count);
 
-int *propertiesOfLinearCombinations(const int *arr, int size, int count);
+int *propertiesOfLinearCombinations(int *arr, int size, int count);
 
 int *SBoxGenerating(int n, int m);
 
-int *propertiesOfSBox(int *sbox, int size, int count);
+int propertiesOfSBox(int *sbox, int size, int count);
+
+int costFunction(int *sbox, int size, int count);
 
 int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) {
     SetConsoleOutputCP(1251);
@@ -459,11 +461,23 @@ int main(__attribute__((unused)) int args, __attribute__((unused)) char **argv) 
     printf("\nDEC OF S-BOX IS\n");
     printf("%d ", ar11[2]);
     printf("\n");
+
+    if (ar11[3] == 1){
+        printf("\nS-BOX IS BALANCED\n");
+    } else {
+        printf("\nS-BOX IS NOT BALANCED\n");
+    }
     printf("\n");
 
-    int *ar12 = SBoxGenerating(3,3);
+    int *ar12 = SBoxGenerating(6,6);
 
-    int *ar13 = propertiesOfSBox(ar12,8,3);
+    int psb = propertiesOfSBox(ar12,64,6);
+
+    int cost = costFunction(ar12,64,6);
+    printf("\n");
+    printf("\nCOST OF S-BOX IS\n");
+    printf("%d ", cost);
+    printf("\n");
 
 
     //free(binElems);
@@ -771,7 +785,7 @@ int *HadamardCoefficients(const int *func, int size, int count) {
     /*for (int i = 0; i < size; ++i) {
         printf(" %d",functions2 [i]);
     }*/
-    printf("\n");
+    //printf("\n");
     for (int i = 0; i < size; ++i) {
         int *bin = valueToBinary(functions2[i], count);
         for (int j = 0; j < count; ++j) {
@@ -806,7 +820,7 @@ int *HadamardCoefficients(const int *func, int size, int count) {
 int HadamardMax(const int *arr, int size) {
     int maxCoefficient = abs(arr[0]);
     for (int i = 0; i < size; ++i) {
-        if (abs(arr[i] > maxCoefficient)) {
+        if (abs(arr[i] )> abs(maxCoefficient)) {
             maxCoefficient = abs(arr[i]);
         }
     }
@@ -1453,7 +1467,7 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count){
 
 //Функція знаходження лінійних комбінацій для булевих функцій S-Box'у
 
-int *linearCombinations(const int *arr, int size, int count){
+int *linearCombinations(int *arr, int size, int count){
     int *result = calloc(size*size, sizeof(int));
     int *calc = calloc(size, sizeof(int));
     for (int i = 1; i < size; ++i){
@@ -1487,10 +1501,11 @@ int *linearCombinations(const int *arr, int size, int count){
 
 //Функція знаходження показників лінійних комбінацій для булевих функцій S-Box'у та знаходження мінімальної нелінійності серед них
 
-int *propertiesOfLinearCombinations(const int *arr, int size, int count){
+int *propertiesOfLinearCombinations(int *arr, int size, int count){
     int *minimalNL = calloc(size-1, sizeof(int));
     int *maxAC = calloc(size-1, sizeof(int));
     int *minDEC = calloc(size-1, sizeof(int));
+    int balancedFlag = 1;
     printf("\nLINEAR COMBINATIONS PROPERTIES\n");
     for (int i = 0; i < size-1; ++i) {
         int *temp = calloc(size, sizeof(int));
@@ -1500,6 +1515,10 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count){
         }
         int weight = HammingWeight(temp, size);
         int flag = funcIsBalanced(weight, count);
+        if (flag == balancedFlag){
+        } else {
+            balancedFlag = flag;
+        }
         int *fxarr = HadamardCoefficients(temp, size, count);
         printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
@@ -1544,13 +1563,13 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count){
             min = minimalNL[r];
         }
     }
-    int max = 0;
+    int max;
     max = maxAC[0];
     printf("\nAC ARRAYS");
     printf("\n");
     for (int t = 0; t < size-1; ++t){
         printf("%d ", maxAC[t]);
-        if (maxAC [t] > min){
+        if (maxAC [t] > max){
             max = maxAC[t];
         }
     }
@@ -1569,6 +1588,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count){
     result[0] = min;
     result[1] = max;
     result[2] = minD;
+    result[3] = balancedFlag;
     return result;
 }
 
@@ -1599,15 +1619,58 @@ int *SBoxGenerating(int n, int m) {
     return sb;
 }
 
-int *propertiesOfSBox(int *sbox, int size, int count){
+int propertiesOfSBox(int *sbox, int size, int count){
+    int result;
     int *ar1 = linearCombinations(sbox,size,count);
     int *ar2 = propertiesOfLinearCombinations(ar1, size, count);
     printf("\nNON LINEARITY OF S-BOX IS\n");
     printf("%d ", ar2[0]);
     printf("\nAUTO CORRELATION OF S-BOX IS\n");
     printf("%d ", ar2[1]);
-    printf("\nDEC OF S-BOX IS\n");
+    printf("\nDEGREE OF S-BOX IS\n");
     printf("%d ", ar2[2]);
+    //printf("%d ", ar2[3]);
+    if (ar2[3] == 1){
+        printf("\nS-BOX IS BALANCED\n");
+        result = 1;
+    } else {
+        printf("\nS-BOX IS NOT BALANCED\n");
+        result = 1;
+    }
     printf("\n");
+    return result;
+}
+
+int costFunction(int *sbox, int size, int count) {
+    int *costArray = calloc(size-1, sizeof(int));
+    int *ar1 = linearCombinations(sbox,size,count);
+    for (int i = 0; i < size-1; ++i) {
+        int *temp = calloc(size, sizeof(int));
+        //printf("\nCombination %d", i+1);
+        for (int j = 0; j < size; ++j) {
+            temp[j] = ar1[i * size + j];
+        }
+        int *fxarr = HadamardCoefficients(temp, size, count);
+        /*printf("\nHADAMARD COEFFICIENTS");
+        printf("\n");
+        for (int q = 0; q < size; ++q) {
+            printf("%d ", fxarr[q]);
+        }*/
+        int max1 = HadamardMax(fxarr, size);
+        //printf("\n max = %d", max1);
+        costArray[i] = max1;
+    }
+    int cost;
+    cost = costArray[0];
+    //printf("\n");
+    printf("\nCOST ARRAY");
+    printf("\n");
+    for (int t = 0; t < size-1; ++t){
+        printf("%d ", costArray[t]);
+        if (costArray [t] > cost){
+            cost = costArray[t];
+        }
+    }
+    return cost;
 }
 
