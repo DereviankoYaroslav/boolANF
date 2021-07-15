@@ -1724,7 +1724,7 @@ int costFunction(int *sbox, int size, int count) {
 int *simulatedAnnealing(int *sbox, int size, int count) {
     double T = 1;
     double a = 0.1;
-    int MIL = 100;
+    int MIL = 170;
     int NLStart = NLOfSBox(sbox,size,count);
     printf("NLStart ===%d ", NLStart);
     int *SBoxBest = calloc(size, sizeof(int));
