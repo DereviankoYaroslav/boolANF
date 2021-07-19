@@ -1764,12 +1764,15 @@ int costFunction(int *sbox, int size, int count) {
 //Реалізація методу симуляції відпалу
 
 int *simulatedAnnealing(const int *sbox, int size, int count) {
+    char *filename = "D:\\CLionProjects\\boolANF\\result.txt";
+    FILE *fp;
     double T = 100;
     double a = 0.97;
-    int MIL = 30;
+    int MIL = 100;
     int MUL = 0;
     int SNL = 0;
     int flag;
+    int fileCounter;
     int NLStart = NLOfSBox(sbox,size,count);
     printf("NLStart ===%d ", NLStart);
     int *SBoxBest = calloc(size, sizeof(int));
@@ -1787,7 +1790,8 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
     int second = rand() % (size);
     int counter = 0;
     int *Y = calloc(size, sizeof(int));
-    while (SNL < 98) {
+    fileCounter = 0;
+    while (SNL < 100) {
         counter++;
         for (int b = 0; b < MIL; ++b) {
             printf("%d ", b);
@@ -1848,6 +1852,21 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
             }
             S = booleanFunctionsToSBox(SB, size, count);
             if (costOfNew <= 60){
+                ++fileCounter;
+                if((fp= fopen(filename, "a"))==NULL)
+                {
+                    printf("Error while opening file");
+                }
+                // записываем строку
+                fprintf(fp,"\nS-BOX NUMBER");
+                fprintf(fp, " %d:", fileCounter);
+                for (int p = 0; p< size; ++p){
+                    fprintf(fp,"%d, ",S[p]);
+                }
+                fprintf(fp,"\n");
+                fclose(fp);   //закрываем файл
+            }
+            if (costOfNew <= 56){
                 break;
             }
             printf("MUL ===%d ", MUL);
