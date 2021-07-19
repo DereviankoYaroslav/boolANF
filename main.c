@@ -527,13 +527,14 @@ int myModulus(int number, int mod) {
 
 int *binaryElements(int *arr, int size, int count) {
     int *result = calloc(size * count, sizeof(int));
+    int *bin = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
-        int *bin = valueToBinary(arr[i], count);
+        bin = valueToBinary(arr[i], count);
         for (int j = 0, k = count - 1; j < count; ++j, k--) {
             result[j * size + i] = bin[k];
         }
-        free(bin);
     }
+    free(bin);
     return result;
 }
 
@@ -546,8 +547,9 @@ int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
     //printf("t = %d", t);
     //printf("\n");
     int *calculation = calloc(size, sizeof(int));
+    int *bin = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
-        int *bin = valueToBinary(arr[i], count);
+        bin = valueToBinary(arr[i], count);
         for (int j = 0, k = count - 1; j < count; ++j, k--) {
             //printf("\n");
             //printf("bin k = %d", bin[k]);
@@ -575,6 +577,7 @@ int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
         //printf("calc3 = %d", calc3);
         //printf("\n");
     }
+    free(bin);
     return calculation;
 }
 
@@ -628,7 +631,7 @@ int *toANF(const int *func, int size) {
         }
         //printf("\n");
     }
-    int *coefficients = malloc(size * sizeof(int));
+    int *coefficients = calloc(size, sizeof(int));
     for (int i = 0; i < size; ++i) {
         coefficients[i] = matrix[i * size];
     }
@@ -677,10 +680,11 @@ int algebraicDeg(const int *func, int size, int count) {
     }
     //printf("\n newSize  = %d",newSize);
     int *deg = calloc(newSize, sizeof(int));
+    int *bin = calloc (count, sizeof(int));
     for (int i = 0; i < size; ++i) {
         if (func[i]) {
             //printf("\ni = %d",i);
-            int *bin = valueToBinary(i, count);
+            bin = valueToBinary(i, count);
             for (int j = 0; j < count; ++j) {
                 if (bin[j] == 1) {
                     ++flag;
@@ -701,6 +705,7 @@ int algebraicDeg(const int *func, int size, int count) {
     //printf("\nH deg   = %d",highestDec);
     result = highestDec;
     free(deg);
+    free(bin);
     return result;
 }
 
@@ -737,12 +742,14 @@ int NLinearity(int *func, int size, int count) {
     int *functions = calloc(matrixRows * matrixColumns, sizeof(int));
     int *functions2 = elemsForN(matrixRows);
     int *testfunc = calloc(size, sizeof(int));
+    int *bin = calloc(matrixColumns, sizeof(int));
+    int *bin2 = calloc(matrixColumns, sizeof(int));
     /*for (int i = 0; i < matrixRows; ++i) {
         printf(" %d",functions2 [i]);
     }*/
     //printf("\n");
     for (int i = 0; i < matrixRows; ++i) {
-        int *bin = valueToBinary(functions2[i], matrixColumns);
+        bin = valueToBinary(functions2[i], matrixColumns);
         for (int j = 0; j < matrixColumns; ++j) {
             //printf(" bin j = %d", bin[j]);
             //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
@@ -753,9 +760,9 @@ int NLinearity(int *func, int size, int count) {
     }
     //minimumNL = HammingDistance(func, functions, size);
     minimumNL1 = HammingDistance(func, functions, size);
-    int *bin = valueToBinary(matrixRows - 1, matrixColumns);
+    bin2 = valueToBinary(matrixRows - 1, matrixColumns);
     for (int j = 0; j < matrixColumns; ++j) {
-        testfunc[j] = bin[j];
+        testfunc[j] = bin2[j];
     }
     /*for (int i = 0; i < size; ++i) {
         printf(" %d",testfunc[i]);
@@ -781,6 +788,7 @@ int NLinearity(int *func, int size, int count) {
     free(functions2);
     free(testfunc);
     free(bin);
+    free(bin2);
     return result;
 }
 
@@ -800,12 +808,13 @@ int *HadamardCoefficients(const int *func, int size, int count) {
     int *result = calloc(size, sizeof(int));
     int *test = calloc(size * count, sizeof(int));
     int *functions2 = elemsForN(size);
+    int *bin = calloc(count, sizeof(int));
     /*for (int i = 0; i < size; ++i) {
         printf(" %d",functions2 [i]);
     }*/
     //printf("\n");
     for (int i = 0; i < size; ++i) {
-        int *bin = valueToBinary(functions2[i], count);
+        bin = valueToBinary(functions2[i], count);
         for (int j = 0; j < count; ++j) {
             //printf(" bin j = %d", bin[j]);
             //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
@@ -813,7 +822,6 @@ int *HadamardCoefficients(const int *func, int size, int count) {
             //printf(" %d",test [i * count + j]);
         }
         //printf("\n");
-        free(bin);
     }
     int *w = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
@@ -834,6 +842,7 @@ int *HadamardCoefficients(const int *func, int size, int count) {
     free(test);
     free(functions2);
     free(w);
+    free(bin);
     return result;
 }
 
@@ -1452,15 +1461,17 @@ int *booleanFunctionsToSBox(const int *arr, int size, int count) {
 
 int *propertiesOfBooleanFunc(int *arr, int size, int count) {
     printf("\nFUNCTIONS PROPERTIES\n");
+    int *temp = calloc(size, sizeof(int));
+    int *fxarr = calloc(size, sizeof(int));
+    int *ar = calloc(size, sizeof(int));
     for (int i = 0; i < count; ++i) {
-        int *temp = calloc(size, sizeof(int));
         printf("\nFunction %d", i);
         for (int j = 0; j < size; ++j) {
             temp[j] = arr[i * size + j];
         }
         int weight = HammingWeight(temp, size);
         int flag = funcIsBalanced(weight, count);
-        int *fxarr = HadamardCoefficients(temp, size, count);
+        fxarr = HadamardCoefficients(temp, size, count);
         printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
         for (int q = 0; q < size; ++q) {
@@ -1475,7 +1486,7 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
         int k = 1;
         int ec = expansionCriterion(temp, size, k);
         printf("\n");
-        int *ar = autoCorrelation(temp, size, count);
+        ar = autoCorrelation(temp, size, count);
 
         printf("\nAUTO CORRELATING FUNCTION");
         printf("\n");
@@ -1491,6 +1502,9 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
         printf("\nALGEBRAIC DEGREE = %d ", dec);
         printf("\n");
     }
+    free(temp);
+    free(fxarr);
+    free(ar);
     return arr;
 }
 
@@ -1499,8 +1513,9 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
 int *linearCombinations(const int *arr, int size, int count) {
     int *result = calloc(size * size, sizeof(int));
     int *calc = calloc(size, sizeof(int));
+    int *bin = calloc(count, sizeof(int));
     for (int i = 1; i < size; ++i) {
-        int *bin = valueToBinary(i, count);
+        bin = valueToBinary(i, count);
         for (int j = 0, k = count - 1; j < count, k >= 0; ++j, k--) {
             if (bin[k] == 1) {
                 for (int w = 0; w < size; ++w) {
@@ -1524,9 +1539,9 @@ int *linearCombinations(const int *arr, int size, int count) {
             calc[l] = 0;
         }
         //printf("\n");
-        free(bin);
     }
     free(calc);
+    free(bin);
     return result;
 }
 
@@ -1538,9 +1553,11 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     int *minDEC = calloc(size - 1, sizeof(int));
     int *result = calloc(4, sizeof(int));
     int balancedFlag = 1;
+    int *temp = calloc(size, sizeof(int));
+    int *fxarr = calloc (size, sizeof(int));
+    int *ar = calloc(size,sizeof(int));
     //printf("\nLINEAR COMBINATIONS PROPERTIES\n");
     for (int i = 0; i < size - 1; ++i) {
-        int *temp = calloc(size, sizeof(int));
         //printf("\nCombination %d", i + 1);
         for (int j = 0; j < size; ++j) {
             temp[j] = arr[i * size + j];
@@ -1551,7 +1568,6 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         } else {
             balancedFlag = flag;
         }
-        int *fxarr = calloc (size, sizeof(int));
         fxarr = HadamardCoefficients(temp, size, count);
         /*printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
@@ -1568,7 +1584,6 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         int k = 1;
         //int ec = expansionCriterion(temp, size, k);
         //printf("\n");
-        int *ar = calloc(size,sizeof(int));
         ar = autoCorrelation(temp, size, count);
 
         /*printf("\nAUTO CORRELATING FUNCTION");
@@ -1586,9 +1601,6 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         //printf("\nALGEBRAIC DEGREE = %d ", dec);
         //printf("\n");
         minDEC[i] = dec;
-        free(temp);
-        free(fxarr);
-        free(ar);
     }
     int min = 0;
     min = minimalNL[0];
@@ -1628,6 +1640,9 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     free(minimalNL);
     free(maxAC);
     free(minDEC);
+    free(temp);
+    free(fxarr);
+    free(ar);
     return result;
 }
 
@@ -1681,6 +1696,7 @@ int *propertiesOfSBox(int *sbox, int size, int count) {
         result = 1;
     }
     printf("\n");
+    free(ar1);
     return ar2;
 }
 
