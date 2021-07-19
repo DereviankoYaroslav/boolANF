@@ -71,9 +71,9 @@ int *booleanFunctionsToSBox(const int *arr, int size, int count);
 
 int *propertiesOfBooleanFunc(int *arr, int size, int count);
 
-int *linearCombinations(int *arr, int size, int count);
+int *linearCombinations(const int *arr, int size, int count);
 
-int *propertiesOfLinearCombinations(int *arr, int size, int count);
+int *propertiesOfLinearCombinations(const int *arr, int size, int count);
 
 int *SBoxGenerating(int n, int m);
 
@@ -81,19 +81,21 @@ int *propertiesOfSBox(int *sbox, int size, int count);
 
 int costFunction(int *sbox, int size, int count);
 
-int NLOfSBox(int *sbox, int size, int count);
+int NLOfSBox(const int *sbox, int size, int count);
 
 int ACOfSBox(int *sbox, int size, int count);
 
-int *simulatedAnnealing(int *sbox, int size, int count);
+int *simulatedAnnealing(const int *sbox, int size, int count);
 
 int testNL(int *sbox, int size, int count);
+
+int NLOfLinearCombinations(const int *arr, int size, int count);
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
 
-    int n = 5;
+    int n = 8;
     int size = raiseToPower(2, n);
     //int *binElems = elemsForN(size);
     //int f[] = {0, 0, 1, 0, 0, 1, 1, 0};
@@ -105,7 +107,6 @@ int main(int args, char **argv) {
         }
         printf("\n");
     }/*
-
     /*int *ar3 = calloc(size, sizeof(int));
     int modulus = 0;
     for (int t = 0, k = size - 1; t < size; ++t, k--) {
@@ -121,88 +122,65 @@ int main(int args, char **argv) {
         ar3[k] = modulus;
         modulus = 0;
     }
-
     printf("\n");
     printf("TRUTH TABLE FOR FUNCTION\n");
-
     for (int i = 0; i < size; ++i) {
         printf("%d ", ar3[i]);
     }
-
     printf("\n");
     printf("\n");
     printf("ANF REPRESENTATION\n");
     int *ar4 = toANF(ar3, size);
-
     for (int i = 0; i < size; ++i) {
         printf("%d ", ar4[i]);
     }
-
     printf("\n");
     printf("\n");
-
     int weight;
     weight = HammingWeight(ar3, size);
     printf("HAMMING WEIGHT = %d ", weight);
     printf("\n");
     int flag = funcIsBalanced(weight, n);
-
     int dec = algebraicDeg(f, size, n);
     printf("\n\nALGEBRAIC DEGREE = %d ", dec);
-
     printf("\n");
-
     int fun11[] = {1, 1, 1, 1};
     int nel = NLinearity(fun11, 4, 2);
     printf("\nNON LINEARITY (DISTANCE) = %d", nel);
-
     printf("\n");
-
     printf("\nPOLAR TABLE");
     printf("\n");
     int *polFunc = toPolarTable(fun11, 4);
     for (int i = 0; i < 4; ++i) {
         printf("%d ", polFunc[i]);
     }
-
     int *ar5 = HadamardCoefficients(fun11, 4, 2);
-
     int max = HadamardMax(ar5, 4);
-
     int nl = HadamardNLinearity(max, 2);
     printf("\nHADAMARD NON LINEARITY = %d", nl);
     printf("\n");
-
     int fun22[] = {1, 0, 1, 1};
-
     int *ar6 = autoCorrelation(fun22, 4, 2);
-
     printf("\nAUTO CORRELATING FUNCTION");
     printf("\n");
     for (int i = 3; i >= 0; i--) {
         printf("%d ", ar6[i]);
     }
     printf("\n");
-
     int AC = autoCorrelationMax(ar6, 4);
     printf("\nAUTO CORRELATION = %d", AC);
     printf("\n");
-
     int ec = expansionCriterion(fun22, 4, 1);
     printf("\n");
     printf("\nW = %d", ec);
     printf("\n");
-
     n = 8;
     size = raiseToPower(2, n);
     int fx[size];
-
     srand(time(NULL));
-
     for (int i = 0; i < size; ++i) {
         fx[i] = rand() % 2;
     }
-
     printf("\nMY FUNCTION 2^8");
     printf("\n");
     for (int i = 0; i < size; ++i) {
@@ -311,7 +289,7 @@ int main(int args, char **argv) {
         printf("NULL");
     }
     printf("\n");
-    // Отримання об'єднання WHT1P та WHT2P
+    // Îòðèìàííÿ îá'ºäíàííÿ WHT1P òà WHT2P
     if (!WHT1Plus && !WHT2Plus) {
         printf("SET WHT PLUS IS NULL");
     } else {
@@ -325,7 +303,7 @@ int main(int args, char **argv) {
         }
     }
     printf("\n");
-    // Отримання об'єднання WHT1M та WHT2M
+    // Îòðèìàííÿ îá'ºäíàííÿ WHT1M òà WHT2M
     if (!WHT1Minus && !WHT2Minus) {
         printf("\nSET WHT MINUS IS NULL");
     } else {
@@ -450,7 +428,6 @@ int main(int args, char **argv) {
 
     /*int *ar10 = linearCombinations(ar7, size, n);
     free(ar7);
-
     printf("\nLINEAR COMBINATION OF BOOLEAN FUNCTIONS\n");
     for (int i = 0; i < size - 1; ++i) {
         printf("Combination %d = ", i + 1);
@@ -459,32 +436,27 @@ int main(int args, char **argv) {
         }
         printf("\n");
     }
-
     int *ar11 = propertiesOfLinearCombinations(ar10, size, n);
-
     printf("\nNON LINEARITY OF S-BOX IS\n");
     printf("%d ", ar11[0]);
     printf("\n");
-
     printf("\nAUTO CORRELATION OF S-BOX IS\n");
     printf("%d ", ar11[1]);
     printf("\n");
-
     printf("\nDEC OF S-BOX IS\n");
     printf("%d ", ar11[2]);
     printf("\n");
-
     if (ar11[3] == 1) {
         printf("\nS-BOX IS BALANCED\n");
     } else {
         printf("\nS-BOX IS NOT BALANCED\n");
     }
     printf("\n");
-
     free(ar10);
     free(ar11);*/
 
-    int *ar12 = SBoxGenerating(8, 8);
+    clock_t tic = clock();
+    int *ar12 = SBoxGenerating(n, n);
 
     //int ACofS = ACOfSBox(ar12, 8, 3);
 
@@ -492,10 +464,17 @@ int main(int args, char **argv) {
 
     //printf("AC = %d ", ACofS);
 
-    int *ar13 = simulatedAnnealing(ar12,256,8);
+    int *ar13 = simulatedAnnealing(ar12,size,n);
+    clock_t toc = clock();
+
+    printf("Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+
+    for (int r = 0; r < size; ++r){
+        printf("%d, ", ar13[r]);
+    }
 
     free(ar12);
-    //free(ar13);
+    free(ar13);
 
 
     //int *psb = propertiesOfSBox(ar12,8,3);
@@ -553,6 +532,7 @@ int *binaryElements(int *arr, int size, int count) {
         for (int j = 0, k = count - 1; j < count; ++j, k--) {
             result[j * size + i] = bin[k];
         }
+        free(bin);
     }
     return result;
 }
@@ -797,6 +777,10 @@ int NLinearity(int *func, int size, int count) {
         }
     }
     int result = minimumNL;
+    free(functions);
+    free(functions2);
+    free(testfunc);
+    free(bin);
     return result;
 }
 
@@ -1040,6 +1024,9 @@ int *linearFunctions(int size, int count, int t) {
         sum = 0;
         //printf("\n");
     }
+    free(binElems);
+    free(bin);
+    free(ar);
     return result;
 }
 
@@ -1130,6 +1117,8 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
         printf("\nIMPROVEMENT IS UNAVAILABLE");
     }
 
+    free(result1);
+    free(result2);
     return result;
 }
 
@@ -1167,6 +1156,7 @@ int *HillClimbing(const int f[], const int *improvementSet, int size, int count)
             printf("\n");
             printf("\nNEW HADAMARD NON LINEARITY = %d", nl);
             printf("\n");
+            free(farr);
             return ftemp;
             break;
         }
@@ -1280,7 +1270,7 @@ int *roundableHillClimbing(const int f[], int size, int count) {
         }
         printf("\n");
 
-        // Отримання об'єднання WHT1P та WHT2P
+        // Îòðèìàííÿ îá'ºäíàííÿ WHT1P òà WHT2P
         if (!WHT1Plus && !WHT2Plus) {
             printf("SET WHT PLUS IS NULL");
         } else {
@@ -1297,7 +1287,7 @@ int *roundableHillClimbing(const int f[], int size, int count) {
 
         printf("\n");
 
-        // Отримання об'єднання WHT1M та WHT2M
+        // Îòðèìàííÿ îá'ºäíàííÿ WHT1M òà WHT2M
         if (!WHT1Minus && !WHT2Minus) {
             printf("\nSET WHT MINUS IS NULL");
         } else {
@@ -1432,17 +1422,17 @@ int *SBoxToBooleanFunc(int *sbox, int size, int count) {
 
     //printf("\n");
 
-   /*for (int i = 0; i < count; ++i) {
-        int *temp = calloc(size, sizeof(int));
-        //printf("Function %d", i);
-        for (int j = 0; j < size; ++j) {
-            temp[j] = result[i * size + j];
-        }
-        int weight = HammingWeight(temp, size);
-        int flag = funcIsBalanced(weight, count);
-        //printf("\n");
-        free(temp);
-    }*/
+    /*for (int i = 0; i < count; ++i) {
+         int *temp = calloc(size, sizeof(int));
+         //printf("Function %d", i);
+         for (int j = 0; j < size; ++j) {
+             temp[j] = result[i * size + j];
+         }
+         int weight = HammingWeight(temp, size);
+         int flag = funcIsBalanced(weight, count);
+         //printf("\n");
+         free(temp);
+     }*/
     return result;
 }
 
@@ -1451,7 +1441,6 @@ int *SBoxToBooleanFunc(int *sbox, int size, int count) {
 int *booleanFunctionsToSBox(const int *arr, int size, int count) {
     int *result = calloc(size, sizeof(int));
     for (int i = 0; i < size; ++i) {
-        result[i] = 0;
         for (int j = 0; j < count; ++j) {
             result[i] += arr[j * size + i] * raiseToPower(2, j);
         }
@@ -1507,12 +1496,12 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
 
 //Функція знаходження лінійних комбінацій для булевих функцій S-Box'у
 
-int *linearCombinations(int *arr, int size, int count) {
+int *linearCombinations(const int *arr, int size, int count) {
     int *result = calloc(size * size, sizeof(int));
     int *calc = calloc(size, sizeof(int));
     for (int i = 1; i < size; ++i) {
         int *bin = valueToBinary(i, count);
-        for (int j = 0, k = count - 1; j < count; ++j, k--) {
+        for (int j = 0, k = count - 1; j < count, k >= 0; ++j, k--) {
             if (bin[k] == 1) {
                 for (int w = 0; w < size; ++w) {
                     calc[w] = calc[w] ^ arr[j * size + w];
@@ -1543,10 +1532,11 @@ int *linearCombinations(int *arr, int size, int count) {
 
 //Функція знаходження показників лінійних комбінацій для булевих функцій S-Box'у та знаходження мінімальної нелінійності серед них
 
-int *propertiesOfLinearCombinations(int *arr, int size, int count) {
+int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     int *minimalNL = calloc(size - 1, sizeof(int));
     int *maxAC = calloc(size - 1, sizeof(int));
     int *minDEC = calloc(size - 1, sizeof(int));
+    int *result = calloc(4, sizeof(int));
     int balancedFlag = 1;
     //printf("\nLINEAR COMBINATIONS PROPERTIES\n");
     for (int i = 0; i < size - 1; ++i) {
@@ -1561,7 +1551,8 @@ int *propertiesOfLinearCombinations(int *arr, int size, int count) {
         } else {
             balancedFlag = flag;
         }
-        int *fxarr = HadamardCoefficients(temp, size, count);
+        int *fxarr = calloc (size, sizeof(int));
+        fxarr = HadamardCoefficients(temp, size, count);
         /*printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
         for (int q = 0; q < size; ++q) {
@@ -1577,7 +1568,8 @@ int *propertiesOfLinearCombinations(int *arr, int size, int count) {
         int k = 1;
         //int ec = expansionCriterion(temp, size, k);
         //printf("\n");
-        int *ar = autoCorrelation(temp, size, count);
+        int *ar = calloc(size,sizeof(int));
+        ar = autoCorrelation(temp, size, count);
 
         /*printf("\nAUTO CORRELATING FUNCTION");
         printf("\n");
@@ -1629,7 +1621,6 @@ int *propertiesOfLinearCombinations(int *arr, int size, int count) {
         }
     }
     printf("\n");
-    int *result = calloc(1, sizeof(int));
     result[0] = min;
     result[1] = max;
     result[2] = minD;
@@ -1693,15 +1684,17 @@ int *propertiesOfSBox(int *sbox, int size, int count) {
     return ar2;
 }
 
-int NLOfSBox(int *sbox, int size, int count) {
+//Функція знаходження нелінійності S-Box'у
+
+int NLOfSBox(const int *sbox, int size, int count) {
     int result;
     int *ar1 = linearCombinations(sbox, size, count);
-    int *ar2 = propertiesOfLinearCombinations(ar1, size, count);
-    result = ar2[0];
+    result = NLOfLinearCombinations(ar1, size, count);
     free(ar1);
-    free(ar2);
     return result;
 }
+
+//Функція знаходження автокореляції S-Box'у
 
 int ACOfSBox(int *sbox, int size, int count) {
     int result;
@@ -1718,13 +1711,13 @@ int ACOfSBox(int *sbox, int size, int count) {
 int costFunction(int *sbox, int size, int count) {
     int *costArray = calloc(size - 1, sizeof(int));
     int *ar1 = linearCombinations(sbox, size, count);
+    int *temp = calloc(size, sizeof(int));
+    int *fxarr = calloc (size, sizeof(int));
     for (int i = 0; i < size - 1; ++i) {
-        int *temp = calloc(size, sizeof(int));
-        //printf("\nCombination %d", i+1);
         for (int j = 0; j < size; ++j) {
             temp[j] = ar1[i * size + j];
         }
-        int *fxarr = HadamardCoefficients(temp, size, count);
+        fxarr = HadamardCoefficients(temp, size, count);
         /*printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
         for (int q = 0; q < size; ++q) {
@@ -1733,8 +1726,6 @@ int costFunction(int *sbox, int size, int count) {
         int max1 = HadamardMax(fxarr, size);
         //printf("\n max = %d", max1);
         costArray[i] = max1;
-        free(fxarr);
-        free(temp);
     }
     int cost;
     cost = costArray[0];
@@ -1747,15 +1738,19 @@ int costFunction(int *sbox, int size, int count) {
             cost = costArray[t];
         }
     }
+    free(temp);
+    free(fxarr);
     free(costArray);
     free(ar1);
     return cost;
 }
 
-int *simulatedAnnealing(int *sbox, int size, int count) {
-    double T = 10;
-    double a = 0.9;
-    int MIL = 20;
+//Реалізація методу симуляції відпалу
+
+int *simulatedAnnealing(const int *sbox, int size, int count) {
+    double T = 100;
+    double a = 0.97;
+    int MIL = 30;
     int MUL = 0;
     int SNL = 0;
     int flag;
@@ -1763,6 +1758,7 @@ int *simulatedAnnealing(int *sbox, int size, int count) {
     printf("NLStart ===%d ", NLStart);
     int *SBoxBest = calloc(size, sizeof(int));
     int *SB = calloc(size*count, sizeof(int));
+    int *SY = calloc(size*count, sizeof(int));
     SBoxBest = booleanFunctionsToSBox(sbox,size,count);
     for (int i = 0; i < size; ++i) {
         //printf("%d ", SBoxBest[i]);
@@ -1773,15 +1769,17 @@ int *simulatedAnnealing(int *sbox, int size, int count) {
     }
     int first =rand() % (size);
     int second = rand() % (size);
+    int counter = 0;
+    int *Y = calloc(size, sizeof(int));
     while (SNL < 98) {
-        for (int i = 0; i < MIL; ++i) {
-            printf("%d ", i);
+        counter++;
+        for (int b = 0; b < MIL; ++b) {
+            printf("%d ", b);
             if (first == second) {
                 first = (first + rand() % (size)) % size;
             }
             srand(time(NULL));
             SB = SBoxToBooleanFunc(S, size, count);
-            int *Y = calloc(size, sizeof(int));
             /*for (int i = 0; i < size*count; ++i) {
                 printf("%d ", SB[i]);
             }*/
@@ -1800,16 +1798,12 @@ int *simulatedAnnealing(int *sbox, int size, int count) {
             Y[second] = tmp;
             first = (first + Y[second]) % size;
             second = (second + Y[first]) % size;
-            int *SY = SBoxToBooleanFunc(Y, size, count);
+            SY = SBoxToBooleanFunc(Y, size, count);
             int costOfNew = costFunction(SY, size, count);
             printf("COST OF NEW ===%d ", costOfNew);
             //int NLofNS = NLOfSBox(SY, size, count);
             //printf("NL OF NEW ===%d ", NLofNS);
             int delta = costOfNew - costOfPrevious;
-            if (flag == delta){
-                ++MUL;
-            }
-            flag = delta;
             //printf("\nDelta ===%d ", delta);
             if (delta < 0) {
                 for (int l = 0; l < size * count; ++l) {
@@ -1818,7 +1812,8 @@ int *simulatedAnnealing(int *sbox, int size, int count) {
                     //printf("SB [j] ===%d ", SB[j]);
                 }
             } else {
-                //генерируем случайное число 0..1
+                ++MUL;
+                //ãåíåðèðóåì ñëó÷àéíîå ÷èñëî 0..1
                 srand(time(NULL));
                 int N = 100;
                 int rd = rand() % (N);
@@ -1829,21 +1824,18 @@ int *simulatedAnnealing(int *sbox, int size, int count) {
                 //printf("\ndt ===%lf\n ", exp(-t));
                 if (u < exp(-t)) {
                     //printf("\nDT\n");
-                    //с некой вероятностью принимаем худшего потомка
+                    //ñ íåêîé âåðîÿòíîñòüþ ïðèíèìàåì õóäøåãî ïîòîìêà
                     for (int m = 0; m < size * count; ++m) {
                         SB[m] = SY[m];
-                        MUL = 0;
                     }
                 }
             }
-            free(Y);
-            free(SY);
             S = booleanFunctionsToSBox(SB, size, count);
             if (costOfNew <= 60){
                 break;
             }
-            //printf("MUL ===%d ", MUL);
-            if (MUL >= 5){
+            printf("MUL ===%d ", MUL);
+            if (MUL >= 10){
                 break;
             }
         }
@@ -1853,17 +1845,52 @@ int *simulatedAnnealing(int *sbox, int size, int count) {
             printf("%d ", SB[j]);
         }*/
         SNL = NLOfSBox(SB, size, count);
-        printf("SNL ===%d ", SNL);
-        printf("Temperature ===%lf ", T);
+        printf("\nSNL ===%d ", SNL);
+        printf("\nTemperature ===%lf ", T);
+        printf("\nC==%d\n", counter);
         /*int SAC = ACOfSBox(SB, size, count);
         printf("SAC ===%d ", SAC);*/
     }
+    free(Y);
+    free(SY);
     free(SBoxBest);
     free(SB);
     return S;
 }
 
+int NLOfLinearCombinations(const int *arr, int size, int count){
+    int *minimalNL = calloc(size - 1, sizeof(int));
+    int result;
+    int *temp = calloc(size, sizeof(int));
+    int *fxarr = calloc(size, sizeof(int));
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = 0; j < size; ++j) {
+            temp[j] = arr[i * size + j];
+        }
+        fxarr = HadamardCoefficients(temp, size, count);
+        int max1 = HadamardMax(fxarr, size);
+        int nl2 = HadamardNLinearity(max1, count);
+        minimalNL[i] = nl2;
+    }
+    int min = 0;
+    min = minimalNL[0];
+    //printf("\nNON-LINEARITIES ARRAY");
+    //printf("\n");
+    for (int r = 0; r < size - 1; ++r) {
+        //printf("%d ", minimalNL[r]);
+        if (minimalNL[r] < min) {
+            min = minimalNL[r];
+        }
+    }
+    result = min;
+    free(minimalNL);
+    free(temp);
+    free(fxarr);
+    return result;
+}
+
+//Перевірка функції знаходження нелінійності
+
 int testNL(int *sbox, int size, int count){
     int NLofS = NLOfSBox(sbox, 8, 3);
 }
-
