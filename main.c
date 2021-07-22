@@ -91,6 +91,8 @@ int testNL(int *sbox, int size, int count);
 
 int NLOfLinearCombinations(const int *arr, int size, int count);
 
+int deltaUniformity(int *arr, int size, int count);
+
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -455,8 +457,17 @@ int main(int args, char **argv) {
     free(ar10);
     free(ar11);*/
 
-    clock_t tic = clock();
-    int *ar12 = SBoxGenerating(n, n);
+    //clock_t tic = clock();
+    //int *ar12 = SBoxGenerating(3, 3);
+
+    int ar12[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
+
+    int res = deltaUniformity(ar12,256,8);
+
+    printf("DU = %d ", res);
+
+
+    //int sbl[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
 
     //int ACofS = ACOfSBox(ar12, 8, 3);
 
@@ -464,17 +475,17 @@ int main(int args, char **argv) {
 
     //printf("AC = %d ", ACofS);
 
-    int *ar13 = simulatedAnnealing(ar12,size,n);
+    /*int *ar13 = simulatedAnnealing(ar12,size,n);
     clock_t toc = clock();
 
     printf("Elapsed: %f seconds\n", (double)(toc - tic) / CLOCKS_PER_SEC);
 
-    for (int r = 0; r < size; ++r){
-        printf("%d, ", ar13[r]);
+    for (int i = 0; i < size; ++i) {
+        printf("%d ", ar13[i]);
     }
 
     free(ar12);
-    free(ar13);
+    free(ar13);*/
 
 
     //int *psb = propertiesOfSBox(ar12,8,3);
@@ -512,7 +523,7 @@ int main(int args, char **argv) {
     return 0;
 }
 
-//Функція приведення числа за модулем дуякого числа
+//Ôóíêö³ÿ ïðèâåäåííÿ ÷èñëà çà ìîäóëåì äóÿêîãî ÷èñëà
 
 int myModulus(int number, int mod) {
     if (number < 0) {
@@ -523,22 +534,21 @@ int myModulus(int number, int mod) {
     return number % 2;
 }
 
-//Функція перетворення елементів з десяткової СЧ у двійкову СЧ, для певного ступеня N
+//Ôóíêö³ÿ ïåðåòâîðåííÿ åëåìåíò³â ç äåñÿòêîâî¿ Ñ× ó äâ³éêîâó Ñ×, äëÿ ïåâíîãî ñòóïåíÿ N
 
 int *binaryElements(int *arr, int size, int count) {
     int *result = calloc(size * count, sizeof(int));
-    int *bin = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
-        bin = valueToBinary(arr[i], count);
+        int *bin = valueToBinary(arr[i], count);
         for (int j = 0, k = count - 1; j < count; ++j, k--) {
             result[j * size + i] = bin[k];
         }
+        free(bin);
     }
-    free(bin);
     return result;
 }
 
-//Функція перетворення масиву чисел у двійковій системі до таблиці істиності
+//Ôóíêö³ÿ ïåðåòâîðåííÿ ìàñèâó ÷èñåë ó äâ³éêîâ³é ñèñòåì³ äî òàáëèö³ ³ñòèíîñò³
 
 int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
     int calc;
@@ -547,9 +557,8 @@ int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
     //printf("t = %d", t);
     //printf("\n");
     int *calculation = calloc(size, sizeof(int));
-    int *bin = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
-        bin = valueToBinary(arr[i], count);
+        int *bin = valueToBinary(arr[i], count);
         for (int j = 0, k = count - 1; j < count; ++j, k--) {
             //printf("\n");
             //printf("bin k = %d", bin[k]);
@@ -577,11 +586,10 @@ int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
         //printf("calc3 = %d", calc3);
         //printf("\n");
     }
-    free(bin);
     return calculation;
 }
 
-//Функція перетворення числа з десяткової СЧ у двійкову СЧ
+//Ôóíêö³ÿ ïåðåòâîðåííÿ ÷èñëà ç äåñÿòêîâî¿ Ñ× ó äâ³éêîâó Ñ×
 
 int *valueToBinary(int i, int rank) {
     int *res = calloc(rank, sizeof(int));
@@ -591,7 +599,7 @@ int *valueToBinary(int i, int rank) {
     return res;
 }
 
-//Функція зведення до ступеня
+//Ôóíêö³ÿ çâåäåííÿ äî ñòóïåíÿ
 
 int raiseToPower(int num, int pow) {
     int res = 1;
@@ -601,7 +609,7 @@ int raiseToPower(int num, int pow) {
     return res;
 }
 
-//Функція генерації чисел для вхідних векторів ступеня N
+//Ôóíêö³ÿ ãåíåðàö³¿ ÷èñåë äëÿ âõ³äíèõ âåêòîð³â ñòóïåíÿ N
 
 int *elemsForN(int size) {
     int *result = calloc(size, sizeof(int));
@@ -611,7 +619,7 @@ int *elemsForN(int size) {
     return result;
 }
 
-//Функція переведення з таблиці істиності до АНФ
+//Ôóíêö³ÿ ïåðåâåäåííÿ ç òàáëèö³ ³ñòèíîñò³ äî ÀÍÔ
 
 int *toANF(const int *func, int size) {
     int *matrix = calloc(size * size, sizeof(int));
@@ -631,7 +639,7 @@ int *toANF(const int *func, int size) {
         }
         //printf("\n");
     }
-    int *coefficients = calloc(size, sizeof(int));
+    int *coefficients = malloc(size * sizeof(int));
     for (int i = 0; i < size; ++i) {
         coefficients[i] = matrix[i * size];
     }
@@ -639,7 +647,7 @@ int *toANF(const int *func, int size) {
     return coefficients;
 }
 
-//Функція обчислення ваги Хеммінга
+//Ôóíêö³ÿ îá÷èñëåííÿ âàãè Õåìì³íãà
 
 int HammingWeight(const int *function, int size) {
     int weight = 0;
@@ -651,7 +659,7 @@ int HammingWeight(const int *function, int size) {
     return weight;
 }
 
-//Функція визначення збалансованості функції
+//Ôóíêö³ÿ âèçíà÷åííÿ çáàëàíñîâàíîñò³ ôóíêö³¿
 
 int funcIsBalanced(int weight, int pow) {
     int flag = 1;
@@ -665,7 +673,7 @@ int funcIsBalanced(int weight, int pow) {
     }
 }
 
-//Функція визначення алгебраїчного ступеня функції
+//Ôóíêö³ÿ âèçíà÷åííÿ àëãåáðà¿÷íîãî ñòóïåíÿ ôóíêö³¿
 
 int algebraicDeg(const int *func, int size, int count) {
     int result;
@@ -680,11 +688,10 @@ int algebraicDeg(const int *func, int size, int count) {
     }
     //printf("\n newSize  = %d",newSize);
     int *deg = calloc(newSize, sizeof(int));
-    int *bin = calloc (count, sizeof(int));
     for (int i = 0; i < size; ++i) {
         if (func[i]) {
             //printf("\ni = %d",i);
-            bin = valueToBinary(i, count);
+            int *bin = valueToBinary(i, count);
             for (int j = 0; j < count; ++j) {
                 if (bin[j] == 1) {
                     ++flag;
@@ -705,11 +712,10 @@ int algebraicDeg(const int *func, int size, int count) {
     //printf("\nH deg   = %d",highestDec);
     result = highestDec;
     free(deg);
-    free(bin);
     return result;
 }
 
-//Функція визначення відстані Хемінга
+//Ôóíêö³ÿ âèçíà÷åííÿ â³äñòàí³ Õåì³íãà
 
 int HammingDistance(const int *func1, const int *func2, int size) {
     int res = 0;
@@ -719,7 +725,7 @@ int HammingDistance(const int *func1, const int *func2, int size) {
     return res;
 }
 
-//Функція визначення рівності між функціями
+//Ôóíêö³ÿ âèçíà÷åííÿ ð³âíîñò³ ì³æ ôóíêö³ÿìè
 
 int funcsIsEqual(const int *func1, const int *func2, int size) {
     int flag = 0;
@@ -731,7 +737,7 @@ int funcsIsEqual(const int *func1, const int *func2, int size) {
     return flag == size;
 }
 
-//Функція визначення нелінійності функції
+//Ôóíêö³ÿ âèçíà÷åííÿ íåë³í³éíîñò³ ôóíêö³¿
 
 int NLinearity(int *func, int size, int count) {
     int minimumNL;
@@ -742,14 +748,12 @@ int NLinearity(int *func, int size, int count) {
     int *functions = calloc(matrixRows * matrixColumns, sizeof(int));
     int *functions2 = elemsForN(matrixRows);
     int *testfunc = calloc(size, sizeof(int));
-    int *bin = calloc(matrixColumns, sizeof(int));
-    int *bin2 = calloc(matrixColumns, sizeof(int));
     /*for (int i = 0; i < matrixRows; ++i) {
         printf(" %d",functions2 [i]);
     }*/
     //printf("\n");
     for (int i = 0; i < matrixRows; ++i) {
-        bin = valueToBinary(functions2[i], matrixColumns);
+        int *bin = valueToBinary(functions2[i], matrixColumns);
         for (int j = 0; j < matrixColumns; ++j) {
             //printf(" bin j = %d", bin[j]);
             //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
@@ -760,9 +764,9 @@ int NLinearity(int *func, int size, int count) {
     }
     //minimumNL = HammingDistance(func, functions, size);
     minimumNL1 = HammingDistance(func, functions, size);
-    bin2 = valueToBinary(matrixRows - 1, matrixColumns);
+    int *bin = valueToBinary(matrixRows - 1, matrixColumns);
     for (int j = 0; j < matrixColumns; ++j) {
-        testfunc[j] = bin2[j];
+        testfunc[j] = bin[j];
     }
     /*for (int i = 0; i < size; ++i) {
         printf(" %d",testfunc[i]);
@@ -788,11 +792,10 @@ int NLinearity(int *func, int size, int count) {
     free(functions2);
     free(testfunc);
     free(bin);
-    free(bin2);
     return result;
 }
 
-//Функція представлення таблиці істиності в полярному вигляді
+//Ôóíêö³ÿ ïðåäñòàâëåííÿ òàáëèö³ ³ñòèíîñò³ â ïîëÿðíîìó âèãëÿä³
 
 int *toPolarTable(const int *function, int size) {
     int *res = calloc(size, sizeof(int));
@@ -802,19 +805,18 @@ int *toPolarTable(const int *function, int size) {
     return res;
 }
 
-//Функція визначення коефіцієнтів перетворення Уолдша-Адамара
+//Ôóíêö³ÿ âèçíà÷åííÿ êîåô³ö³ºíò³â ïåðåòâîðåííÿ Óîëäøà-Àäàìàðà
 
 int *HadamardCoefficients(const int *func, int size, int count) {
     int *result = calloc(size, sizeof(int));
     int *test = calloc(size * count, sizeof(int));
     int *functions2 = elemsForN(size);
-    int *bin = calloc(count, sizeof(int));
     /*for (int i = 0; i < size; ++i) {
         printf(" %d",functions2 [i]);
     }*/
     //printf("\n");
     for (int i = 0; i < size; ++i) {
-        bin = valueToBinary(functions2[i], count);
+        int *bin = valueToBinary(functions2[i], count);
         for (int j = 0; j < count; ++j) {
             //printf(" bin j = %d", bin[j]);
             //*(functions + i * cols + j) = (i >> cols - j - 1) & 1u;
@@ -822,6 +824,7 @@ int *HadamardCoefficients(const int *func, int size, int count) {
             //printf(" %d",test [i * count + j]);
         }
         //printf("\n");
+        free(bin);
     }
     int *w = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
@@ -842,11 +845,10 @@ int *HadamardCoefficients(const int *func, int size, int count) {
     free(test);
     free(functions2);
     free(w);
-    free(bin);
     return result;
 }
 
-//Функція визначення найбільшого коефіцієнта перетворення Уолдша-Адамара
+//Ôóíêö³ÿ âèçíà÷åííÿ íàéá³ëüøîãî êîåô³ö³ºíòà ïåðåòâîðåííÿ Óîëäøà-Àäàìàðà
 
 int HadamardMax(const int *arr, int size) {
     int maxCoefficient = abs(arr[0]);
@@ -859,14 +861,14 @@ int HadamardMax(const int *arr, int size) {
     return maxCoefficient;
 }
 
-//Функція визначення нелінійності функції через коефіцієнти Уолдша-Адамара
+//Ôóíêö³ÿ âèçíà÷åííÿ íåë³í³éíîñò³ ôóíêö³¿ ÷åðåç êîåô³ö³ºíòè Óîëäøà-Àäàìàðà
 
 int HadamardNLinearity(int max, int count) {
     int nl = (raiseToPower(2, count) - max) / 2;
     return nl;
 }
 
-//Функція обчислення автокореляційної функції
+//Ôóíêö³ÿ îá÷èñëåííÿ àâòîêîðåëÿö³éíî¿ ôóíêö³¿
 
 int *autoCorrelation(int *func, int size, int count) {
     int *acFunc = calloc(size, sizeof(int));
@@ -884,7 +886,7 @@ int *autoCorrelation(int *func, int size, int count) {
     return acFunc;
 }
 
-//Функція обчислення автокореляції з функції автокореляції
+//Ôóíêö³ÿ îá÷èñëåííÿ àâòîêîðåëÿö³¿ ç ôóíêö³¿ àâòîêîðåëÿö³¿
 
 int autoCorrelationMax(const int *arr, int size) {
     int maxCoefficient = abs(arr[1]);
@@ -896,7 +898,7 @@ int autoCorrelationMax(const int *arr, int size) {
     return maxCoefficient;
 }
 
-//Функція визначення відповідності критеріям
+//Ôóíêö³ÿ âèçíà÷åííÿ â³äïîâ³äíîñò³ êðèòåð³ÿì
 
 int expansionCriterion(const int *func, int size, int k) {
     int result = 0;
@@ -911,7 +913,7 @@ int expansionCriterion(const int *func, int size, int k) {
     return result;
 }
 
-//Функція визначення множини W1+
+//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W1+
 
 int *WHT1PlusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -929,7 +931,7 @@ int *WHT1PlusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Функція визначення множини W1-
+//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W1-
 
 int *WHT1MinusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -947,7 +949,7 @@ int *WHT1MinusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Функція визначення множини W2+
+//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W2+
 
 int *WHT2PlusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -965,7 +967,7 @@ int *WHT2PlusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Функція визначення множини W2-
+//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W2-
 
 int *WHT2MinusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -983,7 +985,7 @@ int *WHT2MinusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Функція виконання операції "об'єднання" над масивами
+//Ôóíêö³ÿ âèêîíàííÿ îïåðàö³¿ "îá'ºäíàííÿ" íàä ìàñèâàìè
 
 int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]) {
     int n = 0, i = 0, j = 0;
@@ -1006,7 +1008,7 @@ int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]) {
     return n;
 }
 
-//Функція обчислення лінійної функції для заданого омега
+//Ôóíêö³ÿ îá÷èñëåííÿ ë³í³éíî¿ ôóíêö³¿ äëÿ çàäàíîãî îìåãà
 
 int *linearFunctions(int size, int count, int t) {
     int calc1 = 0;
@@ -1039,7 +1041,7 @@ int *linearFunctions(int size, int count, int t) {
     return result;
 }
 
-//Функція з'єднання двох масивів
+//Ôóíêö³ÿ ç'ºäíàííÿ äâîõ ìàñèâ³â
 
 int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
     int linearMassSize = size1 + size2;
@@ -1055,7 +1057,7 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
     return result;
 }
 
-//Функція знаходження набору покращень
+//Ôóíêö³ÿ çíàõîäæåííÿ íàáîðó ïîêðàùåíü
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize) {
     int counter = 0;
@@ -1131,7 +1133,7 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
     return result;
 }
 
-//Функція підвищення нелінійності методом Градієнтного Підйому
+//Ôóíêö³ÿ ï³äâèùåííÿ íåë³í³éíîñò³ ìåòîäîì Ãðàä³ºíòíîãî Ï³äéîìó
 
 int *HillClimbing(const int f[], const int *improvementSet, int size, int count) {
     int *ftemp = calloc(size, sizeof(int));
@@ -1172,7 +1174,7 @@ int *HillClimbing(const int f[], const int *improvementSet, int size, int count)
     }
 }
 
-//Функція циклічного підвищення нелінійності функції методом Градієнтного Підйому, поки це можливо
+//Ôóíêö³ÿ öèêë³÷íîãî ï³äâèùåííÿ íåë³í³éíîñò³ ôóíêö³¿ ìåòîäîì Ãðàä³ºíòíîãî Ï³äéîìó, ïîêè öå ìîæëèâî
 
 int *roundableHillClimbing(const int f[], int size, int count) {
     int *result = calloc(size, sizeof(int));
@@ -1411,7 +1413,7 @@ int *roundableHillClimbing(const int f[], int size, int count) {
     return result;
 }
 
-//Функція перетворення вхідного S-Box на набір булевих функцій, що його описують
+//Ôóíêö³ÿ ïåðåòâîðåííÿ âõ³äíîãî S-Box íà íàá³ð áóëåâèõ ôóíêö³é, ùî éîãî îïèñóþòü
 
 int *SBoxToBooleanFunc(int *sbox, int size, int count) {
     //printf("\nS-BOX\n");
@@ -1445,7 +1447,7 @@ int *SBoxToBooleanFunc(int *sbox, int size, int count) {
     return result;
 }
 
-//Функція перетворення набору булевих функцій на S-Box
+//Ôóíêö³ÿ ïåðåòâîðåííÿ íàáîðó áóëåâèõ ôóíêö³é íà S-Box
 
 int *booleanFunctionsToSBox(const int *arr, int size, int count) {
     int *result = calloc(size, sizeof(int));
@@ -1457,21 +1459,19 @@ int *booleanFunctionsToSBox(const int *arr, int size, int count) {
     return result;
 }
 
-//Функція знаходження показників булевих функцій S-Box'у
+//Ôóíêö³ÿ çíàõîäæåííÿ ïîêàçíèê³â áóëåâèõ ôóíêö³é S-Box'ó
 
 int *propertiesOfBooleanFunc(int *arr, int size, int count) {
     printf("\nFUNCTIONS PROPERTIES\n");
-    int *temp = calloc(size, sizeof(int));
-    int *fxarr = calloc(size, sizeof(int));
-    int *ar = calloc(size, sizeof(int));
     for (int i = 0; i < count; ++i) {
+        int *temp = calloc(size, sizeof(int));
         printf("\nFunction %d", i);
         for (int j = 0; j < size; ++j) {
             temp[j] = arr[i * size + j];
         }
         int weight = HammingWeight(temp, size);
         int flag = funcIsBalanced(weight, count);
-        fxarr = HadamardCoefficients(temp, size, count);
+        int *fxarr = HadamardCoefficients(temp, size, count);
         printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
         for (int q = 0; q < size; ++q) {
@@ -1486,7 +1486,7 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
         int k = 1;
         int ec = expansionCriterion(temp, size, k);
         printf("\n");
-        ar = autoCorrelation(temp, size, count);
+        int *ar = autoCorrelation(temp, size, count);
 
         printf("\nAUTO CORRELATING FUNCTION");
         printf("\n");
@@ -1502,20 +1502,16 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
         printf("\nALGEBRAIC DEGREE = %d ", dec);
         printf("\n");
     }
-    free(temp);
-    free(fxarr);
-    free(ar);
     return arr;
 }
 
-//Функція знаходження лінійних комбінацій для булевих функцій S-Box'у
+//Ôóíêö³ÿ çíàõîäæåííÿ ë³í³éíèõ êîìá³íàö³é äëÿ áóëåâèõ ôóíêö³é S-Box'ó
 
 int *linearCombinations(const int *arr, int size, int count) {
     int *result = calloc(size * size, sizeof(int));
     int *calc = calloc(size, sizeof(int));
-    int *bin = calloc(count, sizeof(int));
     for (int i = 1; i < size; ++i) {
-        bin = valueToBinary(i, count);
+        int *bin = valueToBinary(i, count);
         for (int j = 0, k = count - 1; j < count, k >= 0; ++j, k--) {
             if (bin[k] == 1) {
                 for (int w = 0; w < size; ++w) {
@@ -1539,13 +1535,13 @@ int *linearCombinations(const int *arr, int size, int count) {
             calc[l] = 0;
         }
         //printf("\n");
+        free(bin);
     }
     free(calc);
-    free(bin);
     return result;
 }
 
-//Функція знаходження показників лінійних комбінацій для булевих функцій S-Box'у та знаходження мінімальної нелінійності серед них
+//Ôóíêö³ÿ çíàõîäæåííÿ ïîêàçíèê³â ë³í³éíèõ êîìá³íàö³é äëÿ áóëåâèõ ôóíêö³é S-Box'ó òà çíàõîäæåííÿ ì³í³ìàëüíî¿ íåë³í³éíîñò³ ñåðåä íèõ
 
 int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     int *minimalNL = calloc(size - 1, sizeof(int));
@@ -1553,11 +1549,9 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     int *minDEC = calloc(size - 1, sizeof(int));
     int *result = calloc(4, sizeof(int));
     int balancedFlag = 1;
-    int *temp = calloc(size, sizeof(int));
-    int *fxarr = calloc (size, sizeof(int));
-    int *ar = calloc(size,sizeof(int));
     //printf("\nLINEAR COMBINATIONS PROPERTIES\n");
     for (int i = 0; i < size - 1; ++i) {
+        int *temp = calloc(size, sizeof(int));
         //printf("\nCombination %d", i + 1);
         for (int j = 0; j < size; ++j) {
             temp[j] = arr[i * size + j];
@@ -1568,6 +1562,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         } else {
             balancedFlag = flag;
         }
+        int *fxarr = calloc (size, sizeof(int));
         fxarr = HadamardCoefficients(temp, size, count);
         /*printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
@@ -1584,6 +1579,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         int k = 1;
         //int ec = expansionCriterion(temp, size, k);
         //printf("\n");
+        int *ar = calloc(size,sizeof(int));
         ar = autoCorrelation(temp, size, count);
 
         /*printf("\nAUTO CORRELATING FUNCTION");
@@ -1601,6 +1597,9 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         //printf("\nALGEBRAIC DEGREE = %d ", dec);
         //printf("\n");
         minDEC[i] = dec;
+        free(temp);
+        free(fxarr);
+        free(ar);
     }
     int min = 0;
     min = minimalNL[0];
@@ -1640,13 +1639,10 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     free(minimalNL);
     free(maxAC);
     free(minDEC);
-    free(temp);
-    free(fxarr);
-    free(ar);
     return result;
 }
 
-//Функція генерації S-Box'у
+//Ôóíêö³ÿ ãåíåðàö³¿ S-Box'ó
 
 int *SBoxGenerating(int n, int m) {
     int size = raiseToPower(2, n);
@@ -1675,7 +1671,7 @@ int *SBoxGenerating(int n, int m) {
     return sb;
 }
 
-//Функція знаходження властивойстей S-Box'у
+//Ôóíêö³ÿ çíàõîäæåííÿ âëàñòèâîéñòåé S-Box'ó
 
 int *propertiesOfSBox(int *sbox, int size, int count) {
     int result;
@@ -1696,21 +1692,16 @@ int *propertiesOfSBox(int *sbox, int size, int count) {
         result = 1;
     }
     printf("\n");
-    free(ar1);
     return ar2;
 }
-
-//Функція знаходження нелінійності S-Box'у
 
 int NLOfSBox(const int *sbox, int size, int count) {
     int result;
     int *ar1 = linearCombinations(sbox, size, count);
-    result = NLOfLinearCombinations(ar1, size, count);
+    result = NLOfLinearCombinations(ar1, size,count);
     free(ar1);
     return result;
 }
-
-//Функція знаходження автокореляції S-Box'у
 
 int ACOfSBox(int *sbox, int size, int count) {
     int result;
@@ -1722,18 +1713,18 @@ int ACOfSBox(int *sbox, int size, int count) {
     return result;
 }
 
-//Функція "вартості" S-Box'у
+//Ôóíêö³ÿ "âàðòîñò³" S-Box'ó
 
 int costFunction(int *sbox, int size, int count) {
     int *costArray = calloc(size - 1, sizeof(int));
     int *ar1 = linearCombinations(sbox, size, count);
-    int *temp = calloc(size, sizeof(int));
-    int *fxarr = calloc (size, sizeof(int));
     for (int i = 0; i < size - 1; ++i) {
+        int *temp = calloc(size, sizeof(int));
+        //printf("\nCombination %d", i+1);
         for (int j = 0; j < size; ++j) {
             temp[j] = ar1[i * size + j];
         }
-        fxarr = HadamardCoefficients(temp, size, count);
+        int *fxarr = HadamardCoefficients(temp, size, count);
         /*printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
         for (int q = 0; q < size; ++q) {
@@ -1742,6 +1733,8 @@ int costFunction(int *sbox, int size, int count) {
         int max1 = HadamardMax(fxarr, size);
         //printf("\n max = %d", max1);
         costArray[i] = max1;
+        free(fxarr);
+        free(temp);
     }
     int cost;
     cost = costArray[0];
@@ -1754,25 +1747,21 @@ int costFunction(int *sbox, int size, int count) {
             cost = costArray[t];
         }
     }
-    free(temp);
-    free(fxarr);
     free(costArray);
     free(ar1);
     return cost;
 }
 
-//Реалізація методу симуляції відпалу
-
 int *simulatedAnnealing(const int *sbox, int size, int count) {
     char *filename = "D:\\CLionProjects\\boolANF\\result.txt";
     FILE *fp;
     double T = 100;
-    double a = 0.97;
+    double a = 0.99;
     int MIL = 100;
     int MUL = 0;
     int SNL = 0;
     int flag;
-    int fileCounter;
+    int fileCounter = 0;
     int NLStart = NLOfSBox(sbox,size,count);
     printf("NLStart ===%d ", NLStart);
     int *SBoxBest = calloc(size, sizeof(int));
@@ -1790,7 +1779,6 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
     int second = rand() % (size);
     int counter = 0;
     int *Y = calloc(size, sizeof(int));
-    fileCounter = 0;
     while (SNL < 100) {
         counter++;
         for (int b = 0; b < MIL; ++b) {
@@ -1825,7 +1813,7 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
             //printf("NL OF NEW ===%d ", NLofNS);
             int delta = costOfNew - costOfPrevious;
             //printf("\nDelta ===%d ", delta);
-            if (delta < 0) {
+            if (delta <= 0) {
                 for (int l = 0; l < size * count; ++l) {
                     SB[l] = SY[l];
                     MUL = 0;
@@ -1864,13 +1852,17 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
                     fprintf(fp,"%d, ",S[p]);
                 }
                 fprintf(fp,"\n");
+                fprintf(fp,"\nCOST OF S-BOX");
+                fprintf(fp, " %d:", costOfNew);
+                fprintf(fp,"\n");
+                fprintf(fp,"\n");
                 fclose(fp);   //закрываем файл
             }
             if (costOfNew <= 56){
                 break;
             }
-            printf("MUL ===%d ", MUL);
-            if (MUL >= 10){
+            //printf("MUL ===%d ", MUL);
+            if (MUL >= 30){
                 break;
             }
         }
@@ -1924,7 +1916,25 @@ int NLOfLinearCombinations(const int *arr, int size, int count){
     return result;
 }
 
-//Перевірка функції знаходження нелінійності
+int deltaUniformity(int *arr, int size, int count) {
+    int max = 0;
+    int res = 0;
+    for (int a = 1; a < size; ++a) {
+        for (int b = 0; b < size; ++b) {
+            res = 0;
+            for (int x = 0; x < size; ++x) {
+                if ((arr[x] ^ arr[x ^ a]) == b) {
+                    res++;
+                }
+            }
+            if (res > max){
+                max = res;
+            }
+        }
+
+    }
+    return max;
+}
 
 int testNL(int *sbox, int size, int count){
     int NLofS = NLOfSBox(sbox, 8, 3);
