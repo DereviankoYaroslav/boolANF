@@ -479,25 +479,36 @@ int main(int args, char **argv) {
     int mdt = max_difference_table(ar12);
 
     printf("MDT = %d ", mdt);*/
+    n = 8;
+    size = raiseToPower(2, n);
 
     int ar[] = {14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7};
 
-    int res = deltaUniformity(ar,16,4);
+    //int ar2[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
+
+    int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242, 219, 68, 185, 106, 0, 176, 118, 48, 217, 175, 11, 203, 91, 100, 56, 226, 120, 75, 135, 114, 111, 93, 237, 208, 193, 179, 181, 94, 251, 82, 37, 51, 199, 36, 20, 66, 165, 102, 158, 73, 69, 42, 50, 110, 80, 83, 88, 123, 202, 151, 90, 129, 197, 84, 128, 161, 247, 163, 145, 119, 206, 166, 52, 133, 213, 207, 98, 62, 13, 222, 59, 17, 30, 167, 127, 47, 61, 146, 233, 107, 112, 124, 200, 92, 134, 236, 46, 198, 122, 253, 40, 4, 210, 216, 147, 189, 45, 79, 192, 148, 225, 254, 70, 204, 160, 104, 229, 108, 63, 138, 162, 125, 244, 252, 126, 250, 164, 32, 153, 211, 121, 57, 12, 221, 74, 115, 3, 49, 238, 223, 38, 39, 142, 55, 109, 86, 209, 159, 218, 29, 184, 14, 246, 58, 18, 182, 240, 228, 44, 172, 143, 191, 101, 99, 231, 41, 26, 235, 113, 183, 89, 117, 76, 154, 34, 87, 136, 33, 71, 1, 212, 169, 35, 97, 130, 22, 72, 156, 241, 201, 157, 131, 190, 6, 232, 15, 220, 16, 95, 27, 132, 116, 21, 149, 150, 205, 178, 245, 249, 141, 140, 227, 170, 105, 234, 103, 144, 215, 43, 81, 67, 28, 230, 195, 85, 96, 243, 174, 248, 77, 173, 188, 7, 224, 10, 171, 19, 177, 64, 194, 214, 23, 78
+    };
+    int res = deltaUniformity(ar2,size,n);
 
     printf("\nDU = %d ", res);
     printf("\n");
     printf("\n");
 
-    int mdt = differenceTableMax(ar, 16);
+    int mdt = differenceTableMax(ar2, size);
 
     printf("DT MAX = %d ", mdt);
     printf("\n");
     printf("\n");
 
-    int LAT = LATMax(ar,16,4);
+    int LAT = LATMax(ar2,size,n);
 
     printf("LAT MAX = %d ", LAT);
     printf("\n");
+
+    int NL = raiseToPower(2,n-1) - LAT;
+    printf("NL FROM LAT = %d ", NL);
+    printf("\n");
+
 
 
 
@@ -1970,7 +1981,7 @@ int deltaUniformity(const int *arr, int size, int count) {
     return max;
 }
 
-int differenceTableMax(int* sbox, int size) {
+int differenceTableMax(int *sbox, int size) {
     int *DDT = calloc(size*size, sizeof(int));
     for (int i = 0;i < size;i++)
         for (int j = 0;j < size;j++)
@@ -1992,6 +2003,8 @@ int differenceTableMax(int* sbox, int size) {
         if (findMax[i] > result)
             result = findMax[i];
     }
+    free(DDT);
+    free(findMax);
     return result;
 }
 
@@ -2020,6 +2033,8 @@ int LATMax(int *sbox, int size, int count) {
     int *temp = calloc(size, sizeof(int));
     int *temp2 = calloc(size, sizeof(int));
     int *coefficients = calloc(size*size, sizeof(int));
+    int *bin1 = calloc(count,sizeof(int));
+    int *bin2 = calloc(count,sizeof(int));
     for (int i = 0; i < count; ++i){
         for (int j = 0; j < size; ++j){
             //printf("%d ",binelems[i*size+j]);
@@ -2034,7 +2049,7 @@ int LATMax(int *sbox, int size, int count) {
         //printf("\n");
     }
     for (int i = 0; i < size; ++i) {
-        int *bin1 = valueToBinary(i, count);
+        bin1 = valueToBinary(i, count);
         for (int k = count-1; k >= 0; k--) {
             if (bin1[k]) {
                 //printf("K===%d ",k);
@@ -2048,7 +2063,7 @@ int LATMax(int *sbox, int size, int count) {
         }
         //printf("\n ");
         for (int j = 0; j < size; ++j) {
-            int *bin2 = valueToBinary(j, count);
+            bin2 = valueToBinary(j, count);
             for (int k = count-1; k >= 0; k--) {
                 if (bin2[k]) {
                     //printf("K===%d ",k);
@@ -2088,8 +2103,8 @@ int LATMax(int *sbox, int size, int count) {
     }
     int result = 0;
     for (int i = 1;i < size * size;i++) {
-        if (coefficients[i] > result)
-            result = coefficients[i];
+        if (abs(coefficients[i]) > result)
+            result = abs(coefficients[i]);
     }
 
     free(ar);
@@ -2097,6 +2112,8 @@ int LATMax(int *sbox, int size, int count) {
     free(binelems);
     free(temp);
     free(temp2);
+    free(bin1);
+    free(bin2);
     return result;
 }
 
