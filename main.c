@@ -2010,6 +2010,7 @@ int approxTableMax(int *sbox, int size, int count) {
     int *elems = elemsForN(size);
     int *binelems = binaryElementsApprox(elems,size,count);
     int *temp = calloc(size, sizeof(int));
+    int *temp2 = calloc(size, sizeof(int));
     for (int i = 0; i < count; ++i){
         for (int j = 0; j < size; ++j){
             printf("%d ",binelems[i*size+j]);
@@ -2025,12 +2026,13 @@ int approxTableMax(int *sbox, int size, int count) {
     }
     for (int i = 0; i < size; ++i) {
         int *bin1 = valueToBinary(i, count);
-        for (int k = 0; k < count; ++k) {
+        for (int k = count-1; k > 0; k--) {
             if (bin1[k]) {
                 //printf("K===%d ",k);
+                printf("X == \n ");
                 for (int l = 0; l <size; ++l) {
                     temp[l] = temp[l] ^ binelems[k * size + l];
-                    //printf("%d ",temp[l]);
+                    printf("%d ",temp[l]);
                 }
                 printf("\n ");
             }
@@ -2038,20 +2040,24 @@ int approxTableMax(int *sbox, int size, int count) {
         printf("\n ");
         for (int j = 0; j < size; ++j) {
             int *bin2 = valueToBinary(j, count);
-            for (int k = 0; k < count; ++k) {
+            for (int k = count-1; k > 0; k--) {
                 if (bin2[k]) {
                     //printf("K===%d ",k);
                     for (int l = 0; l <size; ++l) {
-                        temp[l] = temp[l] ^ ar[k * size + l];
+                        temp2[l] = temp2[l] ^ ar[k * size + l];
                         //printf("%d ",temp[l]);
                     }
                 }
             }
             printf("\n ");
             for (int l = 0; l <size; ++l) {
-                printf("%d ", temp[l]);
-                temp[l] = 0;
+                temp2[l] = temp[l]^temp2[l];
+                printf("%d ", temp2[l]);
+                temp2[l] = 0;
             }
+        }
+        for (int l = 0; l <size; ++l) {
+            temp[l] = 0;
         }
         printf("\n ");
     }
