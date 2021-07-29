@@ -101,6 +101,8 @@ int *SBoxApprox(int *sbox, int size, int count);
 
 int approxTableMax(int* sbox, int size, int count);
 
+int LATMax(int *sbox, int size, int count);
+
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -482,15 +484,21 @@ int main(int args, char **argv) {
 
     int res = deltaUniformity(ar,16,4);
 
-    printf("DU = %d ", res);
+    printf("\nDU = %d ", res);
+    printf("\n");
     printf("\n");
 
     int mdt = differenceTableMax(ar, 16);
 
-    printf("MDT = %d ", mdt);
-    printf("\n", mdt);
+    printf("DT MAX = %d ", mdt);
+    printf("\n");
+    printf("\n");
 
-    int aptm = approxTableMax(ar,16,4);
+    int LAT = LATMax(ar,16,4);
+
+    printf("LAT MAX = %d ", LAT);
+    printf("\n");
+
 
 
     //int sbl[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
@@ -2004,66 +2012,92 @@ int *SBoxApprox(int *sbox, int size, int count) {
     return result;
 }
 
-int approxTableMax(int *sbox, int size, int count) {
+int LATMax(int *sbox, int size, int count) {
     int *ar = calloc (size*count, sizeof(int));
     ar = SBoxApprox(sbox,size,count);
     int *elems = elemsForN(size);
     int *binelems = binaryElementsApprox(elems,size,count);
     int *temp = calloc(size, sizeof(int));
     int *temp2 = calloc(size, sizeof(int));
+    int *coefficients = calloc(size*size, sizeof(int));
     for (int i = 0; i < count; ++i){
         for (int j = 0; j < size; ++j){
-            printf("%d ",binelems[i*size+j]);
+            //printf("%d ",binelems[i*size+j]);
         }
-        printf("\n");
+        //printf("\n");
     }
-    printf("\n");
+    //printf("\n");
     for (int i = 0; i < count; ++i){
         for (int j = 0; j < size; ++j){
-            printf("%d ",ar[i*size+j]);
+            //printf("%d ",ar[i*size+j]);
         }
-        printf("\n");
+        //printf("\n");
     }
     for (int i = 0; i < size; ++i) {
         int *bin1 = valueToBinary(i, count);
-        for (int k = count-1; k > 0; k--) {
+        for (int k = count-1; k >= 0; k--) {
             if (bin1[k]) {
                 //printf("K===%d ",k);
-                printf("X == \n ");
+                //printf("X == \n ");
                 for (int l = 0; l <size; ++l) {
                     temp[l] = temp[l] ^ binelems[k * size + l];
-                    printf("%d ",temp[l]);
+                    //printf("%d ",temp[l]);
                 }
-                printf("\n ");
+                //printf("\n ");
             }
         }
-        printf("\n ");
+        //printf("\n ");
         for (int j = 0; j < size; ++j) {
             int *bin2 = valueToBinary(j, count);
-            for (int k = count-1; k > 0; k--) {
+            for (int k = count-1; k >= 0; k--) {
                 if (bin2[k]) {
                     //printf("K===%d ",k);
+                    //printf("\nY [%d]== \n ", j);
                     for (int l = 0; l <size; ++l) {
                         temp2[l] = temp2[l] ^ ar[k * size + l];
-                        //printf("%d ",temp[l]);
+                        //printf("%d ",temp2[l]);
                     }
                 }
             }
-            printf("\n ");
+            //printf("\n ");
+            int calc = 0;
             for (int l = 0; l <size; ++l) {
-                temp2[l] = temp[l]^temp2[l];
-                printf("%d ", temp2[l]);
+                temp2[l] = temp2[l]^temp[l];
+                //printf("%d ", temp2[l]);
+                if (temp2[l]==0){
+                    ++calc;
+                }
                 temp2[l] = 0;
             }
+            int result = 0;
+            result = calc - (size/2);
+            //printf("COEFFS = %d ", result);
+            coefficients[i*size+j] = result;
+
         }
         for (int l = 0; l <size; ++l) {
             temp[l] = 0;
         }
-        printf("\n ");
+        //printf("\n ");
     }
+    for (int n = 0; n < size; ++n){
+        for (int m = 0; m < size; ++m) {
+            printf("%d ", coefficients[n*size+m]);
+        }
+        printf("\n");
+    }
+    int result = 0;
+    for (int i = 1;i < size * size;i++) {
+        if (coefficients[i] > result)
+            result = coefficients[i];
+    }
+
     free(ar);
     free(elems);
     free(binelems);
+    free(temp);
+    free(temp2);
+    return result;
 }
 
 
