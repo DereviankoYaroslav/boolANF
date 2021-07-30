@@ -93,7 +93,7 @@ int NLOfLinearCombinations(const int *arr, int size, int count);
 
 int deltaUniformity(const int *arr, int size, int count);
 
-int differenceTableMax(int* sbox, int size);
+int differenceTableMax(const int* sbox, int size);
 
 int *binaryElementsApprox(int *arr, int size, int count);
 
@@ -103,7 +103,7 @@ int approxTableMax(int* sbox, int size, int count);
 
 int LATMax(int *sbox, int size, int count);
 
-void cyclicStructure(int *sbox, int size);
+void cyclicStructure(const int *sbox, int size);
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
@@ -1982,7 +1982,7 @@ int deltaUniformity(const int *arr, int size, int count) {
     return max;
 }
 
-int differenceTableMax(int *sbox, int size) {
+int differenceTableMax(const int *sbox, int size) {
     int *DDT = calloc(size*size, sizeof(int));
     for (int i = 0;i < size;i++)
         for (int j = 0;j < size;j++)
@@ -2104,41 +2104,41 @@ int LATMax(int *sbox, int size, int count) {
     return result;
 }
 
-void cyclicStructure(int* sbox, int size) {
+void cyclicStructure(const int* sbox, int size) {
     int *structure = calloc(size*4, sizeof(int));
-    int *index = calloc(size,sizeof(int));
+    int *indAr = calloc(size,sizeof(int));
     for (int i = 0;i < size;i++) {
-        index[i] = 0;
+        indAr[i] = 0;
     }
     structure[0] = 0;
-    int current_index = -99;
+    int curInd = -99;
     while (1) {
-        current_index = -99;
+        curInd = -99;
         for (int i = 0;i < size;i++) {
-            if (index[i] != 1) {
-                current_index = i;
+            if (indAr[i] != 1) {
+                curInd = i;
                 break;
             }
 
         }
-        if (current_index == -99)
+        if (curInd == -99)
             break;
-        int cycle_len = 0;
-        int current_pos = current_index;
-        while (index[current_pos] != 1) {
-            index[current_pos] = 1;
-            current_pos = sbox[current_pos];
-            cycle_len++;
+        int lenght = 0;
+        int position = curInd;
+        while (indAr[position] != 1) {
+            indAr[position] = 1;
+            position = sbox[position];
+            lenght++;
         }
 
-        structure[structure[0] * 2 + 1] = current_index;
-        structure[structure[0] * 2 + 2] = cycle_len;
+        structure[structure[0] * 2 + 1] = curInd;
+        structure[structure[0] * 2 + 2] = lenght;
         structure[0]++;
     }
     for (int i = structure[0] - 1;i >= 0;i--)
         printf("%d:%d, ", structure[i * 2 + 1], structure[i * 2 + 2]);
     free(structure);
-    free(index);
+    free(indAr);
 }
 
 int testNL(int *sbox, int size, int count){
