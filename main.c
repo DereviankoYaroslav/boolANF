@@ -103,6 +103,8 @@ int approxTableMax(int* sbox, int size, int count);
 
 int LATMax(int *sbox, int size, int count);
 
+void cyclicStructure(int *sbox, int size);
+
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -488,7 +490,7 @@ int main(int args, char **argv) {
 
     int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242, 219, 68, 185, 106, 0, 176, 118, 48, 217, 175, 11, 203, 91, 100, 56, 226, 120, 75, 135, 114, 111, 93, 237, 208, 193, 179, 181, 94, 251, 82, 37, 51, 199, 36, 20, 66, 165, 102, 158, 73, 69, 42, 50, 110, 80, 83, 88, 123, 202, 151, 90, 129, 197, 84, 128, 161, 247, 163, 145, 119, 206, 166, 52, 133, 213, 207, 98, 62, 13, 222, 59, 17, 30, 167, 127, 47, 61, 146, 233, 107, 112, 124, 200, 92, 134, 236, 46, 198, 122, 253, 40, 4, 210, 216, 147, 189, 45, 79, 192, 148, 225, 254, 70, 204, 160, 104, 229, 108, 63, 138, 162, 125, 244, 252, 126, 250, 164, 32, 153, 211, 121, 57, 12, 221, 74, 115, 3, 49, 238, 223, 38, 39, 142, 55, 109, 86, 209, 159, 218, 29, 184, 14, 246, 58, 18, 182, 240, 228, 44, 172, 143, 191, 101, 99, 231, 41, 26, 235, 113, 183, 89, 117, 76, 154, 34, 87, 136, 33, 71, 1, 212, 169, 35, 97, 130, 22, 72, 156, 241, 201, 157, 131, 190, 6, 232, 15, 220, 16, 95, 27, 132, 116, 21, 149, 150, 205, 178, 245, 249, 141, 140, 227, 170, 105, 234, 103, 144, 215, 43, 81, 67, 28, 230, 195, 85, 96, 243, 174, 248, 77, 173, 188, 7, 224, 10, 171, 19, 177, 64, 194, 214, 23, 78
     };
-    int res = deltaUniformity(ar2,size,n);
+    /*int res = deltaUniformity(ar2,size,n);
 
     printf("\nDU = %d ", res);
     printf("\n");
@@ -507,10 +509,9 @@ int main(int args, char **argv) {
 
     int NL = raiseToPower(2,n-1) - LAT;
     printf("NL FROM LAT = %d ", NL);
-    printf("\n");
+    printf("\n");*/
 
-
-
+    cyclicStructure(ar2, size);
 
     //int sbl[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
 
@@ -2035,19 +2036,6 @@ int LATMax(int *sbox, int size, int count) {
     int *coefficients = calloc(size*size, sizeof(int));
     int *bin1 = calloc(count,sizeof(int));
     int *bin2 = calloc(count,sizeof(int));
-    for (int i = 0; i < count; ++i){
-        for (int j = 0; j < size; ++j){
-            //printf("%d ",binelems[i*size+j]);
-        }
-        //printf("\n");
-    }
-    //printf("\n");
-    for (int i = 0; i < count; ++i){
-        for (int j = 0; j < size; ++j){
-            //printf("%d ",ar[i*size+j]);
-        }
-        //printf("\n");
-    }
     for (int i = 0; i < size; ++i) {
         bin1 = valueToBinary(i, count);
         for (int k = count-1; k >= 0; k--) {
@@ -2064,25 +2052,25 @@ int LATMax(int *sbox, int size, int count) {
         //printf("\n ");
         for (int j = 0; j < size; ++j) {
             bin2 = valueToBinary(j, count);
-            for (int k = count-1; k >= 0; k--) {
-                if (bin2[k]) {
+            for (int q = count-1; q >= 0; q--) {
+                if (bin2[q]) {
                     //printf("K===%d ",k);
                     //printf("\nY [%d]== \n ", j);
-                    for (int l = 0; l <size; ++l) {
-                        temp2[l] = temp2[l] ^ ar[k * size + l];
+                    for (int w = 0; w <size; ++w) {
+                        temp2[w] = temp2[w] ^ ar[q * size + w];
                         //printf("%d ",temp2[l]);
                     }
                 }
             }
             //printf("\n ");
             int calc = 0;
-            for (int l = 0; l <size; ++l) {
-                temp2[l] = temp2[l]^temp[l];
+            for (int r = 0; r <size; ++r) {
+                temp2[r] = temp2[r]^temp[r];
                 //printf("%d ", temp2[l]);
-                if (temp2[l]==0){
+                if (temp2[r]==0){
                     ++calc;
                 }
-                temp2[l] = 0;
+                temp2[r] = 0;
             }
             int result = 0;
             result = calc - (size/2);
@@ -2090,8 +2078,8 @@ int LATMax(int *sbox, int size, int count) {
             coefficients[i*size+j] = result;
 
         }
-        for (int l = 0; l <size; ++l) {
-            temp[l] = 0;
+        for (int t = 0; t <size; ++t) {
+            temp[t] = 0;
         }
         //printf("\n ");
     }
@@ -2102,11 +2090,10 @@ int LATMax(int *sbox, int size, int count) {
         printf("\n");
     }
     int result = 0;
-    for (int i = 1;i < size * size;i++) {
-        if (abs(coefficients[i]) > result)
-            result = abs(coefficients[i]);
+    for (int p = 1;p < size * size;p++) {
+        if (abs(coefficients[p]) > result)
+            result = abs(coefficients[p]);
     }
-
     free(ar);
     free(elems);
     free(binelems);
@@ -2117,7 +2104,42 @@ int LATMax(int *sbox, int size, int count) {
     return result;
 }
 
+void cyclicStructure(int* sbox, int size) {
+    int *structure = calloc(size*4, sizeof(int));
+    int *index = calloc(size,sizeof(int));
+    for (int i = 0;i < size;i++) {
+        index[i] = 0;
+    }
+    structure[0] = 0;
+    int current_index = -99;
+    while (1) {
+        current_index = -99;
+        for (int i = 0;i < size;i++) {
+            if (index[i] != 1) {
+                current_index = i;
+                break;
+            }
 
+        }
+        if (current_index == -99)
+            break;
+        int cycle_len = 0;
+        int current_pos = current_index;
+        while (index[current_pos] != 1) {
+            index[current_pos] = 1;
+            current_pos = sbox[current_pos];
+            cycle_len++;
+        }
+
+        structure[structure[0] * 2 + 1] = current_index;
+        structure[structure[0] * 2 + 2] = cycle_len;
+        structure[0]++;
+    }
+    for (int i = structure[0] - 1;i >= 0;i--)
+        printf("%d:%d, ", structure[i * 2 + 1], structure[i * 2 + 2]);
+    free(structure);
+    free(index);
+}
 
 int testNL(int *sbox, int size, int count){
     int NLofS = NLOfSBox(sbox, 8, 3);
