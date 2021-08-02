@@ -103,9 +103,11 @@ int approxTableMax(int* sbox, int size, int count);
 
 int LATMax(int *sbox, int size, int count);
 
-void cyclicStructure(const int *sbox, int size);
+int cyclicStructure(const int* sbox, int size);
 
 int fixedPoints(int *sbox, int size);
+
+int minDegCalculation(const int *arr, int size, int count);
 
 int minDegree(int *sbox, int size, int count);
 
@@ -494,17 +496,19 @@ int main(int args, char **argv) {
 
     int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242, 219, 68, 185, 106, 0, 176, 118, 48, 217, 175, 11, 203, 91, 100, 56, 226, 120, 75, 135, 114, 111, 93, 237, 208, 193, 179, 181, 94, 251, 82, 37, 51, 199, 36, 20, 66, 165, 102, 158, 73, 69, 42, 50, 110, 80, 83, 88, 123, 202, 151, 90, 129, 197, 84, 128, 161, 247, 163, 145, 119, 206, 166, 52, 133, 213, 207, 98, 62, 13, 222, 59, 17, 30, 167, 127, 47, 61, 146, 233, 107, 112, 124, 200, 92, 134, 236, 46, 198, 122, 253, 40, 4, 210, 216, 147, 189, 45, 79, 192, 148, 225, 254, 70, 204, 160, 104, 229, 108, 63, 138, 162, 125, 244, 252, 126, 250, 164, 32, 153, 211, 121, 57, 12, 221, 74, 115, 3, 49, 238, 223, 38, 39, 142, 55, 109, 86, 209, 159, 218, 29, 184, 14, 246, 58, 18, 182, 240, 228, 44, 172, 143, 191, 101, 99, 231, 41, 26, 235, 113, 183, 89, 117, 76, 154, 34, 87, 136, 33, 71, 1, 212, 169, 35, 97, 130, 22, 72, 156, 241, 201, 157, 131, 190, 6, 232, 15, 220, 16, 95, 27, 132, 116, 21, 149, 150, 205, 178, 245, 249, 141, 140, 227, 170, 105, 234, 103, 144, 215, 43, 81, 67, 28, 230, 195, 85, 96, 243, 174, 248, 77, 173, 188, 7, 224, 10, 171, 19, 177, 64, 194, 214, 23, 78
     };
-    /*int res = deltaUniformity(ar2,size,n);
+    //int ar2[] = {100, 203, 184, 5, 10, 84, 209, 0, 74, 97, 225, 232, 187, 113, 214, 141, 125, 131, 254, 200, 132, 210, 240, 164, 13, 130, 51, 201, 121, 63, 249, 162, 120, 202, 148, 36, 45, 1, 171, 65, 20, 80, 59, 56, 186, 192, 153, 138, 124, 126, 39, 196, 27, 238, 82, 144, 237, 221, 11, 110, 47, 103, 18, 14, 243, 251, 55, 25, 28, 33, 68, 147, 96, 35, 93, 142, 29, 73, 106, 234, 108, 90, 64, 151, 111, 253, 78, 158, 152, 43, 7, 182, 167, 4, 218, 231, 112, 72, 248, 6, 91, 178, 52, 57, 69, 145, 37, 79, 181, 247, 143, 67, 198, 241, 205, 155, 161, 92, 134, 246, 24, 137, 177, 170, 199, 15, 149, 105, 49, 174, 53, 8, 83, 107, 70, 189, 197, 71, 195, 109, 233, 98, 156, 66, 2, 213, 166, 19, 60, 204, 250, 183, 168, 239, 212, 87, 222, 54, 31, 154, 104, 163, 230, 129, 215, 191, 3, 219, 127, 185, 173, 188, 117, 88, 136, 46, 44, 176, 242, 227, 180, 58, 128, 34, 62, 21, 99, 235, 32, 206, 226, 16, 255, 157, 114, 236, 42, 75, 81, 17, 101, 223, 146, 102, 76, 135, 207, 245, 216, 165, 217, 40, 228, 77, 61, 38, 94, 95, 150, 123, 190, 194, 86, 85, 172, 115, 50, 179, 48, 89, 160, 244, 26, 12, 229, 175, 140, 30, 41, 252, 119, 193, 22, 118, 133, 208, 169, 211, 116, 220, 122, 9, 139, 159, 224, 23};
+    //int ar2[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182 };
+    int res = deltaUniformity(ar2,size,n);
 
     printf("\nDU = %d ", res);
     printf("\n");
     printf("\n");
 
-    int mdt = differenceTableMax(ar2, size);
+    /*int mdt = differenceTableMax(ar2, size);
 
     printf("DT MAX = %d ", mdt);
     printf("\n");
-    printf("\n");
+    printf("\n");*/
 
     int LAT = LATMax(ar2,size,n);
 
@@ -513,9 +517,10 @@ int main(int args, char **argv) {
 
     int NL = raiseToPower(2,n-1) - LAT;
     printf("NL FROM LAT = %d ", NL);
-    printf("\n");*/
+    printf("\n");
 
-    cyclicStructure(ar2, size);
+    int cs = cyclicStructure(ar2, size);
+    printf("\nCycle = %d ", cs);
     printf("\n");
 
     int fp = fixedPoints(ar2,size);
@@ -523,7 +528,9 @@ int main(int args, char **argv) {
 
     int md = minDegree(ar2,size,n);
 
-    printf("DEG = %d ", md);
+    //int md = get_min_degree(ar2);
+
+    printf("Minimal algebraic degree = %d ", md);
     printf("\n");
 
 
@@ -2099,9 +2106,9 @@ int LATMax(int *sbox, int size, int count) {
     }
     for (int n = 0; n < size; ++n){
         for (int m = 0; m < size; ++m) {
-            printf("%d ", coefficients[n*size+m]);
+            //printf("%d ", coefficients[n*size+m]);
         }
-        printf("\n");
+        //printf("\n");
     }
     int result = 0;
     for (int p = 1;p < size * size;p++) {
@@ -2118,7 +2125,7 @@ int LATMax(int *sbox, int size, int count) {
     return result;
 }
 
-void cyclicStructure(const int* sbox, int size) {
+int cyclicStructure(const int* sbox, int size) {
     int *structure = calloc(size*4, sizeof(int));
     int *indAr = calloc(size,sizeof(int));
     for (int i = 0;i < size;i++) {
@@ -2149,10 +2156,17 @@ void cyclicStructure(const int* sbox, int size) {
         structure[structure[0] * 2 + 2] = lenght;
         structure[0]++;
     }
-    for (int i = structure[0] - 1;i >= 0;i--)
+    int max = 0;
+    max = structure[structure[0] - 1*2+2];
+    for (int i = structure[0] - 1;i >= 0;i--) {
         printf("%d:%d, ", structure[i * 2 + 1], structure[i * 2 + 2]);
+        if (structure[i * 2 + 2] > max){
+            max = structure[i * 2 + 2];
+        }
+    }
     free(structure);
     free(indAr);
+    return max;
 }
 
 int fixedPoints(int *sbox, int size){
@@ -2164,16 +2178,47 @@ int fixedPoints(int *sbox, int size){
     if (counter > 0)
         printf("\nCapacity of fixed points: %d", counter);
     else
-        printf("\nFixed_points ain't found\n");
+        printf("\nFixed points ain't found\n");
 
     return counter;
+}
+
+int minDegCalculation(const int *arr, int size, int count) {
+    int *minDEC = calloc(size - 1, sizeof(int));
+    int result = 0;
+    int *temp = calloc(size, sizeof(int));
+    for (int i = 0; i < size - 1; ++i) {
+        //printf("\nCombination %d", i + 1);
+        for (int j = 0; j < size; ++j) {
+            temp[j] = arr[i * size + j];
+        }
+        int dec = algebraicDeg(temp, size, count);
+        //printf("\nALGEBRAIC DEGREE = %d ", dec);
+        //printf("\n");
+        minDEC[i] = dec;
+    }
+    int minD = 0;
+    minD = minDEC[0];
+    //printf("\nDEC ARRAY");
+    //printf("\n");
+    for (int y = 0; y < size - 1; ++y) {
+        //printf("%d ", minDEC[y]);
+        if (minDEC[y] < minD) {
+            minD = minDEC[y];
+        }
+    }
+    result = minD;
+    free(minDEC);
+    free(temp);
+    return result;
 }
 
 int minDegree(int *sbox, int size, int count){
     int *ar = SBoxToBooleanFunc(sbox,size,count);
     int *ar2 = linearCombinations(ar,size,count);
-    int *ar3 = propertiesOfLinearCombinations(ar2,size,count);
-    int result = ar3[2];
+    int result = minDegCalculation(ar2,size,count);
+    free(ar);
+    free(ar2);
     return result;
 }
 
