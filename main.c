@@ -111,15 +111,13 @@ int minDegCalculation(const int *arr, int size, int count);
 
 int minDegree(int *sbox, int size, int count);
 
-int get_algebraic_immunity(int *sbox, int size, int count);
-
-int gauss_elimination(int a[256][697]);
-
-void to_monomials(int *x, int *monomials);
-
-int factorial(int count);
+void buildOneRow(int *arr, int *monomials);
 
 int numOfCombinations(int n, int d);
+
+int rankCalculation(int rows, int cols, int a[rows][cols]);
+
+int algebraicImmunity(int *sbox, int size, int count);
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
@@ -554,7 +552,7 @@ int main(int args, char **argv) {
     printf("Minimal algebraic degree = %d ", md);
     printf("\n");
 
-    int ai = get_algebraic_immunity(ar2, size, n);
+    int ai = algebraicImmunity(ar2, size, n);
 
     printf("AI = %d ", ai);
     printf("\n");
@@ -2247,11 +2245,11 @@ int minDegree(int *sbox, int size, int count) {
 }
 
 //build one row for algebraic immunity matrix
-void to_monomials(int *x, int *monomials) {
+void buildOneRow(int *arr, int *monomials) {
     monomials[0] = 1;
     //monomials x1,x8,y1,...,y8
     for (int i = 1; i <= 16; i++)
-        monomials[i] = x[i - 1];
+        monomials[i] = arr[i - 1];
     int pos = 17;
     //monomials x1x2
     for (int i = 1; i < 16; i++) {
@@ -2271,46 +2269,50 @@ void to_monomials(int *x, int *monomials) {
     }
 }
 
-int gauss_elimination(int a[256][697]) {
-    int m = 697;
-    int n = 256;
+int rankCalculation(int rows, int cols, int a[rows][cols]) {
+    int m = cols;
+    int n = rows;
 
-    int rank = 697;
-    int line_used[697] = {0,};
+    int rank = cols;
+    int *line = calloc(cols, sizeof(int));
     for (int i = 0; i < 697; i++)
-        line_used[i] = 0;
+        line[i] = 0;
     for (int i = 0; i < m; ++i) {
         int j;
         for (j = 0; j < n; ++j)
-            if (!line_used[j] && a[j][i])
+            if (!line[j] && a[j][i])
                 break;
         if (j == n)
             --rank;
         else {
-            line_used[j] = 1;
+            line[j] = 1;
             for (int k = 0; k < n; ++k)
                 if (k != j && a[k][i])
                     for (int p = i + 1; p < m; ++p)
                         a[k][p] ^= a[j][p] & a[k][i];
         }
     }
+    free(line);
     return rank;
 }
 
-int get_algebraic_immunity(int *sbox, int size, int count) {
+int algebraicImmunity(int *sbox, int size, int count) {
     int rows = raiseToPower(2, count);
     int calc = 0;
     int cols = 0;
-    for (int d =0; d<count; ++d) {
+    int result = 0;
+    for (int d = 0; d < count; ++d) {
         calc = numOfCombinations(count + count, d);
         cols = cols + calc;
-        if (cols > rows)
+        if (cols > rows) {
+            result = d;
             break;
+        }
     }
-    printf("\nnum of comb %d \n", cols);
+    //printf("\nnum of comb %d \n", cols);
     int mat[rows][cols];
     int tmp[cols];
-    int values[count+count];
+    int values[count + count];
     int *bin = calloc(count, sizeof(int));
     int *input_values = calloc(size * count, sizeof(int));
     for (int i = 0; i < size; ++i) {
@@ -2339,28 +2341,28 @@ int get_algebraic_immunity(int *sbox, int size, int count) {
         values[13] = input_values[y * count + 5];
         values[14] = input_values[y * count + 6];
         values[15] = input_values[y * count + 7];
-        to_monomials((int *) &values, (int *) &mat[i]);
+        buildOneRow((int *) &values, (int *) &mat[i]);
     }
-    int rank = gauss_elimination(mat);
+    int rank = rankCalculation(rows,cols,mat);
     free(bin);
     free(input_values);
-    return rank == 256 ? 3 : 2;//if AI=2 then max rank can be 173. if AI=3 then max rank = min(256,697);
+    //printf("%d", rank);
+    if (rank == 256){
+        return result;
+    } else {
+        return result-1;
+    }
+    //return rank == 256 ? 3 : 2;//if AI=2 then max rank can be 173. if AI=3 then max rank = min(256,697);
 }
 
 int numOfCombinations(int n, int d) {
-        if(n==d)
-            return 1;
-        if(d==1)
-            return n;
-        if(d==0)
-            return 1;
-        return numOfCombinations(n-1, d-1)+numOfCombinations(n-1, d);
+    if (n == d)
+        return 1;
+    if (d == 1)
+        return n;
+    if (d == 0)
+        return 1;
+    return numOfCombinations(n - 1, d - 1) + numOfCombinations(n - 1, d);
 }
 
-int factorial(int count) {
-    int f = 1;
-    for (int i = 1; i <= count; i++)
-        f = f * i;
-    return f;
-}
 
