@@ -93,23 +93,33 @@ int NLOfLinearCombinations(const int *arr, int size, int count);
 
 int deltaUniformity(const int *arr, int size, int count);
 
-int differenceTableMax(const int* sbox, int size);
+int differenceTableMax(const int *sbox, int size);
 
 int *binaryElementsApprox(int *arr, int size, int count);
 
 int *SBoxApprox(int *sbox, int size, int count);
 
-int approxTableMax(int* sbox, int size, int count);
+int approxTableMax(int *sbox, int size, int count);
 
 int LATMax(int *sbox, int size, int count);
 
-int cyclicStructure(const int* sbox, int size);
+int cyclicStructure(const int *sbox, int size);
 
-int fixedPoints(int *sbox, int size);
+int fixedPoints(const int *sbox, int size);
 
 int minDegCalculation(const int *arr, int size, int count);
 
 int minDegree(int *sbox, int size, int count);
+
+int get_algebraic_immunity(int *sbox, int size, int count);
+
+int gauss_elimination(int a[256][697]);
+
+void to_monomials(int *x, int *monomials);
+
+int factorial(int count);
+
+int numOfCombinations(int n, int d);
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
@@ -490,15 +500,26 @@ int main(int args, char **argv) {
     n = 8;
     size = raiseToPower(2, n);
 
-    int ar[] = {14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7};
+    int ar[] = {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7};
 
     //int ar2[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
 
-    int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242, 219, 68, 185, 106, 0, 176, 118, 48, 217, 175, 11, 203, 91, 100, 56, 226, 120, 75, 135, 114, 111, 93, 237, 208, 193, 179, 181, 94, 251, 82, 37, 51, 199, 36, 20, 66, 165, 102, 158, 73, 69, 42, 50, 110, 80, 83, 88, 123, 202, 151, 90, 129, 197, 84, 128, 161, 247, 163, 145, 119, 206, 166, 52, 133, 213, 207, 98, 62, 13, 222, 59, 17, 30, 167, 127, 47, 61, 146, 233, 107, 112, 124, 200, 92, 134, 236, 46, 198, 122, 253, 40, 4, 210, 216, 147, 189, 45, 79, 192, 148, 225, 254, 70, 204, 160, 104, 229, 108, 63, 138, 162, 125, 244, 252, 126, 250, 164, 32, 153, 211, 121, 57, 12, 221, 74, 115, 3, 49, 238, 223, 38, 39, 142, 55, 109, 86, 209, 159, 218, 29, 184, 14, 246, 58, 18, 182, 240, 228, 44, 172, 143, 191, 101, 99, 231, 41, 26, 235, 113, 183, 89, 117, 76, 154, 34, 87, 136, 33, 71, 1, 212, 169, 35, 97, 130, 22, 72, 156, 241, 201, 157, 131, 190, 6, 232, 15, 220, 16, 95, 27, 132, 116, 21, 149, 150, 205, 178, 245, 249, 141, 140, 227, 170, 105, 234, 103, 144, 215, 43, 81, 67, 28, 230, 195, 85, 96, 243, 174, 248, 77, 173, 188, 7, 224, 10, 171, 19, 177, 64, 194, 214, 23, 78
+    int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242,
+                 219, 68, 185, 106, 0, 176, 118, 48, 217, 175, 11, 203, 91, 100, 56, 226, 120, 75, 135, 114, 111, 93,
+                 237, 208, 193, 179, 181, 94, 251, 82, 37, 51, 199, 36, 20, 66, 165, 102, 158, 73, 69, 42, 50, 110, 80,
+                 83, 88, 123, 202, 151, 90, 129, 197, 84, 128, 161, 247, 163, 145, 119, 206, 166, 52, 133, 213, 207, 98,
+                 62, 13, 222, 59, 17, 30, 167, 127, 47, 61, 146, 233, 107, 112, 124, 200, 92, 134, 236, 46, 198, 122,
+                 253, 40, 4, 210, 216, 147, 189, 45, 79, 192, 148, 225, 254, 70, 204, 160, 104, 229, 108, 63, 138, 162,
+                 125, 244, 252, 126, 250, 164, 32, 153, 211, 121, 57, 12, 221, 74, 115, 3, 49, 238, 223, 38, 39, 142,
+                 55, 109, 86, 209, 159, 218, 29, 184, 14, 246, 58, 18, 182, 240, 228, 44, 172, 143, 191, 101, 99, 231,
+                 41, 26, 235, 113, 183, 89, 117, 76, 154, 34, 87, 136, 33, 71, 1, 212, 169, 35, 97, 130, 22, 72, 156,
+                 241, 201, 157, 131, 190, 6, 232, 15, 220, 16, 95, 27, 132, 116, 21, 149, 150, 205, 178, 245, 249, 141,
+                 140, 227, 170, 105, 234, 103, 144, 215, 43, 81, 67, 28, 230, 195, 85, 96, 243, 174, 248, 77, 173, 188,
+                 7, 224, 10, 171, 19, 177, 64, 194, 214, 23, 78
     };
     //int ar2[] = {100, 203, 184, 5, 10, 84, 209, 0, 74, 97, 225, 232, 187, 113, 214, 141, 125, 131, 254, 200, 132, 210, 240, 164, 13, 130, 51, 201, 121, 63, 249, 162, 120, 202, 148, 36, 45, 1, 171, 65, 20, 80, 59, 56, 186, 192, 153, 138, 124, 126, 39, 196, 27, 238, 82, 144, 237, 221, 11, 110, 47, 103, 18, 14, 243, 251, 55, 25, 28, 33, 68, 147, 96, 35, 93, 142, 29, 73, 106, 234, 108, 90, 64, 151, 111, 253, 78, 158, 152, 43, 7, 182, 167, 4, 218, 231, 112, 72, 248, 6, 91, 178, 52, 57, 69, 145, 37, 79, 181, 247, 143, 67, 198, 241, 205, 155, 161, 92, 134, 246, 24, 137, 177, 170, 199, 15, 149, 105, 49, 174, 53, 8, 83, 107, 70, 189, 197, 71, 195, 109, 233, 98, 156, 66, 2, 213, 166, 19, 60, 204, 250, 183, 168, 239, 212, 87, 222, 54, 31, 154, 104, 163, 230, 129, 215, 191, 3, 219, 127, 185, 173, 188, 117, 88, 136, 46, 44, 176, 242, 227, 180, 58, 128, 34, 62, 21, 99, 235, 32, 206, 226, 16, 255, 157, 114, 236, 42, 75, 81, 17, 101, 223, 146, 102, 76, 135, 207, 245, 216, 165, 217, 40, 228, 77, 61, 38, 94, 95, 150, 123, 190, 194, 86, 85, 172, 115, 50, 179, 48, 89, 160, 244, 26, 12, 229, 175, 140, 30, 41, 252, 119, 193, 22, 118, 133, 208, 169, 211, 116, 220, 122, 9, 139, 159, 224, 23};
     //int ar2[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182 };
-    int res = deltaUniformity(ar2,size,n);
+    int res = deltaUniformity(ar2, size, n);
 
     printf("\nDU = %d ", res);
     printf("\n");
@@ -510,12 +531,12 @@ int main(int args, char **argv) {
     printf("\n");
     printf("\n");*/
 
-    int LAT = LATMax(ar2,size,n);
+    int LAT = LATMax(ar2, size, n);
 
     printf("LAT MAX = %d ", LAT);
     printf("\n");
 
-    int NL = raiseToPower(2,n-1) - LAT;
+    int NL = raiseToPower(2, n - 1) - LAT;
     printf("NL FROM LAT = %d ", NL);
     printf("\n");
 
@@ -523,16 +544,20 @@ int main(int args, char **argv) {
     printf("\nCycle = %d ", cs);
     printf("\n");
 
-    int fp = fixedPoints(ar2,size);
+    int fp = fixedPoints(ar2, size);
     printf("\n");
 
-    int md = minDegree(ar2,size,n);
+    int md = minDegree(ar2, size, n);
 
     //int md = get_min_degree(ar2);
 
     printf("Minimal algebraic degree = %d ", md);
     printf("\n");
 
+    int ai = get_algebraic_immunity(ar2, size, n);
+
+    printf("AI = %d ", ai);
+    printf("\n");
 
     //int sbl[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
 
@@ -1629,7 +1654,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         } else {
             balancedFlag = flag;
         }
-        int *fxarr = calloc (size, sizeof(int));
+        int *fxarr = calloc(size, sizeof(int));
         fxarr = HadamardCoefficients(temp, size, count);
         /*printf("\nHADAMARD COEFFICIENTS");
         printf("\n");
@@ -1646,7 +1671,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
         int k = 1;
         //int ec = expansionCriterion(temp, size, k);
         //printf("\n");
-        int *ar = calloc(size,sizeof(int));
+        int *ar = calloc(size, sizeof(int));
         ar = autoCorrelation(temp, size, count);
 
         /*printf("\nAUTO CORRELATING FUNCTION");
@@ -1713,7 +1738,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
 
 int *SBoxGenerating(int n, int m) {
     int size = raiseToPower(2, n);
-    int *dec = calloc(size,sizeof(int));
+    int *dec = calloc(size, sizeof(int));
     srand(time(NULL));
     for (int i = 0; i < size;) {
         dec[i] = rand() % size;
@@ -1765,7 +1790,7 @@ int *propertiesOfSBox(int *sbox, int size, int count) {
 int NLOfSBox(const int *sbox, int size, int count) {
     int result;
     int *ar1 = linearCombinations(sbox, size, count);
-    result = NLOfLinearCombinations(ar1, size,count);
+    result = NLOfLinearCombinations(ar1, size, count);
     free(ar1);
     return result;
 }
@@ -1829,12 +1854,12 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
     int SNL = 0;
     int flag;
     int fileCounter = 0;
-    int NLStart = NLOfSBox(sbox,size,count);
+    int NLStart = NLOfSBox(sbox, size, count);
     printf("NLStart ===%d ", NLStart);
     int *SBoxBest = calloc(size, sizeof(int));
-    int *SB = calloc(size*count, sizeof(int));
-    int *SY = calloc(size*count, sizeof(int));
-    SBoxBest = booleanFunctionsToSBox(sbox,size,count);
+    int *SB = calloc(size * count, sizeof(int));
+    int *SY = calloc(size * count, sizeof(int));
+    SBoxBest = booleanFunctionsToSBox(sbox, size, count);
     for (int i = 0; i < size; ++i) {
         //printf("%d ", SBoxBest[i]);
     }
@@ -1842,7 +1867,7 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
     for (int j = 0; j < size; ++j) {
         S[j] = SBoxBest[j];
     }
-    int first =rand() % (size);
+    int first = rand() % (size);
     int second = rand() % (size);
     int counter = 0;
     int *Y = calloc(size, sizeof(int));
@@ -1906,30 +1931,29 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
                 }
             }
             S = booleanFunctionsToSBox(SB, size, count);
-            if (costOfNew <= 60){
+            if (costOfNew <= 60) {
                 ++fileCounter;
-                if((fp= fopen(filename, "a"))==NULL)
-                {
+                if ((fp = fopen(filename, "a")) == NULL) {
                     printf("Error while opening file");
                 }
                 // записываем строку
-                fprintf(fp,"\nS-BOX NUMBER");
+                fprintf(fp, "\nS-BOX NUMBER");
                 fprintf(fp, " %d:", fileCounter);
-                for (int p = 0; p< size; ++p){
-                    fprintf(fp,"%d, ",S[p]);
+                for (int p = 0; p < size; ++p) {
+                    fprintf(fp, "%d, ", S[p]);
                 }
-                fprintf(fp,"\n");
-                fprintf(fp,"\nCOST OF S-BOX");
+                fprintf(fp, "\n");
+                fprintf(fp, "\nCOST OF S-BOX");
                 fprintf(fp, " %d:", costOfNew);
-                fprintf(fp,"\n");
-                fprintf(fp,"\n");
+                fprintf(fp, "\n");
+                fprintf(fp, "\n");
                 fclose(fp);   //закрываем файл
             }
-            if (costOfNew <= 56){
+            if (costOfNew <= 56) {
                 break;
             }
             //printf("MUL ===%d ", MUL);
-            if (MUL >= 30){
+            if (MUL >= 30) {
                 break;
             }
         }
@@ -1952,7 +1976,7 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
     return S;
 }
 
-int NLOfLinearCombinations(const int *arr, int size, int count){
+int NLOfLinearCombinations(const int *arr, int size, int count) {
     int *minimalNL = calloc(size - 1, sizeof(int));
     int result;
     int *temp = calloc(size, sizeof(int));
@@ -1994,7 +2018,7 @@ int deltaUniformity(const int *arr, int size, int count) {
                     ++result;
                 }
             }
-            if (result > max){
+            if (result > max) {
                 max = result;
             }
         }
@@ -2004,24 +2028,24 @@ int deltaUniformity(const int *arr, int size, int count) {
 }
 
 int differenceTableMax(const int *sbox, int size) {
-    int *DDT = calloc(size*size, sizeof(int));
-    for (int i = 0;i < size;i++)
-        for (int j = 0;j < size;j++)
-            DDT[i*size+j] = 0;
-    for (int i = 0;i < size;i++) {
-        for (int j = 0;j < size;j++) {
+    int *DDT = calloc(size * size, sizeof(int));
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            DDT[i * size + j] = 0;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             DDT[(i ^ j) * size + (sbox[i] ^ sbox[j])]++;
         }
     }
-    for (int i = 0;i < size;i++) {
-        for (int j = 0;j < size;j++) {
-            printf("%d ",DDT[i*size+j]);
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            printf("%d ", DDT[i * size + j]);
         }
         printf("\n");
     }
     int *findMax = DDT;
     int result = 0;
-    for (int i = 1;i < size * size;i++) {
+    for (int i = 1; i < size * size; i++) {
         if (findMax[i] > result)
             result = findMax[i];
     }
@@ -2034,7 +2058,7 @@ int *binaryElementsApprox(int *arr, int size, int count) {
     int *result = calloc(size * count, sizeof(int));
     for (int i = 0; i < size; ++i) {
         int *bin = valueToBinary(arr[i], count);
-        for (int j = count-1; j >= 0; j--) {
+        for (int j = count - 1; j >= 0; j--) {
             result[j * size + i] = bin[j];
         }
         free(bin);
@@ -2048,22 +2072,22 @@ int *SBoxApprox(int *sbox, int size, int count) {
 }
 
 int LATMax(int *sbox, int size, int count) {
-    int *ar = calloc (size*count, sizeof(int));
-    ar = SBoxApprox(sbox,size,count);
+    int *ar = calloc(size * count, sizeof(int));
+    ar = SBoxApprox(sbox, size, count);
     int *elems = elemsForN(size);
-    int *binelems = binaryElementsApprox(elems,size,count);
+    int *binelems = binaryElementsApprox(elems, size, count);
     int *temp = calloc(size, sizeof(int));
     int *temp2 = calloc(size, sizeof(int));
-    int *coefficients = calloc(size*size, sizeof(int));
-    int *bin1 = calloc(count,sizeof(int));
-    int *bin2 = calloc(count,sizeof(int));
+    int *coefficients = calloc(size * size, sizeof(int));
+    int *bin1 = calloc(count, sizeof(int));
+    int *bin2 = calloc(count, sizeof(int));
     for (int i = 0; i < size; ++i) {
         bin1 = valueToBinary(i, count);
-        for (int k = count-1; k >= 0; k--) {
+        for (int k = count - 1; k >= 0; k--) {
             if (bin1[k]) {
                 //printf("K===%d ",k);
                 //printf("X == \n ");
-                for (int l = 0; l <size; ++l) {
+                for (int l = 0; l < size; ++l) {
                     temp[l] = temp[l] ^ binelems[k * size + l];
                     //printf("%d ",temp[l]);
                 }
@@ -2073,11 +2097,11 @@ int LATMax(int *sbox, int size, int count) {
         //printf("\n ");
         for (int j = 0; j < size; ++j) {
             bin2 = valueToBinary(j, count);
-            for (int q = count-1; q >= 0; q--) {
+            for (int q = count - 1; q >= 0; q--) {
                 if (bin2[q]) {
                     //printf("K===%d ",k);
                     //printf("\nY [%d]== \n ", j);
-                    for (int w = 0; w <size; ++w) {
+                    for (int w = 0; w < size; ++w) {
                         temp2[w] = temp2[w] ^ ar[q * size + w];
                         //printf("%d ",temp2[l]);
                     }
@@ -2085,33 +2109,33 @@ int LATMax(int *sbox, int size, int count) {
             }
             //printf("\n ");
             int calc = 0;
-            for (int r = 0; r <size; ++r) {
-                temp2[r] = temp2[r]^temp[r];
+            for (int r = 0; r < size; ++r) {
+                temp2[r] = temp2[r] ^ temp[r];
                 //printf("%d ", temp2[l]);
-                if (temp2[r]==0){
+                if (temp2[r] == 0) {
                     ++calc;
                 }
                 temp2[r] = 0;
             }
             int result = 0;
-            result = calc - (size/2);
+            result = calc - (size / 2);
             //printf("COEFFS = %d ", result);
-            coefficients[i*size+j] = result;
+            coefficients[i * size + j] = result;
 
         }
-        for (int t = 0; t <size; ++t) {
+        for (int t = 0; t < size; ++t) {
             temp[t] = 0;
         }
         //printf("\n ");
     }
-    for (int n = 0; n < size; ++n){
+    for (int n = 0; n < size; ++n) {
         for (int m = 0; m < size; ++m) {
             //printf("%d ", coefficients[n*size+m]);
         }
         //printf("\n");
     }
     int result = 0;
-    for (int p = 1;p < size * size;p++) {
+    for (int p = 1; p < size * size; p++) {
         if (abs(coefficients[p]) > result)
             result = abs(coefficients[p]);
     }
@@ -2125,17 +2149,17 @@ int LATMax(int *sbox, int size, int count) {
     return result;
 }
 
-int cyclicStructure(const int* sbox, int size) {
-    int *structure = calloc(size*4, sizeof(int));
-    int *indAr = calloc(size,sizeof(int));
-    for (int i = 0;i < size;i++) {
+int cyclicStructure(const int *sbox, int size) {
+    int *structure = calloc(size * 4, sizeof(int));
+    int *indAr = calloc(size, sizeof(int));
+    for (int i = 0; i < size; i++) {
         indAr[i] = 0;
     }
     structure[0] = 0;
     int curInd = -99;
     while (1) {
         curInd = -99;
-        for (int i = 0;i < size;i++) {
+        for (int i = 0; i < size; i++) {
             if (indAr[i] != 1) {
                 curInd = i;
                 break;
@@ -2157,10 +2181,10 @@ int cyclicStructure(const int* sbox, int size) {
         structure[0]++;
     }
     int max = 0;
-    max = structure[structure[0] - 1*2+2];
-    for (int i = structure[0] - 1;i >= 0;i--) {
+    max = structure[structure[0] - 1 * 2 + 2];
+    for (int i = structure[0] - 1; i >= 0; i--) {
         printf("%d:%d, ", structure[i * 2 + 1], structure[i * 2 + 2]);
-        if (structure[i * 2 + 2] > max){
+        if (structure[i * 2 + 2] > max) {
             max = structure[i * 2 + 2];
         }
     }
@@ -2169,9 +2193,9 @@ int cyclicStructure(const int* sbox, int size) {
     return max;
 }
 
-int fixedPoints(int *sbox, int size){
+int fixedPoints(const int *sbox, int size) {
     int counter = 0;
-    for (int i = 0;i < 256;i++)
+    for (int i = 0; i < 256; i++)
         if (sbox[i] == i || sbox[i] == ~i) {
             counter++;
         }
@@ -2213,15 +2237,130 @@ int minDegCalculation(const int *arr, int size, int count) {
     return result;
 }
 
-int minDegree(int *sbox, int size, int count){
-    int *ar = SBoxToBooleanFunc(sbox,size,count);
-    int *ar2 = linearCombinations(ar,size,count);
-    int result = minDegCalculation(ar2,size,count);
+int minDegree(int *sbox, int size, int count) {
+    int *ar = SBoxToBooleanFunc(sbox, size, count);
+    int *ar2 = linearCombinations(ar, size, count);
+    int result = minDegCalculation(ar2, size, count);
     free(ar);
     free(ar2);
     return result;
 }
 
-int testNL(int *sbox, int size, int count){
-    int NLofS = NLOfSBox(sbox, 8, 3);
+//build one row for algebraic immunity matrix
+void to_monomials(int *x, int *monomials) {
+    monomials[0] = 1;
+    //monomials x1,x8,y1,...,y8
+    for (int i = 1; i <= 16; i++)
+        monomials[i] = x[i - 1];
+    int pos = 17;
+    //monomials x1x2
+    for (int i = 1; i < 16; i++) {
+        for (int j = i + 1; j <= 16; j++) {
+            monomials[pos] = monomials[i] & monomials[j];
+            pos++;
+        }
+    }
+    //monomials x1x2x3
+    for (int i = 1; i < 15; i++) {
+        for (int j = i + 1; j <= 16; j++) {
+            for (int k = j + 1; k <= 16; k++) {
+                monomials[pos] = monomials[i] & monomials[j] & monomials[k];
+                pos++;
+            }
+        }
+    }
 }
+
+int gauss_elimination(int a[256][697]) {
+    int m = 697;
+    int n = 256;
+
+    int rank = 697;
+    int line_used[697] = {0,};
+    for (int i = 0; i < 697; i++)
+        line_used[i] = 0;
+    for (int i = 0; i < m; ++i) {
+        int j;
+        for (j = 0; j < n; ++j)
+            if (!line_used[j] && a[j][i])
+                break;
+        if (j == n)
+            --rank;
+        else {
+            line_used[j] = 1;
+            for (int k = 0; k < n; ++k)
+                if (k != j && a[k][i])
+                    for (int p = i + 1; p < m; ++p)
+                        a[k][p] ^= a[j][p] & a[k][i];
+        }
+    }
+    return rank;
+}
+
+int get_algebraic_immunity(int *sbox, int size, int count) {
+    int rows = raiseToPower(2, count);
+    int calc = 0;
+    int cols = 0;
+    for (int d =0; d<count; ++d) {
+        calc = numOfCombinations(count + count, d);
+        cols = cols + calc;
+        if (cols > rows)
+            break;
+    }
+    printf("\nnum of comb %d \n", cols);
+    int mat[rows][cols];
+    int tmp[cols];
+    int values[count+count];
+    int *bin = calloc(count, sizeof(int));
+    int *input_values = calloc(size * count, sizeof(int));
+    for (int i = 0; i < size; ++i) {
+        bin = valueToBinary(i, count);
+        for (int j = 0; j < count; ++j) {
+            input_values[i * count + j] = bin[j];
+            //printf("%d ", input_values[i*count+j]);
+        }
+        //printf("\n");
+    }
+    for (int i = 0; i < 256; i++) {
+        int y = sbox[i];
+        values[0] = input_values[i * count + 0];
+        values[1] = input_values[i * count + 1];
+        values[2] = input_values[i * count + 2];
+        values[3] = input_values[i * count + 3];
+        values[4] = input_values[i * count + 4];
+        values[5] = input_values[i * count + 5];
+        values[6] = input_values[i * count + 6];
+        values[7] = input_values[i * count + 7];
+        values[8] = input_values[y * count + 0];
+        values[9] = input_values[y * count + 1];
+        values[10] = input_values[y * count + 2];
+        values[11] = input_values[y * count + 3];
+        values[12] = input_values[y * count + 4];
+        values[13] = input_values[y * count + 5];
+        values[14] = input_values[y * count + 6];
+        values[15] = input_values[y * count + 7];
+        to_monomials((int *) &values, (int *) &mat[i]);
+    }
+    int rank = gauss_elimination(mat);
+    free(bin);
+    free(input_values);
+    return rank == 256 ? 3 : 2;//if AI=2 then max rank can be 173. if AI=3 then max rank = min(256,697);
+}
+
+int numOfCombinations(int n, int d) {
+        if(n==d)
+            return 1;
+        if(d==1)
+            return n;
+        if(d==0)
+            return 1;
+        return numOfCombinations(n-1, d-1)+numOfCombinations(n-1, d);
+}
+
+int factorial(int count) {
+    int f = 1;
+    for (int i = 1; i <= count; i++)
+        f = f * i;
+    return f;
+}
+
