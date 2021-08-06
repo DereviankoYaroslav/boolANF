@@ -614,7 +614,7 @@ int main(int args, char **argv) {
     return 0;
 }
 
-//Ôóíêö³ÿ ïðèâåäåííÿ ÷èñëà çà ìîäóëåì äóÿêîãî ÷èñëà
+//Функція приведення числа за модулем дуякого числа
 
 int myModulus(int number, int mod) {
     if (number < 0) {
@@ -625,7 +625,7 @@ int myModulus(int number, int mod) {
     return number % 2;
 }
 
-//Ôóíêö³ÿ ïåðåòâîðåííÿ åëåìåíò³â ç äåñÿòêîâî¿ Ñ× ó äâ³éêîâó Ñ×, äëÿ ïåâíîãî ñòóïåíÿ N
+//Функція перетворення елементів з десяткової СЧ у двійкову СЧ, для певного ступеня N
 
 int *binaryElements(int *arr, int size, int count) {
     int *result = calloc(size * count, sizeof(int));
@@ -639,7 +639,7 @@ int *binaryElements(int *arr, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ ïåðåòâîðåííÿ ìàñèâó ÷èñåë ó äâ³éêîâ³é ñèñòåì³ äî òàáëèö³ ³ñòèíîñò³
+//Функція перетворення масиву чисел у двійковій системі до таблиці істиності
 
 int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
     int calc;
@@ -680,7 +680,7 @@ int *massToBooleanFunc(int *arr, int *arr2, int size, int count, int t) {
     return calculation;
 }
 
-//Ôóíêö³ÿ ïåðåòâîðåííÿ ÷èñëà ç äåñÿòêîâî¿ Ñ× ó äâ³éêîâó Ñ×
+//Функція перетворення числа з десяткової СЧ у двійкову СЧ
 
 int *valueToBinary(int i, int rank) {
     int *res = calloc(rank, sizeof(int));
@@ -690,7 +690,7 @@ int *valueToBinary(int i, int rank) {
     return res;
 }
 
-//Ôóíêö³ÿ çâåäåííÿ äî ñòóïåíÿ
+//Функція зведення до ступеня
 
 int raiseToPower(int num, int pow) {
     int res = 1;
@@ -700,7 +700,7 @@ int raiseToPower(int num, int pow) {
     return res;
 }
 
-//Ôóíêö³ÿ ãåíåðàö³¿ ÷èñåë äëÿ âõ³äíèõ âåêòîð³â ñòóïåíÿ N
+//Функція генерації чисел для вхідних векторів ступеня N
 
 int *elemsForN(int size) {
     int *result = calloc(size, sizeof(int));
@@ -710,7 +710,7 @@ int *elemsForN(int size) {
     return result;
 }
 
-//Ôóíêö³ÿ ïåðåâåäåííÿ ç òàáëèö³ ³ñòèíîñò³ äî ÀÍÔ
+//Функція переведення з таблиці істиності до АНФ
 
 int *toANF(const int *func, int size) {
     int *matrix = calloc(size * size, sizeof(int));
@@ -738,7 +738,7 @@ int *toANF(const int *func, int size) {
     return coefficients;
 }
 
-//Ôóíêö³ÿ îá÷èñëåííÿ âàãè Õåìì³íãà
+//Функція обчислення ваги Хеммінга
 
 int HammingWeight(const int *function, int size) {
     int weight = 0;
@@ -750,7 +750,7 @@ int HammingWeight(const int *function, int size) {
     return weight;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ çáàëàíñîâàíîñò³ ôóíêö³¿
+//Функція визначення збалансованості функції
 
 int funcIsBalanced(int weight, int pow) {
     int flag = 1;
@@ -764,7 +764,7 @@ int funcIsBalanced(int weight, int pow) {
     }
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ àëãåáðà¿÷íîãî ñòóïåíÿ ôóíêö³¿
+//Функція визначення алгебраїчного ступеня функції
 
 int algebraicDeg(const int *func, int size, int count) {
     int result;
@@ -806,7 +806,7 @@ int algebraicDeg(const int *func, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ â³äñòàí³ Õåì³íãà
+//Функція визначення відстані Хемінга
 
 int HammingDistance(const int *func1, const int *func2, int size) {
     int res = 0;
@@ -816,7 +816,7 @@ int HammingDistance(const int *func1, const int *func2, int size) {
     return res;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ ð³âíîñò³ ì³æ ôóíêö³ÿìè
+//Функція визначення рівності між функціями
 
 int funcsIsEqual(const int *func1, const int *func2, int size) {
     int flag = 0;
@@ -828,7 +828,7 @@ int funcsIsEqual(const int *func1, const int *func2, int size) {
     return flag == size;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ íåë³í³éíîñò³ ôóíêö³¿
+//Функція визначення нелінійності функції
 
 int NLinearity(int *func, int size, int count) {
     int minimumNL;
@@ -886,7 +886,7 @@ int NLinearity(int *func, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ ïðåäñòàâëåííÿ òàáëèö³ ³ñòèíîñò³ â ïîëÿðíîìó âèãëÿä³
+//Функція представлення таблиці істиності в полярному вигляді
 
 int *toPolarTable(const int *function, int size) {
     int *res = calloc(size, sizeof(int));
@@ -896,7 +896,7 @@ int *toPolarTable(const int *function, int size) {
     return res;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ êîåô³ö³ºíò³â ïåðåòâîðåííÿ Óîëäøà-Àäàìàðà
+//Функція визначення коефіцієнтів перетворення Уолдша-Адамара
 
 int *HadamardCoefficients(const int *func, int size, int count) {
     int *result = calloc(size, sizeof(int));
@@ -939,7 +939,7 @@ int *HadamardCoefficients(const int *func, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ íàéá³ëüøîãî êîåô³ö³ºíòà ïåðåòâîðåííÿ Óîëäøà-Àäàìàðà
+//Функція визначення найбільшого коефіцієнта перетворення Уолдша-Адамара
 
 int HadamardMax(const int *arr, int size) {
     int maxCoefficient = abs(arr[0]);
@@ -952,14 +952,14 @@ int HadamardMax(const int *arr, int size) {
     return maxCoefficient;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ íåë³í³éíîñò³ ôóíêö³¿ ÷åðåç êîåô³ö³ºíòè Óîëäøà-Àäàìàðà
+//Функція визначення нелінійності функції через коефіцієнти Уолдша-Адамара
 
 int HadamardNLinearity(int max, int count) {
     int nl = (raiseToPower(2, count) - max) / 2;
     return nl;
 }
 
-//Ôóíêö³ÿ îá÷èñëåííÿ àâòîêîðåëÿö³éíî¿ ôóíêö³¿
+//Функція обчислення автокореляційної функції
 
 int *autoCorrelation(int *func, int size, int count) {
     int *acFunc = calloc(size, sizeof(int));
@@ -977,7 +977,7 @@ int *autoCorrelation(int *func, int size, int count) {
     return acFunc;
 }
 
-//Ôóíêö³ÿ îá÷èñëåííÿ àâòîêîðåëÿö³¿ ç ôóíêö³¿ àâòîêîðåëÿö³¿
+//Функція обчислення автокореляції з функції автокореляції
 
 int autoCorrelationMax(const int *arr, int size) {
     int maxCoefficient = abs(arr[1]);
@@ -989,7 +989,7 @@ int autoCorrelationMax(const int *arr, int size) {
     return maxCoefficient;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ â³äïîâ³äíîñò³ êðèòåð³ÿì
+//Функція визначення відповідності критеріям
 
 int expansionCriterion(const int *func, int size, int k) {
     int result = 0;
@@ -1004,7 +1004,7 @@ int expansionCriterion(const int *func, int size, int k) {
     return result;
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W1+
+//Функція визначення множини W1+
 
 int *WHT1PlusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -1022,7 +1022,7 @@ int *WHT1PlusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W1-
+//Функція визначення множини W1-
 
 int *WHT1MinusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -1040,7 +1040,7 @@ int *WHT1MinusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W2+
+//Функція визначення множини W2+
 
 int *WHT2PlusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -1058,7 +1058,7 @@ int *WHT2PlusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Ôóíêö³ÿ âèçíà÷åííÿ ìíîæèíè W2-
+//Функція визначення множини W2-
 
 int *WHT2MinusSet(const int *func, int size, int newSize, int max) {
     if (newSize != 0) {
@@ -1076,7 +1076,7 @@ int *WHT2MinusSet(const int *func, int size, int newSize, int max) {
     }
 }
 
-//Ôóíêö³ÿ âèêîíàííÿ îïåðàö³¿ "îá'ºäíàííÿ" íàä ìàñèâàìè
+//Функція виконання операції "об'єднання" над масивами
 
 int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]) {
     int n = 0, i = 0, j = 0;
@@ -1099,7 +1099,7 @@ int arrayUnion(const int a[], int n1, const int b[], int n2, int c[]) {
     return n;
 }
 
-//Ôóíêö³ÿ îá÷èñëåííÿ ë³í³éíî¿ ôóíêö³¿ äëÿ çàäàíîãî îìåãà
+//Функція обчислення лінійної функції для заданого омега
 
 int *linearFunctions(int size, int count, int t) {
     int calc1 = 0;
@@ -1132,7 +1132,7 @@ int *linearFunctions(int size, int count, int t) {
     return result;
 }
 
-//Ôóíêö³ÿ ç'ºäíàííÿ äâîõ ìàñèâ³â
+//Функція з'єднання двох масивів
 
 int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
     int linearMassSize = size1 + size2;
@@ -1148,7 +1148,7 @@ int *arrayAdd(const int *arr1, int size1, const int *arr2, int size2) {
     return result;
 }
 
-//Ôóíêö³ÿ çíàõîäæåííÿ íàáîðó ïîêðàùåíü
+//Функція знаходження набору покращень
 
 int *improvementSet(const int func[], const int *linearFunctions, int size, int linearMassSize, int WHTPlusSize) {
     int counter = 0;
@@ -1224,7 +1224,7 @@ int *improvementSet(const int func[], const int *linearFunctions, int size, int 
     return result;
 }
 
-//Ôóíêö³ÿ ï³äâèùåííÿ íåë³í³éíîñò³ ìåòîäîì Ãðàä³ºíòíîãî Ï³äéîìó
+//Функція підвищення нелінійності методом Градієнтного Підйому
 
 int *HillClimbing(const int f[], const int *improvementSet, int size, int count) {
     int *ftemp = calloc(size, sizeof(int));
@@ -1265,7 +1265,7 @@ int *HillClimbing(const int f[], const int *improvementSet, int size, int count)
     }
 }
 
-//Ôóíêö³ÿ öèêë³÷íîãî ï³äâèùåííÿ íåë³í³éíîñò³ ôóíêö³¿ ìåòîäîì Ãðàä³ºíòíîãî Ï³äéîìó, ïîêè öå ìîæëèâî
+//Функція циклічного підвищення нелінійності функції методом Градієнтного Підйому, поки це можливо
 
 int *roundableHillClimbing(const int f[], int size, int count) {
     int *result = calloc(size, sizeof(int));
@@ -1504,7 +1504,7 @@ int *roundableHillClimbing(const int f[], int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ ïåðåòâîðåííÿ âõ³äíîãî S-Box íà íàá³ð áóëåâèõ ôóíêö³é, ùî éîãî îïèñóþòü
+//Функція перетворення вхідного S-Box на набір булевих функцій, що його описують
 
 int *SBoxToBooleanFunc(int *sbox, int size, int count) {
     //printf("\nS-BOX\n");
@@ -1538,7 +1538,7 @@ int *SBoxToBooleanFunc(int *sbox, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ ïåðåòâîðåííÿ íàáîðó áóëåâèõ ôóíêö³é íà S-Box
+//Функція перетворення набору булевих функцій на S-Box
 
 int *booleanFunctionsToSBox(const int *arr, int size, int count) {
     int *result = calloc(size, sizeof(int));
@@ -1550,7 +1550,7 @@ int *booleanFunctionsToSBox(const int *arr, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ çíàõîäæåííÿ ïîêàçíèê³â áóëåâèõ ôóíêö³é S-Box'ó
+//Функція знаходження показників булевих функцій S-Box'у
 
 int *propertiesOfBooleanFunc(int *arr, int size, int count) {
     printf("\nFUNCTIONS PROPERTIES\n");
@@ -1596,7 +1596,7 @@ int *propertiesOfBooleanFunc(int *arr, int size, int count) {
     return arr;
 }
 
-//Ôóíêö³ÿ çíàõîäæåííÿ ë³í³éíèõ êîìá³íàö³é äëÿ áóëåâèõ ôóíêö³é S-Box'ó
+//Функція знаходження лінійних комбінацій для булевих функцій S-Box'у
 
 int *linearCombinations(const int *arr, int size, int count) {
     int *result = calloc(size * size, sizeof(int));
@@ -1632,7 +1632,7 @@ int *linearCombinations(const int *arr, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ çíàõîäæåííÿ ïîêàçíèê³â ë³í³éíèõ êîìá³íàö³é äëÿ áóëåâèõ ôóíêö³é S-Box'ó òà çíàõîäæåííÿ ì³í³ìàëüíî¿ íåë³í³éíîñò³ ñåðåä íèõ
+//Функція знаходження показників лінійних комбінацій для булевих функцій S-Box'у та знаходження мінімальної нелінійності серед них
 
 int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     int *minimalNL = calloc(size - 1, sizeof(int));
@@ -1733,7 +1733,7 @@ int *propertiesOfLinearCombinations(const int *arr, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ ãåíåðàö³¿ S-Box'ó
+//Функція генерації S-Box'у
 
 int *SBoxGenerating(int n, int m) {
     int size = raiseToPower(2, n);
@@ -1762,7 +1762,7 @@ int *SBoxGenerating(int n, int m) {
     return sb;
 }
 
-//Ôóíêö³ÿ çíàõîäæåííÿ âëàñòèâîéñòåé S-Box'ó
+//Функція знаходження властивойстей S-Box'у
 
 int *propertiesOfSBox(int *sbox, int size, int count) {
     int result;
@@ -1786,6 +1786,8 @@ int *propertiesOfSBox(int *sbox, int size, int count) {
     return ar2;
 }
 
+//Функція знаходження нелінійності S-Box'у
+
 int NLOfSBox(const int *sbox, int size, int count) {
     int result;
     int *ar1 = linearCombinations(sbox, size, count);
@@ -1793,6 +1795,8 @@ int NLOfSBox(const int *sbox, int size, int count) {
     free(ar1);
     return result;
 }
+
+//Функція знаходження автокореляції S-Box'у
 
 int ACOfSBox(int *sbox, int size, int count) {
     int result;
@@ -1804,7 +1808,7 @@ int ACOfSBox(int *sbox, int size, int count) {
     return result;
 }
 
-//Ôóíêö³ÿ "âàðòîñò³" S-Box'ó
+//Функція "вартості" S-Box'у
 
 int costFunction(int *sbox, int size, int count) {
     int *costArray = calloc(size - 1, sizeof(int));
@@ -1842,6 +1846,8 @@ int costFunction(int *sbox, int size, int count) {
     free(ar1);
     return cost;
 }
+
+//Реалізація "Імітації Відпалу"
 
 int *simulatedAnnealing(const int *sbox, int size, int count) {
     char *filename = "D:\\CLionProjects\\boolANF\\result.txt";
@@ -1975,6 +1981,8 @@ int *simulatedAnnealing(const int *sbox, int size, int count) {
     return S;
 }
 
+//Функція знаходження мінімальної нелінійності серед лінійних комбінацій
+
 int NLOfLinearCombinations(const int *arr, int size, int count) {
     int *minimalNL = calloc(size - 1, sizeof(int));
     int result;
@@ -2006,6 +2014,8 @@ int NLOfLinearCombinations(const int *arr, int size, int count) {
     return result;
 }
 
+//Функція знаходження дельта-рівномірності
+
 int deltaUniformity(const int *arr, int size, int count) {
     int result;
     int max = 0;
@@ -2025,6 +2035,8 @@ int deltaUniformity(const int *arr, int size, int count) {
     }
     return max;
 }
+
+//Функція знаходження DDT та її максимуму
 
 int differenceTableMax(const int *sbox, int size) {
     int *DDT = calloc(size * size, sizeof(int));
@@ -2069,6 +2081,8 @@ int *SBoxApprox(int *sbox, int size, int count) {
     int *result = binaryElementsApprox(sbox, size, count);
     return result;
 }
+
+//Функція знаходження LAT та її максимуму
 
 int LATMax(int *sbox, int size, int count) {
     int *ar = calloc(size * count, sizeof(int));
@@ -2148,6 +2162,8 @@ int LATMax(int *sbox, int size, int count) {
     return result;
 }
 
+//Функція знаходження циклічної структури
+
 int cyclicStructure(const int *sbox, int size) {
     int *structure = calloc(size * 4, sizeof(int));
     int *indAr = calloc(size, sizeof(int));
@@ -2192,6 +2208,8 @@ int cyclicStructure(const int *sbox, int size) {
     return max;
 }
 
+//Функція знаходження фіксованих точок
+
 int fixedPoints(const int *sbox, int size) {
     int counter = 0;
     for (int i = 0; i < 256; i++)
@@ -2205,6 +2223,8 @@ int fixedPoints(const int *sbox, int size) {
 
     return counter;
 }
+
+//Функція знаходження мінімального ступеня
 
 int minDegCalculation(const int *arr, int size, int count) {
     int *minDEC = calloc(size - 1, sizeof(int));
@@ -2236,6 +2256,8 @@ int minDegCalculation(const int *arr, int size, int count) {
     return result;
 }
 
+//Знаходження мінімально ступеня з попередньої функції
+
 int minDegree(int *sbox, int size, int count) {
     int *ar = SBoxToBooleanFunc(sbox, size, count);
     int *ar2 = linearCombinations(ar, size, count);
@@ -2244,6 +2266,8 @@ int minDegree(int *sbox, int size, int count) {
     free(ar2);
     return result;
 }
+
+//Функція побудування одного рядка матриці, що описує S-Box
 
 void buildOneRow(int *arr, int *monomials) {
     monomials[0] = 1;
@@ -2268,6 +2292,8 @@ void buildOneRow(int *arr, int *monomials) {
         }
     }
 }
+
+//Функція обчислення рангу матриці
 
 int rankCalculation(int rows, int cols, int a[rows][cols]) {
     int m = cols;
@@ -2295,6 +2321,8 @@ int rankCalculation(int rows, int cols, int a[rows][cols]) {
     free(line);
     return rank;
 }
+
+//Функція обчислення алгебраїчного імунітету
 
 int algebraicImmunity(int *sbox, int size, int count) {
     int rows = raiseToPower(2, count);
@@ -2353,6 +2381,8 @@ int algebraicImmunity(int *sbox, int size, int count) {
         return result-1;
     }
 }
+
+//Функція знаходження кількості сполучень
 
 int numOfCombinations(int n, int d) {
     if (n == d)
