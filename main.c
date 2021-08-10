@@ -4,6 +4,7 @@
 #include <time.h>
 #include <pthread.h>
 #include <math.h>
+#include <conio.h>
 
 int raiseToPower(int num, int pow);
 
@@ -117,7 +118,7 @@ int numOfCombinations(int n, int d);
 
 int rankCalculation(int rows, int cols, int a[rows][cols]);
 
-int algebraicImmunity(int *sbox, int size, int count);
+int algebraicImmunity(const int *sbox, int size, int count);
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
@@ -317,7 +318,7 @@ int main(int args, char **argv) {
         printf("NULL");
     }
     printf("\n");
-    // Îòðèìàííÿ îá'ºäíàííÿ WHT1P òà WHT2P
+    // Îòðèìàííÿ îá' ºäíàííÿ WHT1P òà WHT2P
     if (!WHT1Plus && !WHT2Plus) {
         printf("SET WHT PLUS IS NULL");
     } else {
@@ -331,7 +332,7 @@ int main(int args, char **argv) {
         }
     }
     printf("\n");
-    // Îòðèìàííÿ îá'ºäíàííÿ WHT1M òà WHT2M
+    // Îòðèìàííÿ îá' ºäíàííÿ WHT1M òà WHT2M
     if (!WHT1Minus && !WHT2Minus) {
         printf("\nSET WHT MINUS IS NULL");
     } else {
@@ -498,11 +499,11 @@ int main(int args, char **argv) {
     n = 8;
     size = raiseToPower(2, n);
 
-    int ar[] = {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7};
+    //int ar[] = {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7};
 
     //int ar2[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
 
-    int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242,
+    /*int ar2[] = {155, 2, 239, 60, 65, 139, 8, 25, 5, 152, 24, 31, 54, 168, 137, 196, 180, 186, 53, 255, 187, 9, 242,
                  219, 68, 185, 106, 0, 176, 118, 48, 217, 175, 11, 203, 91, 100, 56, 226, 120, 75, 135, 114, 111, 93,
                  237, 208, 193, 179, 181, 94, 251, 82, 37, 51, 199, 36, 20, 66, 165, 102, 158, 73, 69, 42, 50, 110, 80,
                  83, 88, 123, 202, 151, 90, 129, 197, 84, 128, 161, 247, 163, 145, 119, 206, 166, 52, 133, 213, 207, 98,
@@ -514,14 +515,34 @@ int main(int args, char **argv) {
                  241, 201, 157, 131, 190, 6, 232, 15, 220, 16, 95, 27, 132, 116, 21, 149, 150, 205, 178, 245, 249, 141,
                  140, 227, 170, 105, 234, 103, 144, 215, 43, 81, 67, 28, 230, 195, 85, 96, 243, 174, 248, 77, 173, 188,
                  7, 224, 10, 171, 19, 177, 64, 194, 214, 23, 78
-    };
+    };*/
     //int ar2[] = {100, 203, 184, 5, 10, 84, 209, 0, 74, 97, 225, 232, 187, 113, 214, 141, 125, 131, 254, 200, 132, 210, 240, 164, 13, 130, 51, 201, 121, 63, 249, 162, 120, 202, 148, 36, 45, 1, 171, 65, 20, 80, 59, 56, 186, 192, 153, 138, 124, 126, 39, 196, 27, 238, 82, 144, 237, 221, 11, 110, 47, 103, 18, 14, 243, 251, 55, 25, 28, 33, 68, 147, 96, 35, 93, 142, 29, 73, 106, 234, 108, 90, 64, 151, 111, 253, 78, 158, 152, 43, 7, 182, 167, 4, 218, 231, 112, 72, 248, 6, 91, 178, 52, 57, 69, 145, 37, 79, 181, 247, 143, 67, 198, 241, 205, 155, 161, 92, 134, 246, 24, 137, 177, 170, 199, 15, 149, 105, 49, 174, 53, 8, 83, 107, 70, 189, 197, 71, 195, 109, 233, 98, 156, 66, 2, 213, 166, 19, 60, 204, 250, 183, 168, 239, 212, 87, 222, 54, 31, 154, 104, 163, 230, 129, 215, 191, 3, 219, 127, 185, 173, 188, 117, 88, 136, 46, 44, 176, 242, 227, 180, 58, 128, 34, 62, 21, 99, 235, 32, 206, 226, 16, 255, 157, 114, 236, 42, 75, 81, 17, 101, 223, 146, 102, 76, 135, 207, 245, 216, 165, 217, 40, 228, 77, 61, 38, 94, 95, 150, 123, 190, 194, 86, 85, 172, 115, 50, 179, 48, 89, 160, 244, 26, 12, 229, 175, 140, 30, 41, 252, 119, 193, 22, 118, 133, 208, 169, 211, 116, 220, 122, 9, 139, 159, 224, 23};
+    int ar2[256];
+    FILE *fin;
+    fin = fopen("input.txt", "r");
+    for (int i =0;i<256;i++)
+    {
+        fscanf(fin,"%d, ",&ar2[i]);
+    }
+    fclose(fin);
+
     //int ar2[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182 };
+    FILE* file;
+    fopen_s(&file,"sbox.txt", "w");
+    if (file == NULL) {
+        printf("ERROR: Can't save sbox to file!\n");
+        for (;;);
+    }
+    fprintf(file, "\n");
+    for (int i = 0;i < 256;i++) {
+        fprintf(file, "%d, ", ar2[i]);
+    }
+    fprintf(file, "\n");
+
     int res = deltaUniformity(ar2, size, n);
 
-    printf("\nDelta Uniformity = %d ", res);
-    printf("\n");
-    printf("\n");
+    fprintf(file,"\nDelta Uniformity = %d ", res);
+    fprintf(file,"\n");
 
     /*int mdt = differenceTableMax(ar2, size);
 
@@ -531,32 +552,59 @@ int main(int args, char **argv) {
 
     int LAT = LATMax(ar2, size, n);
 
-    printf("LAT Max = %d ", LAT);
-    printf("\n");
+    fprintf(file,"LAT Max = %d ", LAT);
+    fprintf(file,"\n");
 
     int NL = raiseToPower(2, n - 1) - LAT;
-    printf("Non-linearity from LAT = %d ", NL);
-    printf("\n");
+    fprintf(file,"Non-linearity from LAT = %d ", NL);
 
     int cs = cyclicStructure(ar2, size);
-    printf("\nCycle = %d ", cs);
-    printf("\n");
+    fprintf(file,"\nCycle = %d ", cs);
 
     int fp = fixedPoints(ar2, size);
-    printf("\n");
-    printf("\n");
+
+    if (fp > 0)
+        fprintf(file,"\nCapacity of fixed points: %d", fp);
+    else
+        fprintf(file,"\nFixed points ain't found\n");
 
     int md = minDegree(ar2, size, n);
 
     //int md = get_min_degree(ar2);
 
-    printf("Minimal algebraic degree = %d ", md);
-    printf("\n");
+    fprintf(file,"Minimal algebraic degree = %d ", md);
 
     int ai = algebraicImmunity(ar2, size, n);
 
+    fprintf(file,"\nAlgebraic Immunity = %d ", ai);
+    fprintf(file,"\n");
+    fclose(file);
+
+    printf("\nDelta Uniformity = %d ", res);
+    printf("\n");
+
+    /*int mdt = differenceTableMax(ar2, size);
+
+    printf("DT MAX = %d ", mdt);
+    printf("\n");
+    printf("\n");*/
+
+    printf("LAT Max = %d ", LAT);
+    printf("\n");
+
+    printf("Non-linearity from LAT = %d ", NL);
+
+    printf("\nCycle = %d ", cs);
+    printf("\n");
+
+    //int md = get_min_degree(ar2);
+
+    printf("Minimal algebraic degree = %d ", md);
+
     printf("\nAlgebraic Immunity = %d ", ai);
     printf("\n");
+
+    system("PAUSE");
 
     //int sbl[] = {3, 106, 87, 164, 169, 243, 112, 241, 109, 0, 128, 135, 90, 16, 129, 44, 28, 34, 157, 103, 35, 113, 143, 67, 172, 33, 210, 104, 24, 222, 152, 65, 23, 105, 51, 195, 204, 160, 74, 224, 179, 239, 218, 215, 197, 85, 56, 41, 27, 29, 198, 99, 186, 141, 155, 47, 140, 124, 170, 13, 206, 6, 177, 173, 146, 154, 214, 184, 187, 192, 227, 50, 255, 194, 233, 45, 188, 232, 9, 95, 11, 249, 223, 54, 14, 156, 237, 61, 55, 202, 166, 117, 70, 163, 121, 134, 15, 231, 151, 165, 250, 81, 211, 216, 228, 48, 196, 238, 84, 150, 46, 226, 101, 144, 108, 58, 64, 251, 37, 149, 183, 40, 252, 73, 102, 174, 52, 8, 208, 77, 212, 167, 242, 10, 229, 92, 100, 230, 98, 12, 136, 1, 59, 225, 161, 116, 69, 178, 219, 107, 153, 86, 71, 142, 115, 246, 125, 213, 190, 57, 7, 66, 133, 32, 118, 94, 162, 122, 30, 88, 76, 148, 20, 247, 39, 205, 203, 79, 145, 130, 83, 217, 31, 193, 221, 180, 2, 138, 191, 89, 137, 175, 158, 60, 17, 139, 201, 234, 240, 176, 4, 126, 49, 5, 235, 38, 110, 80, 119, 68, 120, 199, 131, 236, 220, 159, 253, 254, 53, 26, 93, 97, 245, 244, 75, 18, 209, 82, 207, 248, 63, 147, 185, 171, 132, 78, 43, 189, 200, 91, 22, 96, 181, 21, 36, 111, 72, 114, 19, 123, 25, 168, 42, 62, 127, 182};
 
@@ -1372,7 +1420,7 @@ int *roundableHillClimbing(const int f[], int size, int count) {
         }
         printf("\n");
 
-        // Îòðèìàííÿ îá'ºäíàííÿ WHT1P òà WHT2P
+        // Îòðèìàííÿ îá' ºäíàííÿ WHT1P òà WHT2P
         if (!WHT1Plus && !WHT2Plus) {
             printf("SET WHT PLUS IS NULL");
         } else {
@@ -1389,7 +1437,7 @@ int *roundableHillClimbing(const int f[], int size, int count) {
 
         printf("\n");
 
-        // Îòðèìàííÿ îá'ºäíàííÿ WHT1M òà WHT2M
+        // Îòðèìàííÿ îá' ºäíàííÿ WHT1M òà WHT2M
         if (!WHT1Minus && !WHT2Minus) {
             printf("\nSET WHT MINUS IS NULL");
         } else {
@@ -2216,10 +2264,10 @@ int fixedPoints(const int *sbox, int size) {
         if (sbox[i] == i || sbox[i] == ~i) {
             counter++;
         }
-    if (counter > 0)
+    /*if (counter > 0)
         printf("\nCapacity of fixed points: %d", counter);
     else
-        printf("\nFixed points ain't found\n");
+        printf("\nFixed points ain't found\n");*/
 
     return counter;
 }
@@ -2295,27 +2343,27 @@ void buildOneRow(int *arr, int *monomials) {
 
 //Функція обчислення рангу матриці
 
-int rankCalculation(int rows, int cols, int a[rows][cols]) {
+int rankCalculation(int rows, int cols, int arr[rows][cols]) {
     int m = cols;
     int n = rows;
 
     int rank = cols;
     int *line = calloc(cols, sizeof(int));
-    for (int i = 0; i < 697; i++)
-        line[i] = 0;
+    for (int q = 0; q < cols; q++)
+        line[q] = 0;
     for (int i = 0; i < m; ++i) {
         int j;
         for (j = 0; j < n; ++j)
-            if (!line[j] && a[j][i])
+            if (!line[j] && arr[j][i])
                 break;
         if (j == n)
             --rank;
         else {
             line[j] = 1;
             for (int k = 0; k < n; ++k)
-                if (k != j && a[k][i])
+                if (k != j && arr[k][i])
                     for (int p = i + 1; p < m; ++p)
-                        a[k][p] ^= a[j][p] & a[k][i];
+                        arr[k][p] ^= arr[j][p] & arr[k][i];
         }
     }
     free(line);
@@ -2324,7 +2372,7 @@ int rankCalculation(int rows, int cols, int a[rows][cols]) {
 
 //Функція обчислення алгебраїчного імунітету
 
-int algebraicImmunity(int *sbox, int size, int count) {
+int algebraicImmunity(const int *sbox, int size, int count) {
     int rows = raiseToPower(2, count);
     int calc = 0;
     int cols = 0;
@@ -2337,7 +2385,7 @@ int algebraicImmunity(int *sbox, int size, int count) {
             break;
         }
     }
-    //printf("\nnum of comb %d \n", cols);
+    //printf("\n num of comb %d \n", cols);
     int mat[rows][cols];
     int tmp[cols];
     int values[count + count];
@@ -2393,5 +2441,6 @@ int numOfCombinations(int n, int d) {
         return 1;
     return numOfCombinations(n - 1, d - 1) + numOfCombinations(n - 1, d);
 }
+
 
 
